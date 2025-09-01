@@ -21,9 +21,6 @@ jobs:
       - name: install dependencies
         run: npm ci
 
-      - name: run debug script
-        run: ./debug-check.sh
-
       - name: check formatting on diff
         id: prettier
         shell: bash
