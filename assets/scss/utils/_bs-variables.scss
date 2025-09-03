@@ -1,0 +1,338 @@
+// *******************************
+// * Bootstrap References
+// *******************************
+
+// gray-color-variables
+$white: #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-900: #212529 !default;
+
+// color-variables
+$cyan: #0dcaf0 !default;
+
+// theme-color-variables
+$info: $cyan !default;
+$light: $gray-100 !default;
+$dark: $gray-900 !default;
+
+// font-variables
+$font-size-base: 1rem !default; // Assumes the browser default, typically `16px`
+
+$h1-font-size: $font-size-base * 2.5 !default;
+$h2-font-size: $font-size-base * 2 !default;
+$h3-font-size: $font-size-base * 1.75 !default;
+$h4-font-size: $font-size-base * 1.5 !default;
+$h6-font-size: $font-size-base !default;
+
+// font-weight
+$font-weight-bold: 700 !default;
+
+// spacer-variables-maps
+$spacer: 1rem !default;
+
+// *******************************
+// * Custom Variables
+// *******************************
+
+// primary-color-variables
+$primary-900: #39401d !default;
+$primary-800: #515a30 !default;
+$primary-700: #6a7442 !default;
+$primary-600: #8c9761 !default;
+$primary-500: #a2ab80 !default;
+$primary-400: #b3b89f !default;
+$primary-300: #cccfbf !default;
+$primary-200: #dfe1d6 !default;
+$primary-100: #ebede3 !default;
+$primary-50: #f6f8ed !default;
+$primarys: (
+  '900': $primary-900,
+  '800': $primary-800,
+  '700': $primary-700,
+  '600': $primary-600,
+  '500': $primary-500,
+  '400': $primary-400,
+  '300': $primary-300,
+  '200': $primary-200,
+  '100': $primary-100,
+  '50': $primary-50,
+) !default;
+
+// secondary-color-variables
+$secondary-900: #3a351d !default;
+$secondary-800: #4e482a !default;
+$secondary-700: #655e39 !default;
+$secondary-600: #847c55 !default;
+$secondary-500: #a1996e !default;
+$secondary-400: #b4ac81 !default;
+$secondary-300: #d3cca9 !default;
+$secondary-200: #ebe4c1 !default;
+$secondary-100: #fff8d6 !default;
+$secondary-50: #fffcec !default;
+$secondarys: (
+  '900': $secondary-900,
+  '800': $secondary-800,
+  '700': $secondary-700,
+  '600': $secondary-600,
+  '500': $secondary-500,
+  '400': $secondary-400,
+  '300': $secondary-300,
+  '200': $secondary-200,
+  '100': $secondary-100,
+  '50': $secondary-50,
+) !default;
+
+// success-color-variables
+$success-900: #103b1a !default;
+$success-800: #194b24 !default;
+$success-700: #2e6439 !default;
+$success-600: #387244 !default;
+$success-500: #4a8857 !default;
+$success-400: #4a9b5b !default;
+$success-300: #58a968 !default;
+$success-200: #69be7a !default;
+$success-100: #95d4a5 !default;
+$success-50: #cbebd6 !default;
+$successes: (
+  '900': $success-900,
+  '800': $success-800,
+  '700': $success-700,
+  '600': $success-600,
+  '500': $success-500,
+  '400': $success-400,
+  '300': $success-300,
+  '200': $success-200,
+  '100': $success-100,
+  '50': $success-50,
+) !default;
+
+// danger-color-variables
+$danger-900: #4d1219 !default;
+$danger-800: #4a140a !default;
+$danger-700: #832311 !default;
+$danger-600: #9d2a15 !default;
+$danger-500: #dd3d23 !default;
+$danger-400: #ff583d !default;
+$danger-300: #ff816d !default;
+$danger-200: #ffbfb5 !default;
+$danger-100: #ffdbdf !default;
+$dangers: (
+  '900': $danger-900,
+  '800': $danger-800,
+  '700': $danger-700,
+  '600': $danger-600,
+  '500': $danger-500,
+  '400': $danger-400,
+  '300': $danger-300,
+  '200': $danger-200,
+  '100': $danger-100,
+) !default;
+
+// warning-color-variables
+$warning-900: #634f0b !default;
+$warning-800: #9b7800 !default;
+$warning-700: #be9404 !default;
+$warning-600: #e3b000 !default;
+$warning-500: #fcc814 !default;
+$warning-400: #fdd139 !default;
+$warning-300: #ffdd69 !default;
+$warning-200: #ffe99c !default;
+$warning-100: #fff0bb !default;
+$warning-50: #fff5d5 !default;
+$warnings: (
+  '900': $warning-900,
+  '800': $warning-800,
+  '700': $warning-700,
+  '600': $warning-600,
+  '500': $warning-500,
+  '400': $warning-400,
+  '300': $warning-300,
+  '200': $warning-200,
+  '100': $warning-100,
+  '50': $warning-50,
+) !default;
+
+// neutral-color-variables
+$neutral-800: #111111 !default;
+$neutral-700: #212121 !default;
+$neutral-600: #484848 !default;
+$neutral-500: #848484 !default;
+$neutral-400: #bbbbbb !default;
+$neutral-300: #dddddd !default;
+$neutral-200: #e4e4e4 !default;
+$neutral-100: #f0f0f0 !default;
+$neutrals: (
+  '800': $neutral-800,
+  '700': $neutral-700,
+  '600': $neutral-600,
+  '500': $neutral-500,
+  '400': $neutral-400,
+  '300': $neutral-300,
+  '200': $neutral-200,
+  '100': $neutral-100,
+) !default;
+
+// font-variables
+$h7-font-size: $font-size-base * 0.875 !default;
+
+// *******************************
+// * Bootstrap Overrides
+// *******************************
+
+// theme-color-variables
+$primary: $primary-400 !default;
+$secondary: $secondary-300 !default;
+$success: $success-300 !default;
+$warning: $warning-400 !default;
+$danger: $danger-400 !default;
+
+// theme-colors-map
+$theme-colors: (
+  'primary': $primary,
+  'secondary': $secondary,
+  'success': $success,
+  'info': $info,
+  'warning': $warning,
+  'danger': $danger,
+  'light': $light,
+  'dark': $dark,
+  'white': $white,
+  // primary
+  'primary-900': $primary-900,
+  'primary-800': $primary-800,
+  'primary-700': $primary-700,
+  'primary-600': $primary-600,
+  'primary-500': $primary-500,
+  'primary-400': $primary-400,
+  'primary-300': $primary-300,
+  'primary-200': $primary-200,
+  'primary-100': $primary-100,
+  'primary-50': $primary-50,
+  // secondary
+  'secondary-900': $secondary-900,
+  'secondary-800': $secondary-800,
+  'secondary-700': $secondary-700,
+  'secondary-600': $secondary-600,
+  'secondary-500': $secondary-500,
+  'secondary-400': $secondary-400,
+  'secondary-300': $secondary-300,
+  'secondary-200': $secondary-200,
+  'secondary-100': $secondary-100,
+  'secondary-50': $secondary-50,
+  // success
+  'success-900': $success-900,
+  'success-800': $success-800,
+  'success-700': $success-700,
+  'success-600': $success-600,
+  'success-500': $success-500,
+  'success-400': $success-400,
+  'success-300': $success-300,
+  'success-200': $success-200,
+  'success-100': $success-100,
+  'success-50': $success-50,
+  // danger
+  'danger-900': $danger-900,
+  'danger-800': $danger-800,
+  'danger-700': $danger-700,
+  'danger-600': $danger-600,
+  'danger-500': $danger-500,
+  'danger-400': $danger-400,
+  'danger-300': $danger-300,
+  'danger-200': $danger-200,
+  'danger-100': $danger-100,
+  // warning
+  'warning-900': $warning-900,
+  'warning-800': $warning-800,
+  'warning-700': $warning-700,
+  'warning-600': $warning-600,
+  'warning-500': $warning-500,
+  'warning-400': $warning-400,
+  'warning-300': $warning-300,
+  'warning-200': $warning-200,
+  'warning-100': $warning-100,
+  'warning-50': $warning-50,
+  // neutral
+  'neutral-800': $neutral-800,
+  'neutral-700': $neutral-700,
+  'neutral-600': $neutral-600,
+  'neutral-500': $neutral-500,
+  'neutral-400': $neutral-400,
+  'neutral-300': $neutral-300,
+  'neutral-200': $neutral-200,
+  'neutral-100': $neutral-100,
+) !default;
+
+// spacer-variables-maps
+$spacers: (
+  0: 0,
+  1: $spacer * 0.25,
+  2: $spacer * 0.5,
+  3: $spacer * 0.75,
+  4: $spacer,
+  5: $spacer * 1.25,
+  6: $spacer * 1.5,
+  7: $spacer * 1.75,
+  8: $spacer * 2,
+  10: $spacer * 2.5,
+  12: $spacer * 3,
+) !default;
+
+// font-variables
+$font-size-sm: $font-size-base * 0.75 !default;
+$h5-font-size: $font-size-base * 1.125 !default;
+
+// font-sizes
+$font-sizes: (
+  1: $h1-font-size,
+  2: $h2-font-size,
+  3: $h3-font-size,
+  4: $h4-font-size,
+  5: $h5-font-size,
+  6: $h6-font-size,
+  7: $h7-font-size, // custom
+) !default;
+
+// font-family
+$font-family-sans-serif:
+  'Noto Sans TC',
+  system-ui,
+  -apple-system,
+  'Segoe UI',
+  Roboto,
+  'Helvetica Neue',
+  'Noto Sans',
+  'Liberation Sans',
+  Arial,
+  sans-serif,
+  'Apple Color Emoji',
+  'Segoe UI Emoji',
+  'Segoe UI Symbol',
+  'Noto Color Emoji' !default;
+
+// Paragraphs
+$paragraph-margin-bottom: 0 !default;
+
+// headings-variables
+$headings-margin-bottom: 0 !default;
+$headings-font-family:
+  'Noto Serif TC',
+  system-ui,
+  -apple-system,
+  'Segoe UI',
+  Roboto,
+  'Helvetica Neue',
+  'Noto Sans',
+  'Liberation Sans',
+  Arial,
+  sans-serif,
+  'Apple Color Emoji',
+  'Segoe UI Emoji',
+  'Segoe UI Symbol',
+  'Noto Color Emoji' !default;
+$headings-font-weight: $font-weight-bold !default;
+
+// rfs
+$enable-rfs: false !default;
+
+// Links
+$link-decoration: none !default;

@@ -1,0 +1,27 @@
+$utilities: map-merge(
+  $utilities,
+  (
+    //===============================
+    // 調整 bootstrap 原有設定
+    //===============================
+    'font-size': map-merge(
+        map-get($utilities, 'font-size'),
+        (
+          responsive: true,
+          values: map-merge(
+              map-get(map-get($utilities, 'font-size'), 'values'),
+              (
+                sm: $font-size-sm,
+                lg: $font-size-lg,
+              )
+            ),
+        )
+      ),
+    //===============================
+    // 覆蓋 bootstrap 原有設定
+    //===============================
+    //===============================
+    // 新增 utilities 設定
+     //===============================
+  )
+);
