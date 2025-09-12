@@ -8,7 +8,7 @@
 ## Clone 專案
 
 ```sh
-git clone https://github.com/kira134679/team-a13-practice.git
+git clone https://github.com/kira134679/plantique-life.git
 ```
 
 ## 建立開發環境
