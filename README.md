@@ -45,7 +45,7 @@ npm run dev
 plantique-life/
 ├── assets
 |  ├── images          // 圖片放置處
-|  ├── js
+|  ├── js              // JS 放置處，每個頁面獨立一個 JS
 |  └── scss            // SCSS 的樣式放置處，每個頁面獨立一個 scss
 |     ├── base
 |     ├── components
@@ -54,7 +54,6 @@ plantique-life/
 ├── components         // 元件放置處
 ├── docs
 ├── layout             // ejs 模板放置處
-├── main.js            // JavaScript 程式碼
 ├── package-lock.json
 ├── package.json
 ├── pages              // 頁面放置處
