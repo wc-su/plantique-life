@@ -3,146 +3,152 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PLANTIQUE LIFE</title>
-    <script type="module" crossorigin src="/plantique-life/assets/index-end-BLVAOHhS.js"></script>
-    <link rel="modulepreload" crossorigin href="/plantique-life/assets/index-D75VYoQX.js">
-    <link rel="stylesheet" crossorigin href="/plantique-life/assets/index-end-CsQCe_t8.css">
+    <title>植感生活 | PLANTIQUE LIFE</title>
+    <script type="module" crossorigin src="/plantique-life/assets/index-end-DDw99pHO.js"></script>
+    <link rel="modulepreload" crossorigin href="/plantique-life/assets/bootstrap.min-Blgo0CQA.js">
+    <link rel="stylesheet" crossorigin href="/plantique-life/assets/index-end-BIYzmfUM.css">
   </head>
   <body>
     <section class="column-section py-12" aria-labelledby="column-title">
       <div class="container-fluid container-xl">
         <div class="d-flex flex-column align-items-center flex-md-row justify-content-md-between mb-md-12">
           <div class="d-flex justify-content-center">
-            <img
-              class="heading-line align-self-end me-6"
-              src="data:image/svg+xml,%3csvg%20width='60'%20height='81'%20viewBox='0%200%2060%2081'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M60%200.714289L0.790235%2080.1191L0%2079.524L59.2098%200.119141L60%200.714289Z'%20fill='%238C9761'/%3e%3c/svg%3e"
-              alt="heading-slash"
-            />
+            <picture class="align-self-end me-6">
+              <source srcset="data:image/svg+xml,%3csvg%20width='60'%20height='81'%20viewBox='0%200%2060%2081'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M60%200.714289L0.790235%2080.1191L0%2079.524L59.2098%200.119141L60%200.714289Z'%20fill='%238C9761'/%3e%3c/svg%3e" media="(min-width: 768px)" />
+              <img src="data:image/svg+xml,%3csvg%20width='32'%20height='41'%20viewBox='0%200%2032%2041'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M31%200.709894L1.77996%2040.1191L1%2039.5284L30.22%200.119141L31%200.709894Z'%20fill='%238C9761'/%3e%3c/svg%3e" class="img-fluid" alt="heading-decoration" />
+            </picture>
             <div class="d-flex flex-column align-items-center">
               <h3 class="text-primary fs-8 fs-md-7 mb-1 mb-md-2">Column</h3>
-              <h2 class="fs-3 fs-md-2 text-neutral-700 ls-base" id="column-title">植感專欄</h2>
+              <h2 class="fs-3 fs-md-2 text-neutral-700" id="column-title">植感專欄</h2>
             </div>
-            <img
-              class="heading-line align-self-end ms-6"
-              src="data:image/svg+xml,%3csvg%20width='60'%20height='81'%20viewBox='0%200%2060%2081'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M60%200.714289L0.790235%2080.1191L0%2079.524L59.2098%200.119141L60%200.714289Z'%20fill='%238C9761'/%3e%3c/svg%3e"
-              alt="heading-slash"
-            />
+            <picture class="align-self-end ms-6">
+              <source srcset="data:image/svg+xml,%3csvg%20width='60'%20height='81'%20viewBox='0%200%2060%2081'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M60%200.714289L0.790235%2080.1191L0%2079.524L59.2098%200.119141L60%200.714289Z'%20fill='%238C9761'/%3e%3c/svg%3e" media="(min-width: 768px)" />
+              <img src="data:image/svg+xml,%3csvg%20width='32'%20height='41'%20viewBox='0%200%2032%2041'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M31%200.709894L1.77996%2040.1191L1%2039.5284L30.22%200.119141L31%200.709894Z'%20fill='%238C9761'/%3e%3c/svg%3e" class="img-fluid" alt="heading-decoration" />
+            </picture>
           </div>
-          <div class="d-flex gap-2 gap-md-4 my-8 align-self-md-end my-md-0">
-            <div class="column-tag fs-sm ls-base text-nowrap border border-primary rounded-1 text-primary py-2 px-3">
+          <div class="d-flex gap-2 gap-md-4 my-8 align-self-md-end my-md-0" id="column-filter">
+            <button
+              type="button"
+              class="column-tag fs-sm text-nowrap btn border border-primary rounded-1 text-primary py-2 px-3 active"
+              data-filter="all"
+            >
               全部
-            </div>
-            <div class="column-tag fs-sm ls-base text-nowrap border border-primary rounded-1 text-primary py-2 px-3">
+            </button>
+            <button
+              type="button"
+              class="column-tag fs-sm text-nowrap btn border border-primary rounded-1 text-primary py-2 px-3"
+              data-filter="guide"
+            >
               #養護指南
-            </div>
-            <div class="column-tag fs-sm ls-base text-nowrap border border-primary rounded-1 text-primary py-2 px-3">
+            </button>
+            <button
+              type="button"
+              class="column-tag fs-sm text-nowrap btn border border-primary rounded-1 text-primary py-2 px-3"
+              data-filter="illustrated-book"
+            >
               #多肉圖鑑
-            </div>
-            <div
-              class="column-tag fs-sm ls-base text-nowrap border border-primary rounded-1 bg-primary text-white py-2 px-3"
+            </button>
+            <button
+              type="button"
+              class="column-tag fs-sm text-nowrap btn border border-primary rounded-1 text-primary py-2 px-3"
+              data-filter="proposal"
             >
               #生活提案
-            </div>
+            </button>
           </div>
         </div>
-        <ul class="list-unstyled row g-6">
-          <li class="col-md-6">
+        <ul class="list-unstyled row g-6" id="">
+          <li class="col-md-6 column-item" data-category="guide">
             <div class="card flex-md-row border-0 rounded-0">
               <img
-                src="/plantique-life/assets/column-1-ClTFES8T.png"
+                src="/plantique-life/assets/img_column_01-BQy0FXLE.png"
                 class="card-img-top object-fit-cover rounded-0 me-md-3"
-                alt="column-1"
+                alt="column_01"
               />
               <div class="card-body d-md-flex flex-md-column p-0 pt-3 pt-md-0">
-                <h4 class="card-title fs-7 fs-md-6 text-neutral-700 ls-base">新手必看：五種不易失敗的多肉推薦</h4>
-                <span
-                  class="align-self-md-start fs-xs fs-md-sm ls-base text-secondary px-2 px-md-3 py-1 bg-secondary-100"
+                <h4 class="card-title fs-7 fs-md-6 text-neutral-700">新手必看：五種不易失敗的多肉推薦</h4>
+                <span class="align-self-md-start fs-xs fs-md-sm text-secondary px-2 px-md-3 py-1 bg-secondary-100"
                   ># 養護指南</span
                 >
-                <p class="card-text fs-sm fs-md-8 ls-base text-neutral-400 multiline-ellipsis mt-2">
-                  第一次養多肉就上手！ 精選五款易照顧、好生長的多肉，輕鬆成為植栽達人。
+                <p class="card-text fs-sm fs-md-8 text-neutral-400 multiline-ellipsis mt-2">
+                  第一次養多肉就上手！精選五款易照顧、好生長的多肉，輕鬆成為植栽達人。
                 </p>
                 <div class="d-flex justify-content-between align-items-center mt-2 mt-md-auto">
-                  <p class="fs-xs fs-md-sm ls-base text-primary-500">2025/08/03</p>
+                  <p class="fs-xs fs-md-sm text-primary-500">2025/08/03</p>
                   <a href="#" class="btn text-primary">
-                    <span class="fs-sm ls-base fw-medium">閱讀全文</span>
+                    <span class="fs-sm fw-medium">閱讀全文</span>
                   </a>
                 </div>
               </div>
             </div>
           </li>
-          <li class="col-md-6">
+          <li class="col-md-6 column-item" data-category="illustrated-book">
             <div class="card flex-md-row border-0 rounded-0">
               <img
-                src="/plantique-life/assets/column-2-BolxUTQA.png"
+                src="/plantique-life/assets/img_column_02-BRyoh7Fa.png"
                 class="card-img-top object-fit-cover rounded-0 me-3"
-                alt="column-2"
+                alt="column_02"
               />
               <div class="card-body d-md-flex flex-md-column p-0 pt-3 pt-md-0">
-                <h4 class="card-title fs-7 fs-md-6 text-neutral-700 ls-base">圓滾滾的療癒系：綠之鈴</h4>
-                <span
-                  class="align-self-md-start fs-xs fs-md-sm ls-base text-secondary px-2 px-md-3 py-1 bg-secondary-100"
+                <h4 class="card-title fs-7 fs-md-6 text-neutral-700">圓滾滾的療癒系：綠之鈴</h4>
+                <span class="align-self-md-start fs-xs fs-md-sm text-secondary px-2 px-md-3 py-1 bg-secondary-100"
                   ># 多肉圖鑑</span
                 >
-                <p class="card-text fs-sm fs-md-8 ls-base text-neutral-400 multiline-ellipsis mt-2">
+                <p class="card-text fs-sm fs-md-8 text-neutral-400 multiline-ellipsis mt-2">
                   鑑在多肉植物的世界裡，若要選出一款最具垂墜美感、造境最討喜的代表，綠之鈴無疑名列前茅。
                 </p>
                 <div class="d-flex justify-content-between align-items-center mt-2 mt-md-auto">
-                  <p class="fs-xs fs-md-sm ls-base text-primary-500">2025/08/03</p>
+                  <p class="fs-xs fs-md-sm text-primary-500">2025/08/03</p>
                   <a href="#" class="btn text-primary">
-                    <span class="fs-sm ls-base fw-medium">閱讀全文</span>
+                    <span class="fs-sm fw-medium">閱讀全文</span>
                   </a>
                 </div>
               </div>
             </div>
           </li>
-          <li class="col-md-6">
+          <li class="col-md-6 column-item" data-category="proposal">
             <div class="card flex-md-row border-0 rounded-0">
               <img
-                src="/plantique-life/assets/column-3-BHV5HSLC.png"
+                src="/plantique-life/assets/img_column_03-Cg6Fcyiu.png"
                 class="card-img-top object-fit-cover rounded-0 me-3"
-                alt="column-3"
+                alt="column_03"
               />
               <div class="card-body d-md-flex flex-md-column p-0 pt-3 pt-md-0">
-                <h4 class="card-title fs-7 fs-md-6 text-neutral-700 ls-base">
-                  為你的空間選一種氣質：多肉的氛圍搭配提案
-                </h4>
-                <span
-                  class="align-self-md-start fs-xs fs-md-sm ls-base text-secondary px-2 px-md-3 py-1 bg-secondary-100"
+                <h4 class="card-title fs-7 fs-md-6 text-neutral-700">為你的空間選一種氣質：多肉的氛圍搭配提案</h4>
+                <span class="align-self-md-start fs-xs fs-md-sm text-secondary px-2 px-md-3 py-1 bg-secondary-100"
                   ># 生活提案</span
                 >
-                <p class="card-text fs-sm fs-md-8 ls-base text-neutral-400 multiline-ellipsis mt-2">
+                <p class="card-text fs-sm fs-md-8 text-neutral-400 multiline-ellipsis mt-2">
                   多肉植物們擁有多樣的顏色、形狀與質地，也乘載著一種「氛圍感」。你會發現，當一盆多肉出現在書桌上，氛圍感立刻不一樣。
                 </p>
                 <div class="d-flex justify-content-between align-items-center mt-2 mt-md-auto">
-                  <p class="fs-xs fs-md-sm ls-base text-primary-500">2025/01/01</p>
+                  <p class="fs-xs fs-md-sm text-primary-500">2025/01/01</p>
                   <a href="#" class="btn text-primary">
-                    <span class="fs-sm ls-base fw-medium">閱讀全文</span>
+                    <span class="fs-sm fw-medium">閱讀全文</span>
                   </a>
                 </div>
               </div>
             </div>
           </li>
-          <li class="col-md-6">
+          <li class="col-md-6 column-item" data-category="proposal">
             <div class="card flex-md-row border-0 rounded-0">
               <img
-                src="/plantique-life/assets/column-4-HtZ5f37z.png"
+                src="/plantique-life/assets/img_column_04-C7YUVehA.png"
                 class="card-img-top object-fit-cover rounded-0 me-3"
-                alt="column-4"
+                alt="column_04"
               />
               <div class="card-body d-md-flex flex-md-column p-0 pt-3 pt-md-0">
-                <h4 class="card-title fs-7 fs-md-6 text-neutral-700 ls-base">療癒系小宇宙：用多肉打造居家綠意角落</h4>
-                <span
-                  class="align-self-md-start fs-xs fs-md-sm ls-base text-secondary px-2 px-md-3 py-1 bg-secondary-100"
+                <h4 class="card-title fs-7 fs-md-6 text-neutral-700">療癒系小宇宙：用多肉打造居家綠意角落</h4>
+                <span class="align-self-md-start fs-xs fs-md-sm text-secondary px-2 px-md-3 py-1 bg-secondary-100"
                   ># 生活提案</span
                 >
-                <p class="card-text fs-sm fs-md-8 ls-base text-neutral-400 multiline-ellipsis mt-2">
+                <p class="card-text fs-sm fs-md-8 text-neutral-400 multiline-ellipsis mt-2">
                   在都市的繁忙節奏中，我們總渴望一處能讓心靈喘息的綠洲。多肉植物以其獨特的圓潤身形與豐富的姿態，正為我們的生活注入這股療癒能量。
                 </p>
                 <div class="d-flex justify-content-between align-items-center mt-2 mt-md-auto">
-                  <p class="fs-xs fs-md-sm ls-base text-primary-500">2025/01/01</p>
+                  <p class="fs-xs fs-md-sm text-primary-500">2025/01/01</p>
                   <a href="#" class="btn text-primary">
-                    <span class="fs-sm ls-base fw-medium">閱讀全文</span>
+                    <span class="fs-sm fw-medium">閱讀全文</span>
                   </a>
                 </div>
               </div>
@@ -156,8 +162,8 @@
     </section>
     <section class="brand-section d-flex flex-column flex-lg-row">
       <div class="brand-text-wrapper container-fluid container-md py-10 mt-auto mt-lg-0">
-        <h3 class="fs-2 fs-lg-1 ls-base text-primary-900">植感生活<br />Plantique Life</h3>
-        <p class="fs-sm fs-ms-8 ls-base mt-4">
+        <h3 class="fs-2 fs-lg-1 text-primary-900">植感生活<br />Plantique Life</h3>
+        <p class="fs-sm fs-ms-8 mt-4">
           在繁忙的節奏裡，植感始終相信綠意能為生活帶來片刻的寧靜與療癒。<br />從多肉出發，讓植物成為你的日常風景，讓療癒成為一種生活態度。
         </p>
         <a href="#" class="btn btn-primary text-white rounded-pill fs-8 fs-lg-7 px-6 py-3 mt-4">關於品牌</a>
