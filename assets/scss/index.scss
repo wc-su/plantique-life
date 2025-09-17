@@ -5,7 +5,9 @@
 @import './base/base';
 @import './utils/custom-utilities';
 
-@import './layout/header.scss';
-@import './layout/footer.scss';
+// layout
 
-@import './pages/index.scss';
+@import './layout/header';
+@import './layout/footer';
+
+// components
