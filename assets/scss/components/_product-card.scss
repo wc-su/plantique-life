@@ -7,8 +7,13 @@
 }
 
 .favorite-btn {
-  top: 12px;
-  right: 12px;
+  top: 8px;
+  right: 8px;
+
+  @media (min-width: 992px) {
+    top: 12px;
+    right: 12px;
+  }
 }
 
 .card-img-top {
