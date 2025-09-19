@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>購物車清單</title>
+    <script type="module" crossorigin src="/plantique-life/assets/shopping-cart-KgFJOpus.js"></script>
+    <link rel="modulepreload" crossorigin href="/plantique-life/assets/index-DdMuGOvR.js">
+    <link rel="stylesheet" crossorigin href="/plantique-life/assets/shopping-cart-CK4c7mOv.css">
+  </head>
+  <body>
+    <h1 class="header">header</h1>
+<a href="index.html">index</a>
+<a href="about.html">about</a>
+
+    <div class="container-fluid container-lg py-8 py-lg-15">
+      <ol class="cart-nav nav nav-pills flex-nowrap gap-3 gap-lg-6" id="pills-cart-nav" role="tablist">
+        <li class="nav-item flex-grow-1" role="presentation">
+          <button
+            class="nav-link active w-100"
+            id="pills-cart-tab"
+            data-bs-toggle="pill"
+            data-bs-target="#pills-cart"
+            role="tab"
+            aria-controls="pills-cart"
+            aria-selected="true"
+          >
+            <div class="d-flex">
+              <p
+                class="cart-step d-flex justify-content-center align-items-center h6 fs-lg-4 text-neutral-700 border border-2 rounded-circle"
+              >
+                1
+              </p>
+              <span class="cart-progress flex-grow-1 align-self-center border-bottom ms-3 ms-lg-6"></span>
+            </div>
+            <h3 class="fs-sm fs-lg-8 text-primary mt-4">Cart List</h3>
+            <h2 class="h6 fs-lg-3 text-neutral-700 text-nowrap mt-2">購物車清單</h2>
+          </button>
+        </li>
+        <li class="nav-item flex-grow-1" role="presentation">
+          <button
+            class="nav-link step-undo w-100"
+            id="pills-checkout-info-tab"
+            data-bs-toggle="pill"
+            data-bs-target="#pills-checkout-info"
+            role="tab"
+            aria-controls="pills-checkout-info"
+            aria-selected="false"
+          >
+            <div class="d-flex">
+              <p
+                class="cart-step flex-shrink-0 d-flex justify-content-center align-items-center h6 fs-lg-4 text-neutral-700 border border-2 rounded-circle"
+              >
+                2
+              </p>
+              <span class="cart-progress flex-grow-1 align-self-center border-bottom ms-3 ms-lg-6"></span>
+            </div>
+            <h3 class="fs-sm fs-lg-8 text-primary text-nowrap mt-4">Checkout Info</h3>
+            <h2 class="h6 fs-lg-3 text-neutral-700 mt-2">付款資料</h2>
+          </button>
+        </li>
+        <li class="nav-item flex-grow-1" role="presentation">
+          <button
+            class="nav-link step-undo w-100"
+            id="pills-confirmation-tab"
+            data-bs-toggle="pill"
+            data-bs-target="#pills-confirmation"
+            role="tab"
+            aria-controls="pills-confirmation"
+            aria-selected="false"
+          >
+            <p
+              class="cart-step d-flex justify-content-center align-items-center h6 fs-lg-4 text-neutral-700 border border-2 rounded-circle"
+            >
+              3
+            </p>
+            <h3 class="fs-sm fs-lg-8 text-primary mt-4">Confirmation</h3>
+            <h2 class="h6 fs-lg-3 text-neutral-700 mt-2">訂單確認</h2>
+          </button>
+        </li>
+      </ol>
+      <div class="tab-content py-12 py-lg-15" id="pills-tabContent">
+        <div
+          class="tab-pane fade show active"
+          id="pills-cart"
+          role="tabpanel"
+          aria-labelledby="pills-cart-tab"
+          tabindex="0"
+        >
+          <div class="row">
+            <div class="col-lg-8">
+              <div class="row text-neutral-400 py-4 border-bottom">
+                <p class="col-lg-3">商品名稱</p>
+                <div class="d-none d-lg-flex col-lg-9 row gx-lg-0">
+                  <span class="col-lg-4 pe-lg-6"></span>
+                  <p class="col-lg-4 pe-lg-6">商品小計</p>
+                  <p class="col-lg-4 pe-lg-6">數量</p>
+                </div>
+              </div>
+              <ul class="list-unstyled mt-6 pb-8">
+                <li class="mb-6">
+                  <div class="row gx-3">
+                    <img
+                      class="col-6 col-lg-3 object-fit-cover"
+                      style="height: 233px"
+                      src="/plantique-life/assets/img_product_13-DXsEIQ0o.png"
+                      alt="荒原綠影"
+                    />
+                    <div class="col-6 d-flex flex-column flex-lg-row col-lg-9 align-items-lg-center gx-lg-0">
+                      <div class="col-lg-4 pe-lg-6">
+                        <h4 class="h6 fs-lg-4 text-neutral-700 mb-1">荒原綠影</h4>
+                        <p class="fs-sm fs-lg-8 text-primary-700 mb-3">NT$2,400</p>
+                      </div>
+                      <div class="d-flex justify-content-between col-lg-4 pe-lg-6">
+                        <p class="d-lg-none fs-sm text-neutral-400">小計</p>
+                        <p class="fs-7 fw-bold lh-sm fs-lg-6 noto-serif-tc text-primary-700">NT$2,400</p>
+                      </div>
+                      <div class="d-flex align-items-center mt-auto mt-lg-0 col-lg-4 pe-lg-6">
+                        <button type="button" class="btn border border-2 rounded-circle p-2 me-1" disabled>
+                          <span class="material-symbols-rounded fs-6 d-block">remove</span>
+                        </button>
+                        <span class="fw-bold lh-sm noto-serif-tc text-center me-1" style="width: 41px">1</span>
+                        <button type="button" class="btn border border-2 rounded-circle p-2">
+                          <span class="material-symbols-rounded fs-6 d-block">add_2</span>
+                        </button>
+                        <button type="button" class="btn border border-2 border-danger-200 rounded-circle p-2 ms-3">
+                          <span class="material-symbols-rounded fs-6 d-block text-danger">delete</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="mb-6">
+                  <div class="row gx-3">
+                    <img
+                      class="col-6 col-lg-3 object-fit-cover"
+                      style="height: 233px"
+                      src="/plantique-life/assets/img_product_11-BmofN9nc.png"
+                      alt="荒原綠影"
+                    />
+                    <div class="col-6 d-flex flex-column flex-lg-row col-lg-9 align-items-lg-center gx-lg-0">
+                      <div class="col-lg-4 pe-lg-6">
+                        <h4 class="h6 fs-lg-4 text-neutral-700 mb-1">垂綠星河</h4>
+                        <p class="fs-sm fs-lg-8 text-primary-700 mb-3">NT$3,600</p>
+                      </div>
+                      <div class="d-flex justify-content-between col-lg-4 pe-lg-6">
+                        <p class="d-lg-none fs-sm text-neutral-400">小計</p>
+                        <p class="fs-7 fw-bold lh-sm fs-lg-6 noto-serif-tc text-primary-700">NT$3,600</p>
+                      </div>
+                      <div class="d-flex align-items-center mt-auto mt-lg-0 col-lg-4 pe-lg-6">
+                        <button type="button" class="btn border border-2 rounded-circle p-2 me-1" disabled>
+                          <span class="material-symbols-rounded fs-6 d-block">remove</span>
+                        </button>
+                        <span class="fw-bold lh-sm noto-serif-tc text-center me-1" style="width: 41px">1</span>
+                        <button type="button" class="btn border border-2 rounded-circle p-2">
+                          <span class="material-symbols-rounded fs-6 d-block">add_2</span>
+                        </button>
+                        <button type="button" class="btn border border-2 border-danger-200 rounded-circle p-2 ms-3">
+                          <span class="material-symbols-rounded fs-6 d-block text-danger">delete</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="row gx-3">
+                    <img
+                      class="col-6 col-lg-3 object-fit-cover"
+                      style="height: 160px"
+                      src="/plantique-life/assets/img-D5NrbCrS.png"
+                      alt="噴霧器"
+                    />
+                    <div class="col-6 d-flex flex-column flex-lg-row col-lg-9 align-items-lg-center gx-lg-0">
+                      <div class="col-lg-4 pe-lg-6">
+                        <span class="align-self-start fs-xs text-secondary bg-secondary-100 py-1 px-2 mb-1"
+                          >加購商品</span
+                        >
+                        <h4 class="h6 fs-lg-4 text-neutral-700 mb-1">噴霧器</h4>
+                        <div class="d-flex mb-3 align-items-end">
+                          <p class="fs-sm fs-lg-8 fw-bold lh-sm noto-serif-tc text-primary-700">NT$129</p>
+                          <p
+                            class="fs-8 fw-bold lh-sm noto-serif-tc text-neutral-400 text-decoration-line-through ms-2"
+                          >
+                            $249
+                          </p>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-between col-lg-4 pe-lg-6">
+                        <p class="d-lg-none fs-sm text-neutral-400">小計</p>
+                        <p class="fs-7 fw-bold lh-sm fs-lg-6 noto-serif-tc text-primary-700">NT$129</p>
+                      </div>
+                      <div class="d-flex align-items-center mt-auto mt-lg-0 col-lg-4 pe-lg-6">
+                        <button type="button" class="btn border border-2 rounded-circle p-2 me-1" disabled>
+                          <span class="material-symbols-rounded fs-6 d-block">remove</span>
+                        </button>
+                        <span class="fw-bold lh-sm noto-serif-tc text-center me-1" style="width: 41px">1</span>
+                        <button type="button" class="btn border border-2 rounded-circle p-2">
+                          <span class="material-symbols-rounded fs-6 d-block">add_2</span>
+                        </button>
+                        <button type="button" class="btn border border-2 border-danger-200 rounded-circle p-2 ms-3">
+                          <span class="material-symbols-rounded fs-6 d-block text-danger">delete</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="summary-wrapper col-lg-4 pb-12">
+              <section class="border border-2 p-4 mb-6 mb-lg-10">
+                <h6 class="h6 mb-4">使用優惠券</h6>
+                <div class="d-flex align-items-center mb-6">
+                  <label for="coupon-code" class="col-form-label fs-sm text-neutral-400 text-nowrap me-3"
+                    >輸入代碼</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control-plaintext border border-2 py-3 px-4"
+                    id="coupon-code"
+                    placeholder="輸入優惠代碼"
+                  />
+                  <button type="button" class="btn btn-primary text-nowrap text-white rounded-0 py-3 px-6 ms-4">
+                    確認
+                  </button>
+                </div>
+                <div class="d-flex align-items-center">
+                  <span class="fs-sm text-neutral-400 text-nowrap me-3">選擇優惠</span>
+                  <span class="text-neutral-400 bg-neutral-100 py-1 px-2">未選擇優惠</span>
+                  <button type="button" class="btn text-primary ms-auto py-1 px-0">選擇</button>
+                </div>
+              </section>
+              <section class="border border-2 p-4">
+                <h6 class="h6 mb-4">訂單明細</h6>
+                <div class="d-flex justify-content-between mb-3">
+                  <span class="fs-sm text-neutral-400">商品小計</span>
+                  <span class="fs-sm text-neutral-400">NT$ 6,129</span>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                  <span class="fs-sm text-neutral-400">折扣優惠</span>
+                  <span class="fs-sm text-secondary">- NT$ 0</span>
+                </div>
+                <div class="d-flex justify-content-between mb-4">
+                  <span class="text-neutral-700">總金額</span>
+                  <span class="h5 text-neutral-700">NT$ 6,129</span>
+                </div>
+                <button type="button" class="btn btn-primary text-white w-100 rounded-pill" id="btn-checkout">
+                  前往結帳
+                </button>
+              </section>
+            </div>
+          </div>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="pills-checkout-info"
+          role="tabpanel"
+          aria-labelledby="pills-checkout-info-tab"
+          tabindex="0"
+        >
+          付款資料
+        </div>
+        <div
+          class="tab-pane fade"
+          id="pills-confirmation"
+          role="tabpanel"
+          aria-labelledby="pills-confirmation-tab"
+          tabindex="0"
+        >
+          訂單確認
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">footer</footer>
+  </body>
+</html>
