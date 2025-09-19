@@ -1,0 +1,25 @@
+.product-card-img-height {
+  height: 350px;
+
+  @include media-breakpoint-up(lg) {
+    height: 420px;
+  }
+}
+
+.favorite-btn {
+  top: 8px;
+  right: 8px;
+
+  @include media-breakpoint-up(lg) {
+    top: 12px;
+    right: 12px;
+  }
+}
+
+.card-img-top {
+  transition: transform 0.5s ease;
+}
+
+.card:hover .card-img-top {
+  transform: scale(1.1);
+}
