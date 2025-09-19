@@ -9,8 +9,6 @@
   border-radius: fill;
 }
 
-// hero
-
 .hero {
   max-height: 800px;
   background-image: url(/assets/images/img_banner_bg.png);
@@ -33,19 +31,12 @@
   // padding-right: 18px;
 }
 
-// news section
-
-// .vertical-lr {
-//   writing-mode: vertical-lr;
-//   text-orientation: upright; //保持直立顯示每個字
-// }
-
-.news-title {
+.vertical-title {
   writing-mode: vertical-lr; //垂直從左到右
 }
 
 @media (max-width: 375px) {
-  .news-title {
+  .vertical-title {
     writing-mode: horizontal-tb; //* 水平書寫 */
     white-space: nowrap;
   }
