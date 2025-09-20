@@ -31,12 +31,12 @@
   // padding-right: 18px;
 }
 
-.vertical-title {
+.news-title {
   writing-mode: vertical-lr; //垂直從左到右
 }
 
 @media (max-width: 375px) {
-  .vertical-title {
+  .news-title {
     writing-mode: horizontal-tb; //* 水平書寫 */
     white-space: nowrap;
   }
