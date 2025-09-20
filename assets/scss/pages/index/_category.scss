@@ -21,7 +21,6 @@
   height: 350px;
 
   transition: transform 0.4s ease;
-  transform: scale(1);
 
   @include media-breakpoint-up(lg) {
     height: 560px;
