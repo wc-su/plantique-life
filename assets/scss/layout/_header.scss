@@ -1,4 +1,98 @@
-.header {
-  background: #fefae0;
-  font-size: 32px;
+@use 'sass:map';
+// to fix:測試用
+// body {
+//   height: 5000px;
+// }
+
+.flex-lg-grow-2 {
+  flex-grow: 2;
+}
+
+.cart-translate {
+  transform: translate(-50%, -60%);
+}
+
+.cart-toggle-btn {
+  color: $neutral-700;
+  padding: map.get($spacers, 2);
+  border-width: 0;
+  border-radius: 50%;
+  background-color: transparent;
+  &.active {
+    background-color: $primary-50;
+  }
+}
+@include media-breakpoint-up(lg) {
+  .cart-toggle-btn {
+    padding: map.get($spacers, 3);
+  }
+}
+
+.member-menu {
+  right: 0;
+  top: 4rem;
+  min-width: 196px;
+}
+.member-menu-toggle-icon {
+  color: $neutral-700;
+  padding: map.get($spacers, 3);
+  border-width: 0;
+  transition: none;
+  border-radius: 50%;
+  background-color: $primary-50;
+  &:hover:focus,
+  :active {
+    background-color: $primary-50;
+  }
+  &.collapsed {
+    background-color: transparent;
+    &:hover:focus,
+    :active {
+      background-color: transparent;
+    }
+  }
+}
+
+.custom-nav-toggle-icon {
+  color: $neutral-700;
+  padding: map.get($spacers, 2);
+  border-width: 0;
+  transition: none;
+  border-radius: 50%;
+  background-color: $primary-50;
+  &:hover:focus,
+  :active {
+    background-color: $primary-50;
+  }
+  &.collapsed {
+    background-color: transparent;
+    &:hover:focus,
+    :active {
+      background-color: transparent;
+    }
+  }
+}
+
+.custom-nav-link {
+  color: $neutral-700;
+  font-size: $font-size-sm;
+  display: block;
+  padding-top: 0.343rem;
+  padding-bottom: 0.343rem;
+}
+@include media-breakpoint-up(lg) {
+  .custom-nav-link {
+    font-size: $font-size-base;
+    padding-top: map.get($spacers, 1);
+    padding-bottom: map.get($spacers, 1);
+    padding-left: map.get($spacers, 3);
+    padding-right: map.get($spacers, 3);
+  }
+}
+
+.member.hidden {
+  display: none !important;
+}
+.guest.hidden {
+  display: none !important;
 }
