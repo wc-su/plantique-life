@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>購物車清單</title>
-    <script type="module" crossorigin src="/plantique-life/assets/shopping-cart-KgFJOpus.js"></script>
+    <script type="module" crossorigin src="/plantique-life/assets/shopping-cart-BpF8_1I5.js"></script>
     <link rel="modulepreload" crossorigin href="/plantique-life/assets/index-DdMuGOvR.js">
-    <link rel="stylesheet" crossorigin href="/plantique-life/assets/shopping-cart-CK4c7mOv.css">
+    <link rel="stylesheet" crossorigin href="/plantique-life/assets/shopping-cart-ZmRx7UFy.css">
   </head>
   <body>
     <h1 class="header">header</h1>
@@ -89,24 +89,24 @@
         >
           <div class="row">
             <div class="col-lg-8">
-              <div class="row text-neutral-400 py-4 border-bottom">
+              <div class="row gx-lg-6 text-neutral-400 py-4 border-bottom">
                 <p class="col-lg-3">商品名稱</p>
-                <div class="d-none d-lg-flex col-lg-9 row gx-lg-0 ps-lg-3">
+                <div class="d-none d-lg-flex col-lg-9 row">
                   <span class="col-lg-4 pe-lg-6"></span>
                   <p class="col-lg-4 pe-lg-6">商品小計</p>
                   <p class="col-lg-4 pe-lg-6">數量</p>
                 </div>
               </div>
-              <ul class="list-unstyled mt-6 pb-8">
-                <li class="mb-6">
+              <ul class="cart-list list-unstyled mt-6 pb-8" id="cart-list">
+                <!-- <li class="mb-6">
                   <div class="row gx-3 gx-lg-6">
                     <img
                       class="col-6 col-lg-3 object-fit-cover"
                       style="height: 233px"
-                      src="/plantique-life/assets/img_product_13-DXsEIQ0o.png"
+                      src="../assets/images/img_product_13.png"
                       alt="荒原綠影"
                     />
-                    <div class="col-6 d-flex flex-column flex-lg-row col-lg-9 align-items-lg-center gx-lg-0 ps-lg-3">
+                    <div class="col-6 d-flex flex-column flex-lg-row col-lg-9 align-items-lg-center">
                       <div class="col-lg-4 pe-lg-6">
                         <h4 class="h6 fs-lg-4 text-neutral-700 mb-1">荒原綠影</h4>
                         <p class="fs-sm fs-lg-8 text-primary-700 mb-3">NT$2,400</p>
@@ -135,10 +135,10 @@
                     <img
                       class="col-6 col-lg-3 object-fit-cover"
                       style="height: 233px"
-                      src="/plantique-life/assets/img_product_11-BmofN9nc.png"
+                      src="../assets/images/img_product_11.png"
                       alt="荒原綠影"
                     />
-                    <div class="col-6 d-flex flex-column flex-lg-row col-lg-9 align-items-lg-center gx-lg-0 ps-lg-3">
+                    <div class="col-6 d-flex flex-column flex-lg-row col-lg-9 align-items-lg-center gx-lg-0">
                       <div class="col-lg-4 pe-lg-6">
                         <h4 class="h6 fs-lg-4 text-neutral-700 mb-1">垂綠星河</h4>
                         <p class="fs-sm fs-lg-8 text-primary-700 mb-3">NT$3,600</p>
@@ -167,10 +167,10 @@
                     <img
                       class="col-6 col-lg-3 object-fit-cover"
                       style="height: 160px"
-                      src="/plantique-life/assets/img-D5NrbCrS.png"
+                      src="../assets/images/img.png"
                       alt="噴霧器"
                     />
-                    <div class="col-6 d-flex flex-column flex-lg-row col-lg-9 align-items-lg-center gx-lg-0 ps-lg-3">
+                    <div class="col-6 d-flex flex-column flex-lg-row col-lg-9 align-items-lg-center gx-lg-0">
                       <div class="col-lg-4 pe-lg-6">
                         <span class="align-self-start fs-xs text-secondary bg-secondary-100 py-1 px-2 mb-1"
                           >加購商品</span
@@ -203,7 +203,7 @@
                       </div>
                     </div>
                   </div>
-                </li>
+                </li> -->
               </ul>
             </div>
             <div class="summary-wrapper col-lg-4 pb-12">
@@ -233,15 +233,15 @@
                 <h6 class="h6 mb-4">訂單明細</h6>
                 <div class="d-flex justify-content-between mb-3">
                   <span class="fs-sm text-neutral-400">商品小計</span>
-                  <span class="fs-sm text-neutral-400">NT$ 6,129</span>
+                  <span class="fs-sm text-neutral-400" id="subtotal"></span>
                 </div>
                 <div class="d-flex justify-content-between mb-3">
                   <span class="fs-sm text-neutral-400">折扣優惠</span>
-                  <span class="fs-sm text-secondary">- NT$ 0</span>
+                  <span class="fs-sm text-secondary" id="discount"></span>
                 </div>
                 <div class="d-flex justify-content-between mb-4">
                   <span class="text-neutral-700">總金額</span>
-                  <span class="h5 text-neutral-700">NT$ 6,129</span>
+                  <span class="h5 text-neutral-700" id="total"></span>
                 </div>
                 <button type="button" class="btn btn-primary text-white w-100 rounded-pill" id="btn-checkout">
                   前往結帳
