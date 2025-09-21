@@ -15,7 +15,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
-            <div class="hero-title">
+            <div class="">
               <img src="/assets/images/img_title_lg.svg" alt="" class="mb-10" />
               <a href="#" class="btn bg-primary text-white rounded-pill"
                 ><span class="me-1">立即選購</span>
@@ -24,7 +24,7 @@
             </div>
           </div>
           <div class="d-none d-sm-block col-md-10">
-            <img src="../assets/images/img_banner_text02_desktop.svg" alt="" />
+            <img src="../assets/images/img_banner_text02_lg.svg" alt="" />
           </div>
         </div>
       </div>
@@ -38,13 +38,13 @@
           <!-- 標題 -->
           <div class="col-md-2">
             <div class="d-flex flex-sm-column justify-content-center align-items-center gap-6 gap-sm-0">
-              <img src="/assets/images/decorate-sm.svg" alt="" class="d-sm-none d-block" />
+              <img src="/assets/images/heading-decoration-sm.svg" alt="decorate-sm" class="d-sm-none d-block" />
               <div class="text-center d-flex flex-column justify-content-center align-items-center">
-                <h6 class="fs-7 text-primary mb-1 mb-lg-3">News</h6>
+                <h6 class="fs-7 text-primary mb-1 mb-lg-4">News</h6>
                 <h2 class="h2-md h3 m-0 text-neutral-600 news-title mb-8 mb-lg-3">最新消息</h2>
               </div>
-              <img src="/assets/images/decorate-lg.svg" alt="" class="d-sm-block d-none" />
-              <img src="/assets/images/decorate-sm.svg" alt="" class="d-sm-none d-block" />
+              <img src="/assets/images/heading-decoration.svg" alt="" class="d-sm-block d-none" />
+              <img src="/assets/images/heading-decoration-sm.svg" alt="" class="d-sm-none d-block" />
             </div>
           </div>
           <!-- 資訊 -->
@@ -52,8 +52,8 @@
             <!-- 圖文 -->
             <div class="d-md-flex flex-column">
               <div class="d-md-flex mb-8 mb-md-10">
-                <div class="news-image w-100" style="max-height: 280px">
-                  <img src="/assets/images/img_news.png" alt="" />
+                <div class="news-image">
+                  <img src="/assets/images/img_news_01.png" alt="中秋禮盒" />
                 </div>
                 <div class="py-3 px-4 w-100">
                   <p class="fs-6 mb-1 text-primary">2025.08.01 ~ 2025.09.20</p>
@@ -86,21 +86,83 @@
     <!-- category section end -->
 
     <!-- recommend section start -->
-
-    <div class="container">
-      <div class="row">
-        <div class="col-4">
-          <!-- prettier-ignore -->
-          <%- include('./components/product-card',{ 
-          picAlt:"多肉植物組合盆栽",
-          picSrc:'/assets/images/img_product_01.png', 
-          productTag:"植感精選",
-          productName:"多肉植物組合盆栽",
-          productPrice :"NT$ 1,280"
-         }); -%>
+    <section class="py-12 py-lg-15">
+      <!-- 標題 -->
+      <div class="container mb-12">
+        <div class="d-flex justify-content-between align-items-end">
+          <hgroup class="d-flex justify-content-start align-items-end align-items-lg-center gap-6 gap-lg-10">
+            <img src="/assets/images/heading-decoration.svg" alt="heading-decoration" class="heading-decoration" />
+            <div class="text-center">
+              <small class="d-block fw-bold lh-sm fs-8 fs-lg-7 align-middle text-primary noto-serif-tc mb-1">
+                Recommend
+              </small>
+              <h2 class="fs-3 fs-lg-2 text-neutral-700">植感精選</h2>
+            </div>
+            <img src="/assets/images/heading-decoration.svg" alt="decorate" class="heading-decoration" />
+          </hgroup>
+          <button class="btn border-neutral-200 rounded-pill">
+            <a href="#" class="text-center text-neutral-700 rounded-pill"
+              ><span class="fs-7 me-1">查看更多</span>
+              <span class="material-symbols-rounded align-text-bottom"> arrow_right_alt </span>
+            </a>
+          </button>
         </div>
       </div>
-    </div>
+
+      <!-- 產品卡片 -->
+      <div class="container position-relative">
+        <div class="row gap-6 gap-lg-0">
+          <div class="col-lg-3">
+            <!-- prettier-ignore -->
+            <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_01.png', 
+                   productTag:"植感精選",
+                   productName:"泡泡森林",
+                   productPrice :"NT$ 6,200"
+                  }); -%>
+          </div>
+          <div class="col-lg-3">
+            <!-- prettier-ignore -->
+            <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_02.png', 
+                   productTag:"植感精選",
+                   productName:"向陽而生",
+                   productPrice :"NT$ 7,280"
+                  }); -%>
+          </div>
+          <div class="col-lg-3">
+            <!-- prettier-ignore -->
+            <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_03.png', 
+                   productTag:"植感精選",
+                   productName:"暮光角落",
+                   productPrice :"NT$ 7,500"
+                  }); -%>
+          </div>
+          <div class="col-lg-3">
+            <!-- prettier-ignore -->
+            <%- include('./components/product-card',{ 
+                   picAlt:"多肉植物組合盆栽",
+                   picSrc:'/assets/images/img_product_04.png', 
+                   productTag:"植感精選",
+                   productName:"雲深處靜",
+                   productPrice :"NT$ 6,600"
+                  }); -%>
+          </div>
+        </div>
+        <div class="w-100 d-flex justify-content-between position-absolute top-50 start-0">
+          <button type="button" class="btn bg-primary rounded-pill opacity-25 p-4 border-0">
+            <span class="material-symbols-rounded text-white"> arrow_back </span>
+          </button>
+          <button type="button" class="btn bg-primary rounded-pill p-4 border-0">
+            <span class="material-symbols-rounded text-white"> arrow_right_alt </span>
+          </button>
+        </div>
+      </div>
+    </section>
     <!-- recommend section end -->
 
     <!-- column section start -->
