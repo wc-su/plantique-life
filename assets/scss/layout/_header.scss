@@ -1,11 +1,14 @@
 @use 'sass:map';
 
-.w-30 {
-  width: 30%;
+@include media-breakpoint-up(lg) {
+  .w-lg-30 {
+    width: 30%;
+  }
+  .w-lg-40 {
+    width: 40%;
+  }
 }
-.w-40 {
-  width: 40%;
-}
+
 .separator-line-top {
   border-top: 0.8px solid $primary-200;
 }
