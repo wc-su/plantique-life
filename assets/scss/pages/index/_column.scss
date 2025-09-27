@@ -13,7 +13,7 @@
 .column-section .card {
   .card-img-top {
     max-height: 150px;
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up(lg) {
       max-width: 164px;
       max-height: none;
     }

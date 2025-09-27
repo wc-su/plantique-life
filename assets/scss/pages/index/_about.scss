@@ -22,7 +22,7 @@
     backdrop-filter: blur(12px);
     z-index: 0;
   }
-  @include media-breakpoint-up(md) {
+  @include media-breakpoint-up(lg) {
     height: 640px;
     &::before {
       width: 50%;
@@ -33,7 +33,7 @@
     z-index: 1;
     position: relative;
     top: 320px;
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up(lg) {
       top: 0;
     }
   }
