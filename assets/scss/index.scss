@@ -12,8 +12,9 @@
 
 // components
 
-@import './components/product-card';
+// section
 
-//pages
+@import './pages/index/category';
+@import './components/product-card';
 
 @import './pages/hero';

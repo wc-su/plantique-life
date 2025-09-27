@@ -35,9 +35,6 @@ $spacer: 1rem !default;
 // * Custom Variables
 // *******************************
 
-// color-variables
-$red-500: #ff583d !default;
-
 // primary-color-variables
 $primary-900: #39401d !default;
 $primary-800: #515a30 !default;
@@ -90,6 +87,16 @@ $neutrals: (
   '50': $neutral-50,
 ) !default;
 
+// danger-color-variables
+$danger-500: #ff583d !default;
+$danger-200: #ffc9c0 !default;
+$danger-100: #ffe9e5 !default;
+$dangers: (
+  '500': $danger-500,
+  '200': $danger-200,
+  '100': $danger-100,
+) !default;
+
 // font-variables
 $h7-font-size: $font-size-base * 1.125 !default;
 $h8-font-size: $font-size-base !default;
@@ -101,7 +108,7 @@ $h8-font-size: $font-size-base !default;
 // theme-color-variables
 $primary: $primary-600 !default;
 $secondary: $secondary-600 !default;
-$danger: $red-500 !default;
+$danger: $danger-500 !default;
 
 // theme-colors-map
 $theme-colors: (
@@ -136,6 +143,9 @@ $theme-colors: (
   'neutral-200': $neutral-200,
   'neutral-100': $neutral-100,
   'neutral-50': $neutral-50,
+  // danger
+  'danger-200': $danger-200,
+  'danger-100': $danger-100,
 ) !default;
 
 // spacer-variables-maps
@@ -151,6 +161,7 @@ $spacers: (
   8: $spacer * 2,
   10: $spacer * 2.5,
   12: $spacer * 3,
+  13: $spacer * 3.5,
   15: $spacer * 5,
 ) !default;
 
@@ -230,3 +241,9 @@ $line-height-sm: 1.2 !default;
 
 // btn
 $btn-font-weight: $font-weight-medium !default;
+
+// border-color
+$border-color: $neutral-200 !default;
+
+// input
+$input-placeholder-color: $neutral-300 !default;

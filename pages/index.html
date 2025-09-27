@@ -11,20 +11,20 @@
     <%- include('./layout/header'); -%>
 
     <!-- hero section start -->
-    <header class="hero">
+    <header class="hero hero-py">
       <div class="container">
         <div class="row">
           <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
             <div class="">
-              <img src="/assets/images/img_title_lg.svg" alt="" class="mb-10" />
+              <img src="/assets/images/img_title_lg.svg" alt="Slogan" class="mb-10" />
               <a href="#" class="btn bg-primary text-white rounded-pill"
                 ><span class="me-1">立即選購</span>
-                <i class="bi bi-arrow-right"></i>
+                <span class="material-symbols-rounded align-text-bottom"> arrow_right_alt </span>
               </a>
             </div>
           </div>
           <div class="d-none d-sm-block col-md-10">
-            <img src="../assets/images/img_banner_text02_lg.svg" alt="" />
+            <img src="../assets/images/img_banner_text02_lg.svg" alt="Slogan" />
           </div>
         </div>
       </div>
@@ -41,39 +41,70 @@
               <img src="/assets/images/heading-decoration-sm.svg" alt="decorate-sm" class="d-sm-none d-block" />
               <div class="text-center d-flex flex-column justify-content-center align-items-center">
                 <h6 class="fs-7 text-primary mb-1 mb-lg-4">News</h6>
-                <h2 class="h2-md h3 m-0 text-neutral-600 news-title mb-8 mb-lg-3">最新消息</h2>
+                <h2 class="fs-3 fs-lg-2 m-0 text-neutral-700 news-title mb-8 mb-lg-3">最 新 消 息</h2>
               </div>
               <img src="/assets/images/heading-decoration.svg" alt="" class="d-sm-block d-none" />
               <img src="/assets/images/heading-decoration-sm.svg" alt="" class="d-sm-none d-block" />
             </div>
           </div>
+
           <!-- 資訊 -->
           <div class="col-md-10">
-            <!-- 圖文 -->
-            <div class="d-md-flex flex-column">
-              <div class="d-md-flex mb-8 mb-md-10">
-                <div class="news-image">
-                  <img src="/assets/images/img_news_01.png" alt="中秋禮盒" />
-                </div>
-                <div class="py-3 px-4 w-100">
-                  <p class="fs-6 mb-1 text-primary">2025.08.01 ~ 2025.09.20</p>
-                  <h3 class="mb-4 texy-neutral-700 lh-sm">送禮不只月餅<br />中秋綠意禮盒預購中！</h3>
-                  <p class="m-0 mb-4 text-neutral-400">
-                    結合優雅設計與療癒綠意。<br />這個秋天，送出專屬於你的植感心意！
-                  </p>
+            <div class="swiper newsSwiper">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <!-- 圖文 -->
+                  <div class="d-md-flex flex-column">
+                    <div class="d-md-flex mb-8 mb-md-10">
+                      <div class="news-image">
+                        <img src="/assets/images/img_news_01.png" alt="中秋禮盒" />
+                      </div>
+                      <div class="py-4 py-lg-5 px-4 px-lg-6 w-100">
+                        <p class="fs-md fs-lg-7 text-primary-500 mb-1">2025.08.01 ~ 2025.09.20</p>
+                        <h3 class="h4 fs-lg-3 mb-4 text-neutral-700 lh-sm">送禮不只月餅<br />中秋綠意禮盒預購中！</h3>
+                        <p class="fs-sm fs-lg-8 m-0 mb-4 text-neutral-400">
+                          結合優雅設計與療癒綠意。<br />這個秋天，送出專屬於你的植感心意！
+                        </p>
 
-                  <button type="button" class="btn text-primary rounded-pill border-4 p-0 ms-auto">
-                    <p class="fs-6 mb-0 me-2">立即選購</p>
-                    <i class="bi bi-arrow-right"></i>
-                  </button>
+                        <button
+                          type="button"
+                          class="btn text-primary rounded-pill border-4 p-0 ms-auto d-flex align-items-center"
+                        >
+                          <span class="fs-sm fs-lg-md mb-0 me-2">立即選購</span>
+                          <span class="material-symbols-rounded align-text-bottom"> arrow_right_alt </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="swiper-slide">
+                  <div class="d-md-flex flex-column">
+                    <div class="d-md-flex mb-8 mb-md-10">
+                      <div class="news-image">
+                        <img src="/assets/images/img_news_02.png" alt="活動開跑" />
+                      </div>
+                      <div class="py-4 py-lg-5 px-4 px-lg-6 w-100">
+                        <p class="fs-md fs-lg-7 text-primary-500 mb-1">2025.08.01 ~ 2025.08.30</p>
+                        <h3 class="h4 fs-lg-3 mb-4 text-neutral-700 lh-sm">
+                          本月打卡活動開跑！<br /># 我的療癒角落，抽盆器好禮！
+                        </h3>
+                        <p class="fs-sm fs-lg-8 fw-medium m-0 mb-4 text-neutral-400">
+                          迷你多肉，輕鬆點綴辦公桌。<br />在忙碌與螢幕之間，留一點空間給綠意。
+                        </p>
+
+                        <button
+                          type="button"
+                          class="btn text-primary rounded-pill border-4 p-0 ms-auto d-flex align-items-center"
+                        >
+                          <span class="fs-sm fs-lg-md mb-0 me-2">立即選購</span>
+                          <span class="material-symbols-rounded align-text-bottom"> arrow_right_alt </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <!-- pagenation -->
-              <ul class="list-unstyled d-flex justify-content-center justify-content-sm-start">
-                <li class="point point-active"></li>
-                <li class="point"></li>
-                <li class="point"></li>
-              </ul>
+              <div class="d-md-flex flex-start swiper-pagination"></div>
             </div>
           </div>
         </div>
@@ -114,9 +145,9 @@
       <!-- 產品卡片 -->
       <div class="container mb-8">
         <div class="position-relative">
-          <div class="swiper">
+          <div class="swiper swiperProduct">
             <div class="swiper-wrapper">
-              <div class="swiper-slide">
+              <div class="swiper-slide swiper-slide-prouct">
                 <div class="">
                   <!-- prettier-ignore -->
                   <%- include('./components/product-card',{ 
@@ -128,7 +159,7 @@
                       }); -%>
                 </div>
               </div>
-              <div class="swiper-slide">
+              <div class="swiper-slide swiper-slide-prouct">
                 <div class="">
                   <!-- prettier-ignore -->
                   <%- include('./components/product-card',{ 
@@ -140,7 +171,7 @@
                       }); -%>
                 </div>
               </div>
-              <div class="swiper-slide">
+              <div class="swiper-slide swiper-slide-prouct">
                 <div class="">
                   <!-- prettier-ignore -->
                   <%- include('./components/product-card',{ 
@@ -152,7 +183,7 @@
                       }); -%>
                 </div>
               </div>
-              <div class="swiper-slide">
+              <div class="swiper-slide swiper-slide-prouct">
                 <div class="">
                   <!-- prettier-ignore -->
                   <%- include('./components/product-card',{ 
@@ -164,7 +195,7 @@
                       }); -%>
                 </div>
               </div>
-              <div class="swiper-slide">
+              <div class="swiper-slide swiper-slide-prouct">
                 <div class="">
                   <!-- prettier-ignore -->
                   <%- include('./components/product-card',{ 
@@ -211,11 +242,21 @@
     <script type="module" src="/assets/js/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
     <script>
-      const swiper = new Swiper('.swiper', {
+      const swiperSingle = new Swiper('.newsSwiper', {
         direction: 'horizontal',
-        slidesPerView: 4,
-        spaceBetween: 24,
         loop: true,
+        slidesPerView: 1, // 預設單張
+        spaceBetween: 12,
+
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      });
+
+      const swiper = new Swiper('.swiperProduct', {
+        direction: 'horizontal',
+        loop: false,
 
         navigation: {
           nextEl: '.swiper-button-next',
