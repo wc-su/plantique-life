@@ -22,16 +22,16 @@
 </div>
 
 <!-- 無框的連結按鈕 Link Button -->
-<% const btnLinkPrimary = { color:'primary', size: 'sm', btnText:'按鈕內容', rightIcon: true } %>
-<%-include('./components/buttons/btn-link', btnLinkPrimary); -%> <% const btnLinkNeutral = { color:'neutral', size:
-'sm', btnText:'按鈕內容', rightIcon: true } %> <%-include('./components/buttons/btn-link', btnLinkNeutral); -%>
+<% const btnLinkPrimary = { color:'primary', btnText:'按鈕內容', rightIcon: true } %>
+<%-include('./components/buttons/btn-link', btnLinkPrimary); -%> <% const btnLinkNeutral = { color:'neutral',
+btnText:'按鈕內容', rightIcon: true } %> <%-include('./components/buttons/btn-link', btnLinkNeutral); -%>
 
 <!-- 填色或外框按鈕 Filled or Outline Button -->
-<!-- Filled Round -->
+<!-- Filled Pill -->
 <!-- prettier-ignore -->
-<% const btnFilledRound = { type: 'filled', color:'primary', shape: 'round', size: 'lg', btnText:'按鈕內容', rightIcon: false, leftIcon: true, iconName:'arrow_left_alt'} %>
+<% const btnFilledPill = { type: 'filled', color:'primary', shape: 'pill', size: 'lg', btnText:'按鈕內容', rightIcon: false, leftIcon: true, iconName:'arrow_left_alt'} %>
 <%-include('./components/buttons/btn-filled-or-outline',
-btnFilledRound); -%>
+btnFilledPill); -%>
 <!-- Filled Square -->
 <!-- prettier-ignore -->
 <% const btnFilledSquare = { type: 'filled', color:'primary', shape: 'square', size: 'md', btnText:'按鈕內容', rightIcon: true, leftIcon: false, iconName:'arrow_right_alt'} %>
@@ -40,8 +40,8 @@ btnFilledRound); -%>
 <%-include('./components/buttons/btn-filled-or-outline', btnFilledSquare1); -%>
 <!-- Outline neutral -->
 <!-- prettier-ignore -->
-<% const btnFilledOutline = { type: 'outline', color:'neutral', shape: 'round', size: 'lg', btnText:'按鈕內容', rightIcon: false, leftIcon: true, iconName:'arrow_left_alt'} %> <%-include('./components/buttons/btn-filled-or-outline', btnFilledOutline); -%>
-<% const btnFilledOutline1 = { type: 'outline', color:'neutral', shape: 'round', size: 'sm',btnText:'按鈕內容', rightIcon: true, leftIcon: false, iconName:'arrow_right_alt'} %>
+<% const btnFilledOutline = { type: 'outline', color:'neutral', shape: 'pill', size: 'lg', btnText:'按鈕內容', rightIcon: false, leftIcon: true, iconName:'arrow_left_alt'} %> <%-include('./components/buttons/btn-filled-or-outline', btnFilledOutline); -%>
+<% const btnFilledOutline1 = { type: 'outline', color:'neutral', shape: 'pill', size: 'sm',btnText:'按鈕內容', rightIcon: true, leftIcon: false, iconName:'arrow_right_alt'} %>
 <%-include('./components/buttons/btn-filled-or-outline', btnFilledOutline1); -%>
 
 <!-- 只有圖標的按鈕 Only Icon Button -->

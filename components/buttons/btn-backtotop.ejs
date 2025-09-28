@@ -1,5 +1,5 @@
 <button id="custom-btn-backtotop" class="btn custom-btn-backtotop" type="button">
-  <span class="custom-btn-icon material-symbols-rounded"> arrow_upward_alt </span>
+  <span class="custom-btn-icon material-symbols-rounded"> north </span>
 </button>
 <script>
   let backToTopBtn = document.getElementById('custom-btn-backtotop');
@@ -8,9 +8,11 @@
   };
   function scrollFunction() {
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-      backToTopBtn.style.display = 'block';
+      backToTopBtn.style.visibility = 'visible';
+      backToTopBtn.style.opacity = '1';
     } else {
-      backToTopBtn.style.display = 'none';
+      backToTopBtn.style.visibility = 'hidden';
+      backToTopBtn.style.opacity = '0';
     }
   }
   backToTopBtn.addEventListener('click', backToTop);
