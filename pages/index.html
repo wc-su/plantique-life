@@ -230,11 +230,173 @@
     <!-- recommend section end -->
 
     <!-- column section start -->
-
+    <section class="column-section py-12" aria-labelledby="column-title">
+      <div class="container-fluid container-lg">
+        <div class="d-flex flex-column align-items-center flex-lg-row justify-content-lg-between mb-lg-12">
+          <div class="d-flex justify-content-center">
+            <picture class="align-self-end me-6">
+              <source srcset="../assets/images/heading-decoration.svg" media="(min-width: 768px)" />
+              <img src="../assets/images/heading-decoration-sm.svg" class="img-fluid" alt="heading-decoration" />
+            </picture>
+            <div class="d-flex flex-column align-items-center">
+              <h3 class="text-primary fs-8 fs-lg-7 mb-1 mb-lg-2">Column</h3>
+              <h2 class="fs-3 fs-lg-2 text-neutral-700" id="column-title">植感專欄</h2>
+            </div>
+            <picture class="align-self-end ms-6">
+              <source srcset="../assets/images/heading-decoration.svg" media="(min-width: 768px)" />
+              <img src="../assets/images/heading-decoration-sm.svg" class="img-fluid" alt="heading-decoration" />
+            </picture>
+          </div>
+          <div class="d-flex gap-2 gap-lg-4 my-8 align-self-lg-end my-lg-0" id="column-filter">
+            <button
+              type="button"
+              class="column-tag fs-sm text-nowrap btn border border-primary rounded-1 text-primary py-2 px-3 active"
+              data-filter="all"
+            >
+              全部
+            </button>
+            <button
+              type="button"
+              class="column-tag fs-sm text-nowrap btn border border-primary rounded-1 text-primary py-2 px-3"
+              data-filter="guide"
+            >
+              #養護指南
+            </button>
+            <button
+              type="button"
+              class="column-tag fs-sm text-nowrap btn border border-primary rounded-1 text-primary py-2 px-3"
+              data-filter="illustrated-book"
+            >
+              #多肉圖鑑
+            </button>
+            <button
+              type="button"
+              class="column-tag fs-sm text-nowrap btn border border-primary rounded-1 text-primary py-2 px-3"
+              data-filter="proposal"
+            >
+              #生活提案
+            </button>
+          </div>
+        </div>
+        <ul class="list-unstyled row g-6" id="">
+          <li class="col-lg-6 column-item" data-category="guide">
+            <div class="card flex-lg-row border-0 rounded-0">
+              <img
+                src="../assets/images/img_column_01.png"
+                class="card-img-top object-fit-cover rounded-0 me-3 me-lg-4"
+                alt="column_01"
+              />
+              <div class="card-body d-lg-flex flex-lg-column p-0 pt-3 pt-lg-0">
+                <h4 class="card-title fs-7 fs-lg-6 text-neutral-700">新手必看：五種不易失敗的多肉推薦</h4>
+                <span class="align-self-lg-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100"
+                  ># 養護指南</span
+                >
+                <p class="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis mt-2">
+                  第一次養多肉就上手！精選五款易照顧、好生長的多肉，輕鬆成為植栽達人。
+                </p>
+                <div class="d-flex justify-content-between align-items-center mt-2 mt-lg-auto">
+                  <p class="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
+                  <a href="#" class="btn text-primary">
+                    <span class="fs-sm fw-medium">閱讀全文</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="col-lg-6 column-item" data-category="illustrated-book">
+            <div class="card flex-lg-row border-0 rounded-0">
+              <img
+                src="../assets/images/img_column_02.png"
+                class="card-img-top object-fit-cover rounded-0 me-3 me-lg-4"
+                alt="column_02"
+              />
+              <div class="card-body d-lg-flex flex-lg-column p-0 pt-3 pt-lg-0">
+                <h4 class="card-title fs-7 fs-lg-6 text-neutral-700">圓滾滾的療癒系：綠之鈴</h4>
+                <span class="align-self-lg-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100"
+                  ># 多肉圖鑑</span
+                >
+                <p class="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis mt-2">
+                  鑑在多肉植物的世界裡，若要選出一款最具垂墜美感、造境最討喜的代表，綠之鈴無疑名列前茅。
+                </p>
+                <div class="d-flex justify-content-between align-items-center mt-2 mt-lg-auto">
+                  <p class="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
+                  <a href="#" class="btn text-primary">
+                    <span class="fs-sm fw-medium">閱讀全文</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="col-lg-6 column-item" data-category="proposal">
+            <div class="card flex-lg-row border-0 rounded-0">
+              <img
+                src="../assets/images/img_column_03.png"
+                class="card-img-top object-fit-cover rounded-0 me-3 me-lg-4"
+                alt="column_03"
+              />
+              <div class="card-body d-lg-flex flex-lg-column p-0 pt-3 pt-lg-0">
+                <h4 class="card-title fs-7 fs-lg-6 text-neutral-700">為你的空間選一種氣質：多肉的氛圍搭配提案</h4>
+                <span class="align-self-lg-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100"
+                  ># 生活提案</span
+                >
+                <p class="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis mt-2">
+                  多肉植物們擁有多樣的顏色、形狀與質地，也乘載著一種「氛圍感」。你會發現，當一盆多肉出現在書桌上，氛圍感立刻不一樣。
+                </p>
+                <div class="d-flex justify-content-between align-items-center mt-2 mt-lg-auto">
+                  <p class="fs-xs fs-lg-sm text-primary-500">2025/01/01</p>
+                  <a href="#" class="btn text-primary">
+                    <span class="fs-sm fw-medium">閱讀全文</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="col-lg-6 column-item" data-category="proposal">
+            <div class="card flex-lg-row border-0 rounded-0">
+              <img
+                src="../assets/images/img_column_04.png"
+                class="card-img-top object-fit-cover rounded-0 me-3 me-lg-4"
+                alt="column_04"
+              />
+              <div class="card-body d-lg-flex flex-lg-column p-0 pt-3 pt-lg-0">
+                <h4 class="card-title fs-7 fs-lg-6 text-neutral-700">療癒系小宇宙：用多肉打造居家綠意角落</h4>
+                <span class="align-self-lg-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100"
+                  ># 生活提案</span
+                >
+                <p class="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis mt-2">
+                  在都市的繁忙節奏中，我們總渴望一處能讓心靈喘息的綠洲。多肉植物以其獨特的圓潤身形與豐富的姿態，正為我們的生活注入這股療癒能量。
+                </p>
+                <div class="d-flex justify-content-between align-items-center mt-2 mt-lg-auto">
+                  <p class="fs-xs fs-lg-sm text-primary-500">2025/01/01</p>
+                  <a href="#" class="btn text-primary">
+                    <span class="fs-sm fw-medium">閱讀全文</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <button type="button" class="btn btn-white border-2 border-neutral-200 mt-8 mt-lg-12 d-block mx-auto">
+          查看更多
+        </button>
+      </div>
+    </section>
     <!-- column section end -->
 
     <!-- about section start -->
-
+    <section class="about-section">
+      <div class="container-fluid container-lg h-100">
+        <div class="d-flex flex-column flex-lg-row h-100">
+          <div class="about-text-wrapper col-lg-6 py-10 py-lg-0 pe-lg-3 my-lg-auto">
+            <h3 class="fs-2 fs-lg-1 text-primary-900">植感生活<br />Plantique Life</h3>
+            <p class="fs-sm fs-lg-8 mt-4 mt-lg-6">
+              在繁忙的節奏裡，植感始終相信綠意能為生活帶來片刻的寧靜與療癒。<br />從多肉出發，讓植物成為你的日常風景，讓療癒成為一種生活態度。
+            </p>
+            <a href="#" class="btn btn-primary text-white rounded-pill fs-8 fs-lg-7 px-6 py-3 mt-4 mt-lg-6">關於品牌</a>
+          </div>
+        </div>
+      </div>
+    </section>
     <!-- about section end -->
 
     <%- include('./layout/footer'); -%>
