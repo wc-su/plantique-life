@@ -3,57 +3,15 @@
 
 .footer {
   font-size: $font-size-sm;
-}
-@include media-breakpoint-up(lg) {
-  .footer {
+  @include media-breakpoint-up(lg) {
     font-size: $font-size-base;
   }
 }
 
-.site-map {
-  & > div {
-    display: flex;
-    justify-content: space-between;
-  }
-  ul {
-    // flex: 1 0 0;
-    list-style: none;
-    text-align: center;
-    margin-bottom: 0;
-    padding-left: 0;
-  }
-  li {
-    margin-bottom: map.get($spacers, 1);
-  }
-  li:first-child {
-    color: $primary-200;
-    margin-bottom: map.get($spacers, 4);
-  }
-  li:last-child {
-    margin-bottom: 0;
-  }
-  a {
-    padding: map.get($spacers, 1) 0.656rem; //note: 連結的padding目前皆採用設計稿上的四個字連結padding
-  }
-}
-@include media-breakpoint-up(lg) {
-  .site-map {
-    & > div {
-      gap: map.get($spacers, 6);
-      justify-content: flex-start;
-    }
-    ul {
-      flex: initial;
-    }
-    li {
-      margin-bottom: map.get($spacers, 2);
-    }
-    li:first-child {
-      margin-bottom: map.get($spacers, 6);
-    }
-    a {
-      padding: map.get($spacers, 1) 0.656rem;
-    }
+.site-map-link {
+  padding: 0.343rem 0.679rem; //note: 連結的padding目前皆採用設計稿上的四個字連結padding
+  @include media-breakpoint-up(lg) {
+    padding: map.get($spacers, 1) 0.656rem;
   }
 }
 
@@ -64,9 +22,7 @@
   img {
     display: block;
   }
-}
-@include media-breakpoint-up(lg) {
-  .social-link {
+  @include media-breakpoint-up(lg) {
     padding: map.get($spacers, 3);
   }
 }

@@ -19,9 +19,8 @@
   display: block;
   padding-top: 0.343rem;
   padding-bottom: 0.343rem;
-}
-@include media-breakpoint-up(lg) {
-  .custom-nav-link {
+
+  @include media-breakpoint-up(lg) {
     font-size: $font-size-base;
     padding-top: map.get($spacers, 1);
     padding-bottom: map.get($spacers, 1);
@@ -39,18 +38,15 @@
   &.active {
     background-color: $primary-50;
   }
-}
-@include media-breakpoint-up(lg) {
-  .cart-toggle-btn {
+  @include media-breakpoint-up(lg) {
     padding: map.get($spacers, 3);
   }
 }
 .cart-badge {
   font-size: $font-size-xxs;
   transform: translate(-73.333%, -22.222%);
-}
-@include media-breakpoint-up(lg) {
-  .cart-badge {
+
+  @include media-breakpoint-up(lg) {
     font-size: $font-size-xs;
     transform: translate(-50%, -40%);
   }
