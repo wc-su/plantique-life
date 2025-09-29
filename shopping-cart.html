@@ -4,20 +4,151 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>購物車清單</title>
-    <script type="module" crossorigin src="/plantique-life/assets/shopping-cart-D-1_Z3Wm.js"></script>
+    <script type="module" crossorigin src="/plantique-life/assets/shopping-cart-CAoeWS1v.js"></script>
     <link rel="modulepreload" crossorigin href="/plantique-life/assets/index-DdMuGOvR.js">
-    <link rel="stylesheet" crossorigin href="/plantique-life/assets/shopping-cart-DWOQ2zxw.css">
+    <link rel="stylesheet" crossorigin href="/plantique-life/assets/shopping-cart-Bz0uaTGK.css">
   </head>
   <body>
-    <h1 class="header">header</h1>
-<a href="index.html">index</a>
-<a href="about.html">about</a>
+    <nav class="navbar navbar-expand-lg sticky-top bg-white py-2 py-lg-4">
+  <div class="container">
+    <!-- LOGO -->
+    <a class="d-none d-lg-block w-lg-30" href="index.html"
+      ><img src="/plantique-life/assets/logo-primary-en-zh-lg-Dv4xVOzA.svg" alt="Plantique Life 植感生活"
+    /></a>
+    <a class="d-lg-none" href="index.html"
+      ><img src="/plantique-life/assets/logo-primary-en-sm-DRZaQepn.svg" alt="Plantique Life 植感生活"
+    /></a>
+    <!-- 購物車、電腦版註冊登入、會員選單 -->
+    <div class="ms-auto order-lg-2 w-lg-30">
+      <ul class="d-flex list-unstyled align-items-center justify-content-end">
+        <li class="me-2 me-lg-4">
+          <button class="btn cart-toggle-btn" data-bs-toggle="button" type="button">
+            <div class="position-relative">
+              <span class="material-symbols-rounded d-block"> shopping_cart </span>
+              <span
+                class="badge rounded-pill text-bg-danger text-white lh-base py-0 px-1 position-absolute top-0 start-100 cart-badge"
+                >0</span
+              >
+            </div>
+          </button>
+        </li>
+        <!-- 未登入 -->
+        <!-- TODO: 待替換成 Button 元件 -->
+        <li class="d-none d-lg-block guest">
+          <button
+            class="btn btn-white text-neutral-700 rounded-pill border-2 border-neutral-200 py-3 px-6 me-4"
+            type="button"
+          >
+            登入
+          </button>
+        </li>
+        <li class="d-none d-lg-block guest">
+          <button class="btn btn-primary text-white rounded-pill border-0 py-3 px-6" type="button">註冊</button>
+        </li>
+        <!-- 登入後 -->
+        <!-- 會員選單 -->
+        <li class="d-none d-lg-block position-relative member">
+          <!-- 會員選單按鈕 -->
+          <button
+            class="btn member-menu-toggle-btn collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#memberMenu"
+            aria-controls="memberMenu"
+            aria-expanded="false"
+            aria-label="Toggle member menu"
+          >
+            <span class="material-symbols-rounded d-block"> person </span>
+          </button>
+          <!-- 會員選單內容 -->
+          <ul class="collapse position-absolute list-unstyled bg-white text-center p-6 member-menu" id="memberMenu">
+            <li class="mb-3"><a class="member-menu-link" href="#">會員中心</a></li>
+            <li class="pb-6">
+              <a class="member-menu-link" href="#">訂單查詢</a>
+            </li>
+            <li class="pt-6 separator-line-top">
+              <a class="member-menu-link py-1 d-flex justify-content-center align-items-center" href="#"
+                >登出 <span class="ms-2 material-symbols-rounded"> logout </span></a
+              >
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!-- 手機版漢堡選單按鈕 -->
+    <button
+      class="btn custom-nav-toggle-btn d-block d-lg-none collapsed"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="material-symbols-rounded d-block d-lg-none"> density_medium </span>
+    </button>
+    <!-- 導覽列連結  -->
+    <div
+      class="collapse navbar-collapse text-center p-6 p-lg-0 order-lg-1 justify-content-center w-lg-40"
+      id="navbarNav"
+    >
+      <ul class="navbar-nav pb-6 pb-lg-0 gap-3 gap-lg-0">
+        <li>
+          <a class="custom-nav-link" aria-current="page" href="#">關於品牌</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">最新消息</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">植感商品</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">植藝專欄</a>
+        </li>
+      </ul>
+      <!-- 未登入 -->
+      <ul class="navbar-nav pt-6 d-lg-none separator-line-top guest">
+        <li>
+          <a class="custom-nav-link" href="#">會員登入</a>
+        </li>
+      </ul>
+      <!-- 登入後 -->
+      <ul class="navbar-nav pt-6 d-lg-none separator-line-top member">
+        <li>
+          <a class="custom-nav-link mb-3" href="#">會員中心</a>
+        </li>
+        <li class="pb-6">
+          <a class="custom-nav-link" href="#">訂單查詢</a>
+        </li>
+        <li class="pt-6 separator-line-top">
+          <a class="custom-nav-link py-1 d-flex justify-content-center align-items-center" href="#"
+            >登出 <span class="ms-2 material-symbols-rounded"> logout </span></a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- JS: 依登入狀態顯示/隱藏某些元素 -->
+<script>
+  let loggedIn = false;
+  const guestItems = document.querySelectorAll('.guest');
+  const memberItems = document.querySelectorAll('.member');
+  if (loggedIn) {
+    guestItems.forEach(item => item.classList.add('hidden'));
+    memberItems.forEach(item => item.classList.remove('hidden'));
+  } else {
+    guestItems.forEach(item => item.classList.remove('hidden'));
+    memberItems.forEach(item => item.classList.add('hidden'));
+  }
+</script>
 
     <div class="container-fluid container-lg">
       <ol class="cart-nav nav nav-pills flex-nowrap py-8 py-lg-13" id="pills-cart-nav" role="tablist">
-        <li class="nav-item col-4" role="presentation">
+        <li class="nav-item flex-grow-1" role="presentation">
           <button
-            class="nav-link w-100 d-flex flex-column align-items-center active step-active"
+            class="nav-link w-100 d-flex flex-column align-items-center active"
             id="pills-cart-tab"
             data-bs-toggle="pill"
             data-bs-target="#pills-cart"
@@ -32,12 +163,12 @@
             </p>
             <h3 class="fs-sm fs-lg-8 text-primary mt-2">Cart List</h3>
             <h2 class="h6 fs-lg-3 text-neutral-700 text-nowrap mt-2">購物車清單</h2>
-            <div class="cart-progress"></div>
+            <div class="cart-progress cart-progress-end"></div>
           </button>
         </li>
-        <li class="nav-item col-4" role="presentation">
+        <li class="nav-item flex-grow-1" role="presentation">
           <button
-            class="nav-link w-100 d-flex flex-column align-items-center"
+            class="nav-link w-100 d-flex flex-column align-items-center step-undo"
             id="pills-checkout-info-tab"
             data-bs-toggle="pill"
             data-bs-target="#pills-checkout-info"
@@ -52,12 +183,13 @@
             </p>
             <h3 class="fs-sm fs-lg-8 text-primary text-nowrap mt-2">Checkout Info</h3>
             <h2 class="h6 fs-lg-3 text-neutral-700 mt-2">付款資料</h2>
-            <div class="cart-progress"></div>
+            <div class="cart-progress cart-progress-start"></div>
+            <div class="cart-progress cart-progress-end"></div>
           </button>
         </li>
-        <li class="nav-item col-4" role="presentation">
+        <li class="nav-item flex-grow-1" role="presentation">
           <button
-            class="nav-link w-100 text-center"
+            class="nav-link w-100 text-center step-undo"
             id="pills-confirmation-tab"
             data-bs-toggle="pill"
             data-bs-target="#pills-confirmation"
@@ -72,6 +204,7 @@
             </p>
             <h3 class="fs-sm fs-lg-8 text-primary mt-2">Confirmation</h3>
             <h2 class="h6 fs-lg-3 text-neutral-700 mt-2">訂單確認</h2>
+            <div class="cart-progress cart-progress-start"></div>
           </button>
         </li>
       </ol>
@@ -165,26 +298,391 @@
                 <h6 class="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">訂單明細</h6>
                 <div class="d-flex justify-content-between mb-3 mb-lg-4">
                   <span class="fs-sm fs-lg-8 text-neutral-400">商品小計</span>
-                  <span class="fs-sm fs-lg-8 text-neutral-400" id="cart-subtotal"></span>
+                  <span class="fs-sm fs-lg-8 text-neutral-400" id="subtotal"></span>
                 </div>
                 <div class="d-flex justify-content-between mb-3 mb-lg-4">
                   <span class="fs-sm fs-lg-8 text-neutral-400">折扣優惠</span>
-                  <span class="fs-sm fs-lg-8 text-secondary" id="cart-discount"></span>
+                  <span class="fs-sm fs-lg-8 text-secondary" id="discount"></span>
                 </div>
                 <div class="d-flex justify-content-between mb-4 mb-lg-8">
                   <span class="fs-lg-7 text-neutral-700">總金額</span>
-                  <span class="fs-7 fs-lg-6 fw-bold lh-sm noto-serif-tc text-neutral-700" id="cart-total"></span>
+                  <span class="fs-7 fs-lg-6 fw-bold lh-sm noto-serif-tc text-neutral-700" id="total"></span>
                 </div>
                 <button
                   type="button"
                   class="btn btn-primary fs-lg-7 text-white w-100 rounded-pill py-3"
-                  id="btn-next-checkout"
+                  id="btn-checkout"
                 >
                   前往結帳
                 </button>
               </section>
             </div>
           </div>
+          <!-- add cart section start -->
+          <section class="py-12 py-lg-15">
+            <!-- 標題 -->
+            <div class="container mb-12">
+              <div class="d-flex justify-content-center align-items-center align-items-lg-center gap-6 gap-lg-10">
+                <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
+                <p class="fs-lg fs-lg-7 text-neutral-400">加購商品</p>
+                <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
+              </div>
+            </div>
+
+            <!-- 產品卡片 -->
+            <div class="container">
+              <div class="row gap-6 gap-lg-0">
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <div class="card rounded-0 border-0">
+  <div class="position-relative overflow-hidden product-card-img-height">
+    <img src="/plantique-life/assets/img_product_01-Dlj0DR4q.png" class="card-img-top rounded-0 h-100 w-100 object-fit-cover" alt="多肉植物組合盆栽" />
+    <button type="button" class="btn bg-transparent border-0 p-0 position-absolute favorite-btn">
+      <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3 bg-white bg-opacity-40 rounded-circle">
+        favorite
+      </span>
+    </button>
+  </div>
+  <div class="card-body p-0 pt-3 pt-lg-5">
+    <!-- <span class="fs-xs fs-lg-sm text-primary bg-primary-100 px-2 px-lg-3 py-1">加購價</span> -->
+    <span>
+      
+      <span class="fs-xs fs-lg-sm px-2 px-lg-3 py-1 text-secondary bg-secondary-100">加購價</span>
+      
+    </span>
+
+    <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
+      <div class="d-flex flex-column justify-content-between">
+        <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
+          <a href="#" class="stretched-link text-decoration-none text-neutral-700"> 天使環生長燈 </a>
+        </h5>
+        <!-- <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">NT$ 799</p> -->
+        <div class="d-lg-flex align-items-center">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
+            NT$ 799
+          </p>
+          
+          <p class="card-text fs-sm fs-md-8 text-neutral-400 text-decoration-line-through ms-0 ms-lg-2">
+            NT$ 1,000
+          </p>
+          
+        </div>
+      </div>
+      <button type="button" class="btn bg-transparent border-0 p-0">
+        <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3"> shopping_cart </span>
+      </button>
+    </div>
+  </div>
+</div>
+                </div>
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <div class="card rounded-0 border-0">
+  <div class="position-relative overflow-hidden product-card-img-height">
+    <img src="/plantique-life/assets/img_product_02-D9MDmzrV.png" class="card-img-top rounded-0 h-100 w-100 object-fit-cover" alt="多肉植物組合盆栽" />
+    <button type="button" class="btn bg-transparent border-0 p-0 position-absolute favorite-btn">
+      <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3 bg-white bg-opacity-40 rounded-circle">
+        favorite
+      </span>
+    </button>
+  </div>
+  <div class="card-body p-0 pt-3 pt-lg-5">
+    <!-- <span class="fs-xs fs-lg-sm text-primary bg-primary-100 px-2 px-lg-3 py-1">加購價</span> -->
+    <span>
+      
+      <span class="fs-xs fs-lg-sm px-2 px-lg-3 py-1 text-secondary bg-secondary-100">加購價</span>
+      
+    </span>
+
+    <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
+      <div class="d-flex flex-column justify-content-between">
+        <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
+          <a href="#" class="stretched-link text-decoration-none text-neutral-700"> 陶瓷盆器 </a>
+        </h5>
+        <!-- <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">NT$ 300</p> -->
+        <div class="d-lg-flex align-items-center">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
+            NT$ 300
+          </p>
+          
+          <p class="card-text fs-sm fs-md-8 text-neutral-400 text-decoration-line-through ms-0 ms-lg-2">
+            NT$ 350
+          </p>
+          
+        </div>
+      </div>
+      <button type="button" class="btn bg-transparent border-0 p-0">
+        <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3"> shopping_cart </span>
+      </button>
+    </div>
+  </div>
+</div>
+                </div>
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <div class="card rounded-0 border-0">
+  <div class="position-relative overflow-hidden product-card-img-height">
+    <img src="/plantique-life/assets/img_product_03-npzK0oPu.png" class="card-img-top rounded-0 h-100 w-100 object-fit-cover" alt="多肉植物組合盆栽" />
+    <button type="button" class="btn bg-transparent border-0 p-0 position-absolute favorite-btn">
+      <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3 bg-white bg-opacity-40 rounded-circle">
+        favorite
+      </span>
+    </button>
+  </div>
+  <div class="card-body p-0 pt-3 pt-lg-5">
+    <!-- <span class="fs-xs fs-lg-sm text-primary bg-primary-100 px-2 px-lg-3 py-1">加購價</span> -->
+    <span>
+      
+      <span class="fs-xs fs-lg-sm px-2 px-lg-3 py-1 text-secondary bg-secondary-100">加購價</span>
+      
+    </span>
+
+    <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
+      <div class="d-flex flex-column justify-content-between">
+        <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
+          <a href="#" class="stretched-link text-decoration-none text-neutral-700"> 園藝工具組 </a>
+        </h5>
+        <!-- <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">NT$ 500</p> -->
+        <div class="d-lg-flex align-items-center">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
+            NT$ 500
+          </p>
+          
+          <p class="card-text fs-sm fs-md-8 text-neutral-400 text-decoration-line-through ms-0 ms-lg-2">
+            NT$ 650
+          </p>
+          
+        </div>
+      </div>
+      <button type="button" class="btn bg-transparent border-0 p-0">
+        <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3"> shopping_cart </span>
+      </button>
+    </div>
+  </div>
+</div>
+                </div>
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <div class="card rounded-0 border-0">
+  <div class="position-relative overflow-hidden product-card-img-height">
+    <img src="/plantique-life/assets/img_product_04-DzsKeSo2.png" class="card-img-top rounded-0 h-100 w-100 object-fit-cover" alt="多肉植物組合盆栽" />
+    <button type="button" class="btn bg-transparent border-0 p-0 position-absolute favorite-btn">
+      <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3 bg-white bg-opacity-40 rounded-circle">
+        favorite
+      </span>
+    </button>
+  </div>
+  <div class="card-body p-0 pt-3 pt-lg-5">
+    <!-- <span class="fs-xs fs-lg-sm text-primary bg-primary-100 px-2 px-lg-3 py-1">加購價</span> -->
+    <span>
+      
+      <span class="fs-xs fs-lg-sm px-2 px-lg-3 py-1 text-secondary bg-secondary-100">加購價</span>
+      
+    </span>
+
+    <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
+      <div class="d-flex flex-column justify-content-between">
+        <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
+          <a href="#" class="stretched-link text-decoration-none text-neutral-700"> 日本赤玉土 </a>
+        </h5>
+        <!-- <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">NT$ 3,500</p> -->
+        <div class="d-lg-flex align-items-center">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
+            NT$ 3,500
+          </p>
+          
+          <p class="card-text fs-sm fs-md-8 text-neutral-400 text-decoration-line-through ms-0 ms-lg-2">
+            NT$ 5,900
+          </p>
+          
+        </div>
+      </div>
+      <button type="button" class="btn bg-transparent border-0 p-0">
+        <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3"> shopping_cart </span>
+      </button>
+    </div>
+  </div>
+</div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- add cart section end -->
+
+          <!-- recommend section start -->
+          <section class="py-12 py-lg-15">
+            <!-- 標題 -->
+            <div class="container mb-12">
+              <div class="d-flex justify-content-center align-items-center align-items-lg-center gap-6 gap-lg-10">
+                <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
+                <p class="fs-lg fs-lg-7 text-neutral-400">為您推薦</p>
+                <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
+              </div>
+            </div>
+
+            <!-- 產品卡片 -->
+            <div class="container position-relative">
+              <div class="row gap-6 gap-lg-0">
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <div class="card rounded-0 border-0">
+  <div class="position-relative overflow-hidden product-card-img-height">
+    <img src="/plantique-life/assets/img_product_07-p-BSOo11.png" class="card-img-top rounded-0 h-100 w-100 object-fit-cover" alt="多肉植物組合盆栽" />
+    <button type="button" class="btn bg-transparent border-0 p-0 position-absolute favorite-btn">
+      <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3 bg-white bg-opacity-40 rounded-circle">
+        favorite
+      </span>
+    </button>
+  </div>
+  <div class="card-body p-0 pt-3 pt-lg-5">
+    <!-- <span class="fs-xs fs-lg-sm text-primary bg-primary-100 px-2 px-lg-3 py-1">質感精選</span> -->
+    <span>
+      
+      <span class="fs-xs fs-lg-sm px-2 px-lg-3 py-1 text-primary bg-primary-100">質感精選</span>
+      
+    </span>
+
+    <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
+      <div class="d-flex flex-column justify-content-between">
+        <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
+          <a href="#" class="stretched-link text-decoration-none text-neutral-700"> 雪夜之森 </a>
+        </h5>
+        <!-- <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">NT$ 2,400</p> -->
+        <div class="d-lg-flex align-items-center">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
+            NT$ 2,400
+          </p>
+          
+        </div>
+      </div>
+      <button type="button" class="btn bg-transparent border-0 p-0">
+        <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3"> shopping_cart </span>
+      </button>
+    </div>
+  </div>
+</div>
+                </div>
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <div class="card rounded-0 border-0">
+  <div class="position-relative overflow-hidden product-card-img-height">
+    <img src="/plantique-life/assets/img_product_08-B-ePgOsy.png" class="card-img-top rounded-0 h-100 w-100 object-fit-cover" alt="多肉植物組合盆栽" />
+    <button type="button" class="btn bg-transparent border-0 p-0 position-absolute favorite-btn">
+      <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3 bg-white bg-opacity-40 rounded-circle">
+        favorite
+      </span>
+    </button>
+  </div>
+  <div class="card-body p-0 pt-3 pt-lg-5">
+    <!-- <span class="fs-xs fs-lg-sm text-primary bg-primary-100 px-2 px-lg-3 py-1">質感精選</span> -->
+    <span>
+      
+      <span class="fs-xs fs-lg-sm px-2 px-lg-3 py-1 text-primary bg-primary-100">質感精選</span>
+      
+    </span>
+
+    <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
+      <div class="d-flex flex-column justify-content-between">
+        <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
+          <a href="#" class="stretched-link text-decoration-none text-neutral-700"> 植語時光 </a>
+        </h5>
+        <!-- <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">NT$ 3,000</p> -->
+        <div class="d-lg-flex align-items-center">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
+            NT$ 3,000
+          </p>
+          
+        </div>
+      </div>
+      <button type="button" class="btn bg-transparent border-0 p-0">
+        <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3"> shopping_cart </span>
+      </button>
+    </div>
+  </div>
+</div>
+                </div>
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <div class="card rounded-0 border-0">
+  <div class="position-relative overflow-hidden product-card-img-height">
+    <img src="/plantique-life/assets/img_product_09-BCAGLXpf.png" class="card-img-top rounded-0 h-100 w-100 object-fit-cover" alt="多肉植物組合盆栽" />
+    <button type="button" class="btn bg-transparent border-0 p-0 position-absolute favorite-btn">
+      <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3 bg-white bg-opacity-40 rounded-circle">
+        favorite
+      </span>
+    </button>
+  </div>
+  <div class="card-body p-0 pt-3 pt-lg-5">
+    <!-- <span class="fs-xs fs-lg-sm text-primary bg-primary-100 px-2 px-lg-3 py-1">質感精選</span> -->
+    <span>
+      
+      <span class="fs-xs fs-lg-sm px-2 px-lg-3 py-1 text-primary bg-primary-100">質感精選</span>
+      
+    </span>
+
+    <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
+      <div class="d-flex flex-column justify-content-between">
+        <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
+          <a href="#" class="stretched-link text-decoration-none text-neutral-700"> 荒野綠影 </a>
+        </h5>
+        <!-- <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">NT$ 2,400</p> -->
+        <div class="d-lg-flex align-items-center">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
+            NT$ 2,400
+          </p>
+          
+        </div>
+      </div>
+      <button type="button" class="btn bg-transparent border-0 p-0">
+        <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3"> shopping_cart </span>
+      </button>
+    </div>
+  </div>
+</div>
+                </div>
+                <div class="col-6 col-lg-3">
+                  <!-- prettier-ignore -->
+                  <div class="card rounded-0 border-0">
+  <div class="position-relative overflow-hidden product-card-img-height">
+    <img src="/plantique-life/assets/img_product_10-Bf5RerWE.png" class="card-img-top rounded-0 h-100 w-100 object-fit-cover" alt="多肉植物組合盆栽" />
+    <button type="button" class="btn bg-transparent border-0 p-0 position-absolute favorite-btn">
+      <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3 bg-white bg-opacity-40 rounded-circle">
+        favorite
+      </span>
+    </button>
+  </div>
+  <div class="card-body p-0 pt-3 pt-lg-5">
+    <!-- <span class="fs-xs fs-lg-sm text-primary bg-primary-100 px-2 px-lg-3 py-1">質感精選</span> -->
+    <span>
+      
+      <span class="fs-xs fs-lg-sm px-2 px-lg-3 py-1 text-primary bg-primary-100">質感精選</span>
+      
+    </span>
+
+    <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
+      <div class="d-flex flex-column justify-content-between">
+        <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
+          <a href="#" class="stretched-link text-decoration-none text-neutral-700"> 森語花信 </a>
+        </h5>
+        <!-- <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">NT$ 3,500</p> -->
+        <div class="d-lg-flex align-items-center">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
+            NT$ 3,500
+          </p>
+          
+        </div>
+      </div>
+      <button type="button" class="btn bg-transparent border-0 p-0">
+        <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3"> shopping_cart </span>
+      </button>
+    </div>
+  </div>
+</div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- recommend section end -->
         </div>
         <div
           class="tab-pane fade"
@@ -193,284 +691,7 @@
           aria-labelledby="pills-checkout-info-tab"
           tabindex="0"
         >
-          <div class="row">
-            <div class="col-lg-8">
-              <section class="border border-2 p-4 p-lg-6 mb-6 mb-lg-10">
-                <h6 class="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">
-                  選擇運送及付款方式 <span class="text-danger">*</span>
-                </h6>
-                <p class="fs-lg-7 text-neutral-700 mb-2">運送方式</p>
-                <div class="dropdown checkout-dropdown" id="delivery-dropdown">
-                  <button
-                    class="btn dropdown-toggle border w-100 text-start"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                    id="delivery-toggle"
-                    data-initial-text="請選擇運送方式"
-                  >
-                    請選擇運送方式
-                  </button>
-                  <ul class="dropdown-menu w-100">
-                    <li><a class="dropdown-item" href="#">黑貓宅配</a></li>
-                  </ul>
-                  <div class="dropdown-invalid-feedback">未選擇運送方式</div>
-                </div>
-                <p class="fs-sm text-neutral-400 mt-1">* 宅配貨到付款會產生額外手續費</p>
-                <p class="fs-sm text-neutral-400 mb-3">* 宅配週日不配送</p>
-                <p class="fs-lg-7 text-neutral-700 mb-2">付款方式</p>
-                <div class="dropdown checkout-dropdown" id="payment-dropdown">
-                  <button
-                    class="btn dropdown-toggle border w-100 text-start"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                    id="payment-toggle"
-                    data-initial-text="請選擇付款方式"
-                  >
-                    請選擇付款方式
-                  </button>
-                  <ul class="dropdown-menu w-100">
-                    <li><a class="dropdown-item" href="#">貨到付款</a></li>
-                    <li><a class="dropdown-item" href="#">信用卡一次付清</a></li>
-                    <li><a class="dropdown-item" href="#">轉帳</a></li>
-                  </ul>
-                  <div class="dropdown-invalid-feedback">未選擇付款方式</div>
-                </div>
-                <form id="creditcard-form" class="needs-validation mt-4" novalidate>
-                  <div>
-                    <label for="card-number-1" class="form-label fs-lg-7 text-neutral-700">信用卡卡號</label>
-                    <div class="d-flex flex-wrap align-items-center gap-1 mb-2">
-                      <input
-                        type="text"
-                        class="form-control text-center"
-                        id="card-number-1"
-                        pattern="\d{4}"
-                        maxlength="4"
-                        data-card-number-group="1"
-                        required
-                      />
-                      <span class="text-neutral-400">-</span>
-                      <input
-                        type="text"
-                        class="form-control text-center"
-                        id="card-number-2"
-                        pattern="\d{4}"
-                        maxlength="4"
-                        data-card-number-group="2"
-                        required
-                      />
-                      <span class="text-neutral-400">-</span>
-                      <input
-                        type="text"
-                        class="form-control text-center"
-                        id="card-number-3"
-                        pattern="\d{4}"
-                        maxlength="4"
-                        data-card-number-group="3"
-                        required
-                      />
-                      <span class="text-neutral-400">-</span>
-                      <input
-                        type="text"
-                        class="form-control text-center"
-                        id="card-number-4"
-                        pattern="\d{4}"
-                        maxlength="4"
-                        data-card-number-group="4"
-                        required
-                      />
-                      <div class="invalid-feedback w-100 mt-0">卡號輸入錯誤</div>
-                    </div>
-                  </div>
-                  <div class="d-flex gap-4 gap-lg-6">
-                    <div>
-                      <label for="card-exp-month" class="form-label fs-lg-7 text-neutral-700">卡片有效期限</label>
-                      <div class="d-flex flex-wrap align-items-center gap-1">
-                        <input
-                          type="text"
-                          class="form-control text-center"
-                          id="card-exp-month"
-                          placeholder="MM"
-                          maxlength="2"
-                          data-card-exp-group="1"
-                          required
-                        />
-                        <span class="text-neutral-400">/</span>
-                        <input
-                          type="text"
-                          class="form-control text-center"
-                          id="card-exp-year"
-                          placeholder="YY"
-                          maxlength="2"
-                          data-card-exp-group="2"
-                          required
-                        />
-                        <div class="invalid-feedback w-100 mt-0">有效期限輸入錯誤</div>
-                      </div>
-                    </div>
-                    <div>
-                      <label for="card-cvc" class="form-label fs-lg-7 text-neutral-700">背面末三碼</label>
-                      <input
-                        type="text"
-                        class="form-control text-center"
-                        id="card-cvc"
-                        pattern="\d{3}"
-                        placeholder="CVC"
-                        data-card-cvc="1"
-                        required
-                      />
-                      <div class="invalid-feedback text-nowrap">末三碼輸入錯誤</div>
-                    </div>
-                  </div>
-                </form>
-              </section>
-              <section class="border border-2 p-4 p-lg-6 mb-6 mb-lg-10">
-                <h6 class="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">訂購人資料 <span class="text-danger">*</span></h6>
-                <form id="purchaser-form" class="needs-validation" novalidate>
-                  <div class="d-flex gap-4 gap-lg-6">
-                    <div class="flex-grow-1 mb-3">
-                      <label for="purchaser-name" class="form-label fs-lg-7 text-neutral-700">姓名</label>
-                      <input type="text" class="form-control" id="purchaser-name" placeholder="請輸入姓名" required />
-                      <div class="invalid-feedback">未輸入姓名</div>
-                    </div>
-                    <div class="flex-grow-1 mb-3">
-                      <label for="purchaser-phone" class="form-label fs-lg-7 text-neutral-700">電話號碼</label>
-                      <input type="tel" class="form-control" id="purchaser-phone" placeholder="請輸入電話" required />
-                      <div class="invalid-feedback">未輸入電話號碼</div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <label for="purchaser-email" class="form-label fs-lg-7 text-neutral-700">電子郵件</label>
-                    <input
-                      type="email"
-                      class="form-control"
-                      id="purchaser-email"
-                      placeholder="請輸入 E-mail"
-                      required
-                    />
-                    <div class="invalid-feedback">電子郵件輸入有誤</div>
-                  </div>
-                </form>
-              </section>
-              <section class="border border-2 p-4 p-lg-6 mb-6 mb-lg-10">
-                <div class="d-flex">
-                  <h6 class="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">
-                    收貨人資料 <span class="text-danger">*</span>
-                  </h6>
-                  <div class="form-check ms-auto">
-                    <input class="form-check-input" type="checkbox" value="" id="recipient-checked" />
-                    <label class="form-check-label" for="recipient-checked">同訂購人資料</label>
-                  </div>
-                </div>
-                <form id="recipient-form" class="needs-validation" novalidate>
-                  <div class="d-flex gap-4 gap-lg-6">
-                    <div class="flex-grow-1 mb-3">
-                      <label for="recipient-name" class="form-label fs-lg-7 text-neutral-700">姓名</label>
-                      <input type="text" class="form-control" id="recipient-name" placeholder="請輸入姓名" required />
-                      <div class="invalid-feedback">未輸入姓名</div>
-                    </div>
-                    <div class="flex-grow-1 mb-3">
-                      <label for="recipient-phone" class="form-label fs-lg-7 text-neutral-700">電話號碼</label>
-                      <input type="tel" class="form-control" id="recipient-phone" placeholder="請輸入電話" required />
-                      <div class="invalid-feedback">未輸入電話號碼</div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <label for="recipient-email" class="form-label fs-lg-7 text-neutral-700">電子郵件</label>
-                    <input
-                      type="email"
-                      class="form-control"
-                      id="recipient-email"
-                      placeholder="請輸入 E-mail"
-                      required
-                    />
-                    <div class="invalid-feedback">電子郵件輸入有誤</div>
-                  </div>
-                  <div class="flex-grow-1 mb-3">
-                    <label for="recipient-address" class="form-label fs-lg-7 text-neutral-700">收件地址</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="recipient-address"
-                      placeholder="請輸入收件地址"
-                      required
-                    />
-                    <div class="invalid-feedback">未輸入收件地址</div>
-                  </div>
-                </form>
-              </section>
-              <section class="border border-2 p-4 p-lg-6 mb-6 mb-lg-10">
-                <h6 class="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">發票類型 <span class="text-danger">*</span></h6>
-                <form id="invoice-form" class="needs-validation" novalidate>
-                  <p class="fs-lg-7 text-neutral-700 mb-2">選擇發票類型</p>
-                  <div class="dropdown checkout-dropdown" id="invoice-dropdown">
-                    <button
-                      class="btn dropdown-toggle border w-100 text-start"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                      id="invoice-toggle"
-                      data-initial-text="選擇發票類型"
-                    >
-                      選擇發票類型
-                    </button>
-                    <ul class="dropdown-menu w-100">
-                      <li><a class="dropdown-item" href="#">電子發票</a></li>
-                      <li><a class="dropdown-item" href="#">雲端載具</a></li>
-                      <li><a class="dropdown-item" href="#">統一編號</a></li>
-                    </ul>
-                    <div class="dropdown-invalid-feedback">未選擇發票類型</div>
-                  </div>
-                  <div class="mt-3" id="cloud-invoice-carrier">
-                    <label for="mobile-barcode" class="form-label fs-lg-7">手機條碼 :</label>
-                    <input type="text" class="form-control" id="mobile-barcode" placeholder="請輸入手機條碼" required />
-                    <div class="invalid-feedback">未輸入手機條碼</div>
-                  </div>
-                </form>
-              </section>
-              <section class="border border-2 p-4 p-lg-6 mb-6 mb-lg-10">
-                <h6 class="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">備註</h6>
-                <div class="mb-2">
-                  <label for="checkout-notes" class="form-label visually-hidden">備註</label>
-                  <textarea class="form-control" id="checkout-notes" rows="3" placeholder="請輸入備註"></textarea>
-                </div>
-              </section>
-            </div>
-            <div class="col-lg-4">
-              <section class="border border-2 p-4 p-lg-6">
-                <h6 class="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">訂單明細</h6>
-                <div class="d-flex justify-content-between mb-3 mb-lg-4">
-                  <span class="fs-sm fs-lg-8 text-neutral-400">商品小計</span>
-                  <span class="fs-sm fs-lg-8 text-neutral-400" id="checkout-subtotal"></span>
-                </div>
-                <div class="d-flex justify-content-between mb-3 mb-lg-4">
-                  <span class="fs-sm fs-lg-8 text-neutral-400">折扣優惠</span>
-                  <span class="fs-sm fs-lg-8 text-secondary" id="checkout-discount"></span>
-                </div>
-                <div class="d-flex justify-content-between mb-4 mb-lg-8">
-                  <span class="fs-lg-7 text-neutral-700">總金額</span>
-                  <span class="fs-7 fs-lg-6 fw-bold lh-sm noto-serif-tc text-neutral-700" id="checkout-total"></span>
-                </div>
-                <div class="d-flex gap-4">
-                  <button
-                    type="button"
-                    class="btn btn-outline-primary fs-lg-7 w-100 rounded-pill py-3"
-                    id="btn-back-cart"
-                  >
-                    回購物車
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-primary fs-lg-7 text-white w-100 rounded-pill py-3"
-                    id="btn-next-confirmation"
-                  >
-                    下一步
-                  </button>
-                </div>
-              </section>
-            </div>
-          </div>
+          付款資料
         </div>
         <div
           class="tab-pane fade"
@@ -484,6 +705,83 @@
       </div>
     </div>
 
-    <footer class="footer">footer</footer>
+    <footer class="footer bg-primary-500 py-12 py-lg-15">
+  <div class="container">
+    <div class="row mb-10 mb-lg-6">
+      <!-- 營業資訊 -->
+      <section class="col-lg-4 order-lg-2 mb-10 mb-lg-0">
+        <div class="mb-4 mb-lg-6">
+          <a class="d-block pt-3 pb-2" href="index.html">
+            <img src="/plantique-life/assets/logo-white-en-lg-CGcqdvxj.svg" alt="Plantique Life" />
+          </a>
+        </div>
+        <p class="text-white mb-2 d-flex align-items-center">
+          <span class="material-symbols-rounded align-bottom me-2 me-lg-3 fs-6"> mail </span>平日&ensp;
+          <time datetime="09:00">09:00</time>&thinsp;-&thinsp;<time datetime="21:00">21:00</time>
+        </p>
+        <p class="text-white mb-4 mb-lg-6 d-flex align-items-center">
+          <span class="material-symbols-rounded align-bottom me-2 me-lg-3 fs-6"> schedule </span>
+          <a href="mailto:PlaniqueLife@example.invalid" class="text-white">PlaniqueLife@gmail.com</a>
+        </p>
+        <!-- TODO: 待替換成 button 元件 -->
+        <div class="d-flex column-gap-4">
+          <a class="social-link" href="#">
+            <img src="data:image/svg+xml,%3csvg%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='white'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M15.3172%202C16.5936%202.00005%2016.9964%202.21866%2017.5855%202.35823C17.8288%202.41586%2017.9999%202.62499%2018%202.86457V6.04795C17.9999%206.20237%2017.9284%206.34884%2017.8044%206.44784C17.6804%206.5468%2017.5168%206.58818%2017.3579%206.56077C16.6076%206.43093%2016.4594%206.37286%2015.7627%206.37286C15.3661%206.37286%2015.1033%206.42876%2014.9065%206.51449C14.7128%206.59898%2014.544%206.72914%2014.3603%206.93752C14.0515%207.28773%2013.8306%207.98915%2013.8305%209.19522V9.80987H17.4547C17.63%209.80987%2017.7948%209.89065%2017.8973%2010.0265C17.9997%2010.1623%2018.0271%2010.3369%2017.9719%2010.4958L16.8542%2013.7134C16.78%2013.9269%2016.5705%2014.0712%2016.3351%2014.0707L13.8305%2014.0642V21.4788C13.8305%2021.7667%2013.5863%2021.9998%2013.2852%2022H9.60387C9.30262%2022%209.0586%2021.7668%209.0586%2021.4788V14.0633H6.54528C6.24402%2014.0633%206%2013.8301%206%2013.5422V10.3245C6%2010.0366%206.24402%209.80339%206.54528%209.80339H9.0586V9.15357C9.0586%206.9238%209.52597%205.12598%2010.5811%203.87911C11.6542%202.61109%2013.2596%202%2015.3172%202ZM15.3172%203.0423C13.4953%203.0423%2012.2431%203.57404%2011.4295%204.53541C10.5981%205.51804%2010.1492%207.03662%2010.1492%209.15357V10.3245C10.1491%2010.6123%209.90495%2010.8456%209.60387%2010.8457H7.09056V13.021H9.60387C9.90492%2013.0212%2010.149%2013.2544%2010.1492%2013.5422V20.9577H12.739V13.5422C12.7391%2013.4039%2012.7974%2013.2715%2012.8998%2013.1737C13.0023%2013.076%2013.1413%2013.0207%2013.2862%2013.021L15.9429%2013.0266L16.6993%2010.8531H13.2852C12.984%2010.8531%2012.739%2010.6189%2012.739%2010.331V9.19522C12.739%207.93392%2012.9574%206.91075%2013.5264%206.26548C13.7814%205.97626%2014.073%205.7318%2014.4542%205.56568C14.8327%205.40077%2015.2603%205.32963%2015.7627%205.32963C16.2845%205.32963%2016.5799%205.36623%2016.9094%205.4222V3.25984C16.4803%203.13762%2016.1733%203.04234%2015.3172%203.0423Z'/%3e%3c/svg%3e" />
+          </a>
+          <a class="social-link" href="#">
+            <img src="/plantique-life/assets/line-CnBc3KYC.svg" />
+          </a>
+          <a class="social-link" href="#">
+            <img src="data:image/svg+xml,%3csvg%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='white'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M12.0037%207.10905C13.31%207.10915%2014.5412%207.61953%2015.4645%208.54283C16.3877%209.46618%2016.8974%2010.6974%2016.8974%2012.0037C16.8973%2013.31%2016.3878%2014.5412%2015.4645%2015.4645L15.4627%2015.4663C14.5341%2016.387%2013.3113%2016.8973%2012.0037%2016.8974C10.6972%2016.8974%209.46529%2016.3879%208.54191%2015.4645C7.61869%2014.5412%207.10911%2013.3099%207.10905%2012.0037C7.10905%2010.6974%207.61878%209.46617%208.54191%208.54283C9.46529%207.61945%2010.6972%207.10905%2012.0037%207.10905ZM12.0037%208.23428C10.9954%208.23428%2010.0497%208.62537%209.33754%209.33754C8.62533%2010.0497%208.23428%2010.9953%208.23428%2012.0037C8.23434%2013.0118%208.62549%2013.9567%209.33754%2014.6689C10.0497%2015.3811%2010.9953%2015.7721%2012.0037%2015.7721C13.0105%2015.772%2013.95%2015.3817%2014.6707%2014.667C15.3817%2013.9551%2015.7721%2013.011%2015.7721%2012.0037C15.7721%2010.9953%2015.3811%2010.0497%2014.6689%209.33754C13.9568%208.62552%2013.0118%208.23438%2012.0037%208.23428Z'/%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M17.1793%205.30356C17.9493%205.30367%2018.5738%205.92804%2018.5738%206.69797C18.5737%207.46786%2017.9492%208.09226%2017.1793%208.09237C16.4094%208.09237%2015.785%207.46793%2015.7849%206.69797C15.7849%205.92797%2016.4094%205.30356%2017.1793%205.30356ZM17.1793%206.42879C17.0307%206.42879%2016.9102%206.54932%2016.9102%206.69797C16.9102%206.84658%2017.0307%206.96714%2017.1793%206.96714C17.3279%206.96703%2017.4485%206.84652%2017.4485%206.69797C17.4485%206.54938%2017.3279%206.4289%2017.1793%206.42879Z'/%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M17.617%203C19.4801%203%2021%204.51991%2021%206.38301V17.617C21%2019.487%2019.487%2021%2017.617%2021H6.38301C4.51991%2021%203%2019.4801%203%2017.617V6.38301C3%204.51991%204.51991%203%206.38301%203H17.617ZM6.38301%204.12431C5.14126%204.12431%204.12431%205.14126%204.12431%206.38301V17.617C4.12431%2018.8587%205.14126%2019.8757%206.38301%2019.8757H17.617C18.8657%2019.8757%2019.8757%2018.8657%2019.8757%2017.617V6.38301C19.8757%205.14126%2018.8587%204.12431%2017.617%204.12431H6.38301Z'/%3e%3c/svg%3e" />
+          </a>
+        </div>
+      </section>
+      <!-- 網站地圖 -->
+      <section class="col-lg-8 order-lg-1">
+        <div class="d-flex justify-content-between gap-lg-6 justify-content-lg-start text-center">
+          <div>
+            <p class="text-primary-200 mb-4 mb-lg-6">Member</p>
+            <ul class="list-unstyled">
+              <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="#">會員權益</a></li>
+              <li><a class="link-white site-map-link" href="#">會員帳戶</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-primary-200 mb-4 mb-lg-6">About Us</p>
+            <ul class="list-unstyled">
+              <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="#">關於植感</a></li>
+              <li><a class="link-white site-map-link" href="#">植藝生活</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-primary-200 mb-4 mb-lg-6">Product</p>
+            <ul class="list-unstyled">
+              <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="#">植感精選</a></li>
+              <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="#">所有商品</a></li>
+              <li><a class="link-white site-map-link" href="#">配件商品</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-primary-200 mb-4 mb-lg-6">FAQs</p>
+            <ul class="list-unstyled">
+              <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="#">購物須知 </a></li>
+              <li><a class="link-white site-map-link" href="#">退換貨政策</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- Copyright -->
+    <div
+      class="d-flex flex-column text-center justify-content-center flex-lg-row justify-content-lg-start align-items-center text-lg-start"
+    >
+      <p class="text-white me-0 mb-lg-0 me-lg-6 mb-1">© 2025 PlantiqueLife All rights reserved.</p>
+      <ul class="d-flex list-unstyled">
+        <li class="me-3 me-lg-6"><a class="link-white" href="#">隱私權政策</a></li>
+        <li><a class="link-white" href="#">使用者條款</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
   </body>
 </html>
