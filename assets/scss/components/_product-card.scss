@@ -16,10 +16,10 @@
   }
 }
 
-.card-img-top {
+.product-card-img {
   transition: transform 0.5s ease;
 }
 
-.card:hover .card-img-top {
+.product-card:hover .product-card-img {
   transform: scale(1.1);
 }
