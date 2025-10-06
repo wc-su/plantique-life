@@ -15,11 +15,11 @@
       <div class="container">
         <div class="row">
           <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
-            <div class="">
+            <div>
               <img src="/assets/images/img_title_lg.svg" alt="title" class="mb-10" />
               <a href="#" class="btn-1 bg-primary text-white rounded-pill"
                 ><span class="me-1">立即選購</span>
-                <i class="bi bi-arrow-right"></i>
+                <span class="material-symbols-rounded"> arrow_right_alt </span>
               </a>
             </div>
           </div>
@@ -350,62 +350,62 @@
           <div class="swiper swiperProduct">
             <div class="swiper-wrapper">
               <div class="swiper-slide swiper-slide-prouct">
-                <div class="">
+                <div>
                   <!-- prettier-ignore -->
                   <%- include('./components/product-card',{ 
                        picAlt:"多肉植物組合盆栽",
                        picSrc:'/assets/images/img_product_01.png', 
-                       productTag:"植感精選",
+                       productTag:"質感精選",
                        productName:"泡泡森林",
                        productPrice :"NT$ 6,200"
                       }); -%>
                 </div>
               </div>
               <div class="swiper-slide swiper-slide-prouct">
-                <div class="">
-                  <!-- prettier-ignore -->
-                  <%- include('./components/product-card',{ 
-                       picAlt:"多肉植物組合盆栽",
-                       picSrc:'/assets/images/img_product_01.png', 
-                       productTag:"植感精選",
-                       productName:"泡泡森林",
-                       productPrice :"NT$ 6,200"
-                      }); -%>
-                </div>
-              </div>
-              <div class="swiper-slide swiper-slide-prouct">
-                <div class="">
+                <div>
                   <!-- prettier-ignore -->
                   <%- include('./components/product-card',{ 
                        picAlt:"多肉植物組合盆栽",
                        picSrc:'/assets/images/img_product_02.png', 
-                       productTag:"植感精選",
+                       productTag:"質感精選",
                        productName:"向陽而生",
                        productPrice :"NT$ 7,280"
                       }); -%>
                 </div>
               </div>
               <div class="swiper-slide swiper-slide-prouct">
-                <div class="">
+                <div>
                   <!-- prettier-ignore -->
                   <%- include('./components/product-card',{ 
                        picAlt:"多肉植物組合盆栽",
                        picSrc:'/assets/images/img_product_03.png', 
-                       productTag:"植感精選",
+                       productTag:"質感精選",
                        productName:"暮光角落",
                        productPrice :"NT$ 7,500"
                       }); -%>
                 </div>
               </div>
               <div class="swiper-slide swiper-slide-prouct">
-                <div class="">
+                <div>
                   <!-- prettier-ignore -->
                   <%- include('./components/product-card',{ 
                        picAlt:"多肉植物組合盆栽",
                        picSrc:'/assets/images/img_product_04.png', 
-                       productTag:"植感精選",
+                       productTag:"質感精選",
                        productName:"雲深處靜",
                        productPrice :"NT$ 6,600"
+                      }); -%>
+                </div>
+              </div>
+              <div class="swiper-slide swiper-slide-prouct">
+                <div>
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                       picAlt:"多肉植物組合盆栽",
+                       picSrc:'/assets/images/img_product_01.png', 
+                       productTag:"質感精選",
+                       productName:"泡泡森林",
+                       productPrice :"NT$ 6,200"
                       }); -%>
                 </div>
               </div>
@@ -636,15 +636,16 @@
 
         breakpoints: {
           // RWD 響應式
+          0: {
+            slidesPerView: 'auto',
+            spaceBetween: 12,
+            freeMode: true,
+            navigation: false, // 關閉箭頭
+          },
           1024: {
             slidesPerView: 4,
             spaceBetween: 24,
-          },
-
-          0: {
-            slidesPerView: 1,
-            spaceBetween: 12,
-            navigation: false, // 關閉箭頭
+            freeMode: false,
           },
         },
       });
