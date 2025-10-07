@@ -207,7 +207,7 @@
     <!-- add cart section start -->
     <section class="py-12 py-lg-15">
       <!-- 標題 -->
-      <div class="container mb-12">
+      <div class="container mb-8 mb-md-12">
         <div class="d-flex justify-content-center align-items-center align-items-lg-center gap-6 gap-lg-10">
           <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
           <p class="fs-lg fs-lg-7 text-neutral-400">加購商品</p>
@@ -217,7 +217,7 @@
 
       <!-- 產品卡片 -->
       <div class="container">
-        <div class="row gap-6 gap-lg-0">
+        <div class="row gx-3 gx-lg-6 gy-6">
           <div class="col-6 col-lg-3">
             <!-- prettier-ignore -->
             <%- include('./components/product-card',{ 
@@ -226,7 +226,7 @@
                    productTag:"加購價",
                    productName:"天使環生長燈",
                    productPrice :"NT$ 799",
-                   productOlPrice :"NT$ 1,000"
+                   originalPrice :"NT$ 1,000"
                   }); -%>
           </div>
           <div class="col-6 col-lg-3">
@@ -237,7 +237,7 @@
                    productTag:"加購價",
                    productName:"陶瓷盆器",
                    productPrice :"NT$ 300",
-                   productOlPrice :"NT$ 350"
+                   originalPrice :"NT$ 350"
                   }); -%>
           </div>
           <div class="col-6 col-lg-3">
@@ -248,7 +248,7 @@
                    productTag:"加購價",
                    productName:"園藝工具組",
                    productPrice :"NT$ 500",
-                    productOlPrice :"NT$ 650"
+                   originalPrice :"NT$ 650"
                   }); -%>
           </div>
           <div class="col-6 col-lg-3">
@@ -259,7 +259,7 @@
                    productTag:"加購價",
                    productName:"日本赤玉土",
                    productPrice :"NT$ 3,500",
-                    productOlPrice :"NT$ 5,900"
+                   originalPrice :"NT$ 5,900"
                   }); -%>
           </div>
         </div>
@@ -270,7 +270,7 @@
     <!-- recommend section start -->
     <section class="py-12 py-lg-15">
       <!-- 標題 -->
-      <div class="container mb-12">
+      <div class="container mb-8 mb-md-12">
         <div class="d-flex justify-content-center align-items-center align-items-lg-center gap-6 gap-lg-10">
           <span class="flex-grow-1 border-top border-1 border-primary-200"></span>
           <p class="fs-lg fs-lg-7 text-neutral-400">為您推薦</p>
@@ -280,7 +280,7 @@
 
       <!-- 產品卡片 -->
       <div class="container position-relative">
-        <div class="row gap-6 gap-lg-0">
+        <div class="row gx-3 gx-lg-6 gy-6">
           <div class="col-6 col-lg-3">
             <!-- prettier-ignore -->
             <%- include('./components/product-card',{ 
