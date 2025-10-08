@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>植藝專欄 | PLANTIQUE LIFE</title>
+  </head>
+
+  <body>
+    <%- include('./layout/header'); -%>
+
+    <!-- life section start -->
+    <section class="life-section">
+      <div class="container-fluid container-lg">
+        <div class="d-flex flex-column flex-lg-row py-md-15">
+          <div class="life-text-wrapper col-lg-6 py-10 py-lg-0 pe-lg-15 my-lg-auto">
+            <h6 class="card-text fs-md-4 text-primary mb-md-2">Plantique Life</h6>
+            <div class="d-flex justify-content-between">
+              <div class="d-flex flex-column text-primary-900">
+                <h3 class="fs-2 fs-lg-1 mb-1">探索植感生活</h3>
+                <h3 class="fs-2 fs-lg-1">提案</h3>
+              </div>
+              <picture class="align-self-end me-6">
+                <source srcset="/assets/images/heading-decoration.svg" media="(min-width: 768px)" />
+                <img src="../assets/images/heading-decoration-sm.svg" class="img-fluid" alt="heading-decoration" />
+              </picture>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- life section end -->
+
+    <!-- tags section start -->
+    <div class="container">
+      <div class="d-flex gap-2 gap-lg-4 my-8 align-self-lg-end my-lg-0 py-md-15" id="column-filter">
+        <button
+          type="button"
+          class="column-tag fs-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3 active"
+          data-filter="all"
+        >
+          全部
+        </button>
+        <button
+          type="button"
+          class="column-tag fs-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
+          data-filter="guide"
+        >
+          #養護指南
+        </button>
+        <button
+          type="button"
+          class="column-tag fs-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
+          data-filter="illustrated-book"
+        >
+          #多肉圖鑑
+        </button>
+        <button
+          type="button"
+          class="column-tag fs-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
+          data-filter="proposal"
+        >
+          #生活提案
+        </button>
+      </div>
+    </div>
+    <!-- tags section end -->
+
+    <!-- maintenance section start -->
+    <section>
+      <div class="container">
+        <!-- title -->
+        <div class="d-flex">
+          <h2 class="fs-md-2 text-neutral-700"><span class="fs-7 text-primary align-top me-1">#</span>養護指南</h2>
+        </div>
+      </div>
+    </section>
+    <!-- maintenance section end -->
+
+    <!-- succulent section start -->
+
+    <!-- succulent section end -->
+
+    <!-- life section start -->
+    <!-- life section end -->
+
+    <%- include('./layout/footer'); -%>
+
+    <script type="module" src="/assets/js/article.js"></script>
+  </body>
+</html>
