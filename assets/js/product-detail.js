@@ -24,7 +24,7 @@ const thumbSwiper = new Swiper('.thumb-swiper', {
   },
 });
 
-const swiper2 = new Swiper('.product-swiper-container', {
+const productSwiperContainer = new Swiper('.product-swiper-container', {
   modules: [Navigation, Pagination, Thumbs],
   loop: true,
   spaceBetween: 16,
