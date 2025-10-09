@@ -25,12 +25,14 @@
           <a href="#" class="stretched-link text-decoration-none text-neutral-700"> <%= productName %> </a>
         </h5>
         <!-- <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm"><%= productPrice %></p> -->
-        <div class="d-flex align-items-center">
+        <div class="d-md-flex align-items-baseline">
           <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
             <%= productPrice %>
           </p>
-          <% if (typeof originalPrice !== 'undefined' && originalPrice) { %>
-          <p class="card-text fs-sm fs-md-8 text-neutral-400 text-decoration-line-through ms-2"><%= originalPrice %></p>
+          <% if (originalPrice) { %>
+          <p class="card-text fs-sm fs-md-8 text-neutral-400 noto-serif-tc text-decoration-line-through ms-md-2">
+            <%= originalPrice %>
+          </p>
           <% } %>
         </div>
       </div>
