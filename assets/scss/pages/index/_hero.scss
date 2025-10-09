@@ -78,7 +78,7 @@
   padding: 16px;
   font-size: 24px;
   border-radius: 100%;
-  background: $primary-600;
+  background: $primary;
   color: #fff;
   display: none;
 
@@ -86,12 +86,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    position: absolute;
+    top: 50%;
   }
 }
 
 .swiper-button-prev {
-  transform: translate(-80px, 0);
+  transform: translateX(calc(-100% - 24px));
 }
 .swiper-button-next {
-  transform: translate(80px, 0);
+  transform: translateX(calc(100% + 24px));
 }
