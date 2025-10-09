@@ -13,7 +13,7 @@
     $active-background: $primary-700,
     $active-border: transparent,
     $active-color: $white,
-    $disabled-background: rgba($primary-600, 0.4),
+    $disabled-background: $primary-600,
     $disabled-border: transparent,
     $disabled-color: $white
   );
@@ -32,8 +32,8 @@
     $active-border: $neutral-200,
     $active-color: $neutral-700,
     $disabled-background: $white,
-    $disabled-border: rgba($neutral-200, 0.4),
-    $disabled-color: rgba($neutral-700, 0.4)
+    $disabled-border: $neutral-200,
+    $disabled-color: $neutral-700
   );
   border-width: 2px;
 }
@@ -49,8 +49,8 @@
     $active-border: $danger-200,
     $active-color: $danger-500,
     $disabled-background: $white,
-    $disabled-border: rgba($danger-200, 0.4),
-    $disabled-color: rgba($danger-500, 0.4)
+    $disabled-border: $danger-200,
+    $disabled-color: $danger-500
   );
   border-width: 2px;
 }
@@ -160,6 +160,10 @@
     $font-size: $font-size-base,
     $border-radius: 50%
   );
+  & > .custom-btn-icon {
+    display: block;
+    font-size: map.get($font-sizes, 5);
+  }
 }
 .custom-btn-circle-lg {
   @include button-size(

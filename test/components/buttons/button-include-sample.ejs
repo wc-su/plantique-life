@@ -8,7 +8,8 @@
 <%- include('./components/buttons/btn-backtotop'); -%>
 
 <!-- 標籤按鈕 Tag Button -->
-<% const btnTag = { active: false, btnText: '按鈕內容' } %> <%- include('./components/buttons/btn-tag', btnTag); -%>
+<% const btnTag = { active: false, btnText: '按鈕內容', dataFilter: 'all' } %> <%-
+include('./components/buttons/btn-tag', btnTag); -%>
 
 <!-- 願望清單按鈕 Fav Button -->
 <div class="py-4 bg-primary-400"><%-include('./components/buttons/btn-fav'); -%></div>

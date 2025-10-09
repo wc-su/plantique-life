@@ -30,6 +30,7 @@
   visibility: hidden;
   opacity: 0;
   position: fixed;
+  z-index: 1030;
   right: map.get($spacers, 3);
   bottom: map.get($spacers, 3);
 }

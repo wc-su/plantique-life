@@ -20,12 +20,13 @@
     $padding-y: map.get($spacers, 2),
     $padding-x: map.get($spacers, 3),
     $font-size: $font-size-sm,
-    $border-radius: $border-radius-lg
+    $border-radius: $border-radius-sm
   );
   &.active {
     background: $primary-600;
     color: $white;
   }
+  border-width: 0.8px;
 }
 @include media-breakpoint-up(lg) {
   .custom-btn-tag {
@@ -35,5 +36,6 @@
       $font-size: $font-size-base,
       $border-radius: $border-radius-lg
     );
+    border-width: 1px;
   }
 }
