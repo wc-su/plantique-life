@@ -8,32 +8,7 @@ import productAdd1 from '../images/img_product_add_01.png';
 const images = [
   { source: product11, name: '荒原綠影' },
   { source: product13, name: '垂綠星河' },
-  { source: productAdd1, name: '噴霧器' },
-];
-
-// 購物車資料
-const cartMenu = [
-  {
-    type: 'product',
-    name: '荒原綠影',
-    originalPrice: 2400,
-    salePrice: 2400,
-    count: 1,
-  },
-  {
-    type: 'product',
-    name: '垂綠星河',
-    originalPrice: 3600,
-    salePrice: 3600,
-    count: 1,
-  },
-  {
-    type: 'add-on',
-    name: '噴霧器',
-    originalPrice: 249,
-    salePrice: 129,
-    count: 1,
-  },
+  { source: productAdd1, name: '噴霧器', position: 'product-add1-position' },
 ];
 
 // 優惠券資料
@@ -42,14 +17,16 @@ const couponMenu = [
     type: 'amount',
     name: '入會首購金 250 元',
     discount: 250,
+    minimumSpend: 250,
     date: '2025.07.01 ~ 2025.12.31',
-    code: 'aaaAAA',
+    code: 'aaaaaa',
     state: '',
   },
   {
     type: 'amount',
     name: '好友分享禮 150 元',
     discount: 150,
+    minimumSpend: 150,
     date: '2025.07.01 ~ 2025.12.31',
     code: 'A7X9Q2',
     state: '',
@@ -58,6 +35,7 @@ const couponMenu = [
     type: 'amount',
     name: '官方好友禮 50 元',
     discount: 50,
+    minimumSpend: 50,
     date: '2025.07.01 ~ 2025.12.31',
     code: 'M3T8kz',
     state: '',
@@ -66,29 +44,91 @@ const couponMenu = [
     type: 'amount',
     name: '滿 5000 折 500',
     discount: 500,
+    minimumSpend: 5000,
     date: '2025.07.01 ~ 2025.12.31',
-    code: 'P5R1Y4',
+    code: 'bbbbbb',
     state: '',
   },
 ];
 
-const btnCheckoutEl = document.getElementById('btn-checkout');
+// 付款資料
+const orderInfo = {
+  cart: [
+    {
+      type: 'product',
+      name: '荒原綠影',
+      originalPrice: 2400,
+      salePrice: 2400,
+      count: 1,
+    },
+    {
+      type: 'product',
+      name: '垂綠星河',
+      originalPrice: 3600,
+      salePrice: 3600,
+      count: 1,
+    },
+    {
+      type: 'add-on',
+      name: '噴霧器',
+      originalPrice: 249,
+      salePrice: 129,
+      count: 1,
+    },
+  ],
+  subtotal: 0,
+  discount: 0,
+  total: 0,
+  delivery: {
+    method: '黑貓宅配',
+  },
+  payment: {
+    method: '信用卡一次付清',
+    creditCardInfo: { number: ['1111', '2222', '3333', '4444'], exp: ['31', '01'], cvc: '123' },
+  },
+  purchaser: {
+    name: '王小明',
+    tel: '0912345678',
+    email: 'plantique@test.com',
+  },
+  recipient: {
+    name: '王小明',
+    tel: '0912345678',
+    email: 'plantique@test.com',
+    address: '台北市信義區',
+  },
+  invoice: {
+    method: '雲端載具',
+    mobileBarcode: '/ABC1234',
+    ubn: '',
+  },
+  notes: '',
+};
+
+// 購物車頁面各步驟 網頁標題
+const stepTitle = ['購物車清單', '付款資料', '訂單確認'];
+// 紀錄目前在哪一個步驟
+let stepNow = 0;
+
+// 分頁切換
 const cartNavChildrenEl = document.querySelectorAll('#pills-cart-nav li button');
+
+/****** 購物車清單畫面 開始 ******/
+
+// 前往 付款資料畫面 按鈕
+const btnNextCheckoutEl = document.getElementById('btn-next-checkout');
+// 購物車商品清單
 const cartListEl = document.getElementById('cart-list');
-
-const subtotalEl = document.getElementById('subtotal');
-const discountEl = document.getElementById('discount');
-const totalEl = document.getElementById('total');
-
-const couponModalListEl = document.getElementById('couponModalList');
+// 優惠券
+const couponCodeEl = document.getElementById('coupon-code');
+// 優惠券 Modal
 const couponSelectedNameEl = document.getElementById('coupon-selected-name');
+const couponCheckBtnEl = document.getElementById('coupon-check-btn');
 const couponSelectedBtnEl = document.getElementById('coupon-choose-btn');
-const couponModalSelectedEl = document.getElementById('couponModalSelected');
 
-let subtotal = 0;
-let discount = 0;
-let total = 0;
+/******  購物車清單畫面 結束 ******/
 
+// 滾動至頂部
 function scrollToTop() {
   return new Promise(resolve => {
     if (window.scrollY === 0) {
@@ -107,13 +147,68 @@ function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 }
+// 切換 step 函式
+async function switchStep(currentIndex, targetIndex, options = {}) {
+  const { addCompleted = true, removeCompleted = false } = options;
+
+  await scrollToTop(); // 等滾動完成
+
+  const currentEl = cartNavChildrenEl[currentIndex];
+  const targetEl = cartNavChildrenEl[targetIndex];
+
+  await new Promise(resolve => {
+    let resolved = false;
+
+    const handleEnd = () => {
+      if (resolved) return;
+      resolved = true;
+      bootstrap.Tab.getOrCreateInstance(targetEl).show();
+      targetEl.classList.add('step-active');
+      document.title = stepTitle[targetIndex];
+      stepNow = targetIndex;
+      resolve();
+    };
+
+    // 監聽 transitionend
+    currentEl.addEventListener('transitionend', handleEnd, { once: true });
+    currentEl.classList.remove('step-active');
+    if (addCompleted) currentEl.classList.add('step-completed');
+    if (removeCompleted) targetEl.classList.remove('step-completed');
+  });
+}
 
 // 產生購物車商品列表
 function loadProduct() {
-  for (const item of cartMenu) {
-    const li = loadProductItem(item);
-    cartListEl.appendChild(li);
+  // 購物車沒有商品
+  if (orderInfo.cart.length == 0) {
+    loadNoProduct();
+    return;
   }
+  // 清空內容
+  stepNow === 0 ? (cartListEl.innerHTML = '') : (confirmationListEl.innerHTML = '');
+  // 新增內容
+  for (const item of orderInfo.cart) {
+    const li = loadProductItem(item);
+    if (stepNow === 0) {
+      cartListEl.appendChild(li);
+    } else {
+      confirmationListEl.appendChild(li);
+    }
+  }
+}
+// 購物車沒有產品
+function loadNoProduct() {
+  // 無法往下一步驟
+  btnNextCheckoutEl.disabled = true;
+  // 產生提示訊息
+  const li = document.createElement('li');
+  li.classList.add('text-center');
+  li.innerHTML = `
+      <p class="text-neutral-600 my-15">購物車尚未加入商品</p>
+      <a href="#" class="btn btn-outline-neutral-400 rounded-pill py-3 px-5"
+        >前往選購商品</a
+      >`;
+  cartListEl.appendChild(li);
 }
 // 購物車商品列表內容
 function loadProductItem(item) {
@@ -123,14 +218,15 @@ function loadProductItem(item) {
   outerDiv.classList.add('row', 'gx-3', 'gx-lg-6');
 
   // img
-  const source = images.filter(img => img.name === item.name)[0]?.source;
+  const image = images.filter(img => img.name === item.name);
   const imgDiv = document.createElement('div');
   imgDiv.classList.add('col-6', 'col-lg-3');
   const img = document.createElement('img');
   img.classList.add('cart-product-img', 'w-100');
   item.type === 'add-on' ? img.classList.add('add-on') : null;
-  source ? img.classList.add('object-fit-cover') : img.classList.add('d-block');
-  source ? (img.src = source) : null;
+  image[0]?.source ? img.classList.add('object-fit-cover') : img.classList.add('d-block');
+  image[0]?.position ? img.classList.add(image[0]?.position) : null;
+  image[0]?.source ? (img.src = image[0]?.source) : null;
   img.alt = item.name;
   imgDiv.appendChild(img);
 
@@ -152,17 +248,25 @@ function loadProductItem(item) {
     </div>`;
 
   const subtotalDiv = document.createElement('div');
-  subtotalDiv.classList.add('d-flex', 'justify-content-between', 'col-lg-4', 'pe-lg-6', 'mb-3', 'mb-md-0');
+  subtotalDiv.classList.add('d-flex', 'justify-content-between', 'col-lg-4', 'pe-lg-6', 'mb-md-0');
+  if (stepNow === 0) {
+    subtotalDiv.classList.add('mb-3');
+  }
   subtotalDiv.innerHTML = `<p class="d-lg-none fs-sm text-neutral-400">小計</p>`;
   const subtotalP = document.createElement('p');
   subtotalP.classList.add('fs-7', 'fw-bold', 'lh-sm', 'fs-lg-6', 'noto-serif-tc', 'text-primary-700');
-  subtotal += item.salePrice * item.count;
   subtotalP.textContent = `NT$${(item.salePrice * item.count).toLocaleString()}`;
   subtotalDiv.appendChild(subtotalP);
 
   // button
   const btnWrapper = document.createElement('div');
-  btnWrapper.classList.add('d-flex', 'align-items-center', 'mt-auto', 'mt-lg-0', 'col-lg-4', 'pe-lg-6');
+  btnWrapper.classList.add('d-flex', 'align-items-center', 'col-lg-4', 'pe-lg-6');
+  if (stepNow === 0) {
+    btnWrapper.classList.add('mt-auto', 'mt-lg-0');
+  } else {
+    btnWrapper.classList.add('justify-content-between', 'order-lg-1', 'mb-3', 'mb-lg-0', 'mt-auto', 'mt-lg-0');
+    btnWrapper.innerHTML = `<p class="d-lg-none fs-sm text-neutral-400">數量</p>`;
+  }
   const increaseBtn = document.createElement('button');
   increaseBtn.type = 'button';
   increaseBtn.classList.add(
@@ -184,6 +288,7 @@ function loadProductItem(item) {
     'fw-bold',
     'lh-sm',
     'noto-serif-tc',
+    'text-black',
     'text-center',
     'me-1',
   );
@@ -223,8 +328,7 @@ function loadProductItem(item) {
       subtotalP.textContent = `NT$${(item.salePrice * item.count).toLocaleString()}`;
       quantity.textContent = item.count;
 
-      subtotal -= item.salePrice;
-      amountDisplay();
+      updateOrderAmount(true);
     }
   });
   decreaseBtn.addEventListener('click', () => {
@@ -232,27 +336,39 @@ function loadProductItem(item) {
     subtotalP.textContent = `NT$${(item.salePrice * item.count).toLocaleString()}`;
     quantity.textContent = item.count;
 
-    subtotal += item.salePrice;
-    amountDisplay();
+    updateOrderAmount(false);
   });
   deleteBtn.addEventListener('click', () => {
-    subtotal -= item.salePrice * item.count;
-    amountDisplay();
-
+    // 刪除畫面商品
     cartListEl.removeChild(li);
-    cartMenu.splice(
-      cartMenu.findIndex(old => old.name !== item.name),
+    // 刪除訂單購物車紀錄
+    orderInfo.cart.splice(
+      orderInfo.cart.findIndex(orderCartItem => orderCartItem.name === item.name),
       1,
     );
+    if (orderInfo.cart.length === 0) {
+      loadNoProduct();
+    }
+
+    updateOrderAmount(true);
   });
-  btnWrapper.appendChild(increaseBtn);
+  if (stepNow === 0) {
+    btnWrapper.appendChild(increaseBtn);
+  }
   btnWrapper.appendChild(quantity);
-  btnWrapper.appendChild(decreaseBtn);
-  btnWrapper.appendChild(deleteBtn);
+  if (stepNow === 0) {
+    btnWrapper.appendChild(decreaseBtn);
+    btnWrapper.appendChild(deleteBtn);
+  }
 
   innerDiv.appendChild(infoDiv);
-  innerDiv.appendChild(subtotalDiv);
-  innerDiv.appendChild(btnWrapper);
+  if (stepNow === 0) {
+    innerDiv.appendChild(subtotalDiv);
+    innerDiv.appendChild(btnWrapper);
+  } else {
+    innerDiv.appendChild(btnWrapper);
+    innerDiv.appendChild(subtotalDiv);
+  }
 
   outerDiv.appendChild(imgDiv);
   outerDiv.appendChild(innerDiv);
@@ -264,12 +380,13 @@ function loadProductItem(item) {
 
 // 產生優惠券列表
 function loadCoupon() {
+  const couponModalListEl = document.getElementById('couponModalList');
   // 清除優惠券列表內容
   couponModalListEl.innerHTML = '';
   // 新增優惠券內容
   couponMenu.forEach(coupon => {
     // 已被選取的優惠券不會出現在列表中
-    if (!coupon.state) {
+    if (!coupon.state && coupon.minimumSpend <= orderInfo.total) {
       const li = document.createElement('li');
       const div = loadCouponItem(coupon, true);
       li.appendChild(div);
@@ -325,67 +442,168 @@ function loadCouponItem(coupon, isMenuItem) {
   outerDiv.appendChild(endDiv);
   btn.addEventListener('click', () => {
     if (isMenuItem) {
-      couponMenu.map(coupon => (coupon.state = ''));
-      // 選擇優惠券
-      couponModalSelectedEl.innerHTML = '';
-      couponModalSelectedEl.classList.remove('unselected');
-      couponModalSelectedEl.appendChild(loadCouponItem(coupon));
+      // 更新訂單紀錄
+      orderInfo.discount = coupon.discount;
+      orderInfo.coupon = coupon;
+      // 移除優惠券清單狀態
+      couponMenu.forEach(coupon => coupon.state && (coupon.state = ''));
+      // 更新優惠券
       coupon.state = 'selected';
-      discount = coupon.discount;
-      couponSelectedNameEl.textContent = coupon.name;
-      couponSelectedNameEl.classList.add('selected');
-      couponSelectedBtnEl.textContent = '編輯';
+      // 更新畫面
+      renderCartCoupon(true, coupon);
     } else {
-      // 移除已選擇優惠券
-      couponModalSelectedEl.classList.add('unselected');
-      couponModalSelectedEl.innerHTML = '';
+      // 更新訂單紀錄
+      orderInfo.discount = 0;
+      delete orderInfo.coupon;
+      // 更新優惠券
       coupon.state = '';
-      discount = 0;
-      couponSelectedNameEl.textContent = '未選擇優惠';
-      couponSelectedNameEl.classList.remove('selected');
-      couponSelectedBtnEl.textContent = '選擇';
+      // 更新畫面，移除已選擇優惠券
+      renderCartCoupon(false);
     }
     loadCoupon();
-    amountDisplay();
+    updateOrderAmount(false);
   });
   return outerDiv;
 }
 
-// 更新訂單明細
-function amountDisplay() {
-  total = subtotal - discount;
-  subtotalEl.textContent = `NT$ ${subtotal.toLocaleString()}`;
-  discountEl.textContent = `- NT$ ${discount.toLocaleString()}`;
-  totalEl.textContent = `NT$ ${total.toLocaleString()}`;
-}
+// 更新訂單紀錄金額
+function updateOrderAmount(checkCoupon = false) {
+  // 更新訂單紀錄
+  orderInfo.subtotal = orderInfo.cart.reduce((prev, current) => (prev += current.salePrice * current.count), 0);
+  orderInfo.discount = orderInfo.coupon ? orderInfo.coupon.discount : 0;
+  orderInfo.total = orderInfo.subtotal - orderInfo.discount;
 
-// 第一次執行
-// 產生購物車商品列表
-loadProduct();
-// 產生優惠券列表
-loadCoupon();
-// 更新訂單明細
-amountDisplay();
+  // 確認優惠券是否還可使用
+  if (checkCoupon) {
+    if (orderInfo.coupon && orderInfo.coupon.minimumSpend >= orderInfo.total) {
+      // 清除優惠券選取狀態
+      couponMenu.forEach(coupon => coupon.state && (coupon.state = ''));
 
-// 購物車清單 前往結帳 按鈕事件
-btnCheckoutEl.addEventListener('click', () => {
-  const handleEnd = function () {
-    cartNavChildrenEl[1].classList.remove('step-undo');
-    const triggerCheckoutInfoEl = document.querySelector(
-      '#pills-cart-nav button[data-bs-target="#pills-checkout-info"]',
-    );
-    setTimeout(() => {
-      bootstrap.Tab.getOrCreateInstance(triggerCheckoutInfoEl).show();
-    }, 600);
-  };
+      // 重新更新訂單紀錄
+      orderInfo.discount = 0;
+      delete orderInfo.coupon;
+      orderInfo.total = orderInfo.subtotal;
 
-  async function runEffects() {
-    await scrollToTop(); // 等滾動完成
-
-    // 第一個效果
-    cartNavChildrenEl[0].addEventListener('transitionend', handleEnd, { once: true });
-    cartNavChildrenEl[0].classList.add('step-completed');
+      // 更新畫面
+      renderCartCoupon(false);
+    }
   }
 
-  runEffects();
+  // 更新畫面
+  renderOrderSummaryDisplay();
+}
+
+// 更新購物車清單「訂單明細」
+function renderOrderSummaryDisplay() {
+  const cartSubtotalEl = document.getElementById('cart-subtotal');
+  const cartDiscountEl = document.getElementById('cart-discount');
+  const cartTotalEl = document.getElementById('cart-total');
+
+  cartSubtotalEl.textContent = `NT$ ${orderInfo.subtotal.toLocaleString()}`;
+  cartDiscountEl.textContent = `- NT$ ${orderInfo.discount.toLocaleString()}`;
+  cartTotalEl.textContent = `NT$ ${orderInfo.total.toLocaleString()}`;
+}
+// 更新購物車清單「優惠券」
+function renderCartCoupon(hasSelected, coupon) {
+  const couponModalSelectedEl = document.getElementById('couponModalSelected');
+  couponModalSelectedEl.innerHTML = '';
+  if (hasSelected) {
+    // 更新 Modal
+    couponModalSelectedEl.classList.remove('unselected');
+    couponModalSelectedEl.appendChild(loadCouponItem(coupon), false);
+    // 更新購物車清單畫面「使用優惠券」區塊
+    couponSelectedNameEl.textContent = coupon.name;
+    couponSelectedNameEl.classList.add('selected');
+    couponSelectedBtnEl.textContent = '編輯';
+  } else {
+    // 更新 Modal，移除已選擇優惠券
+    couponModalSelectedEl.classList.add('unselected');
+    // 更新購物車清單畫面「使用優惠券」區塊
+    couponSelectedNameEl.textContent = '未選擇優惠';
+    couponSelectedNameEl.classList.remove('selected');
+    couponSelectedBtnEl.textContent = '選擇';
+  }
+}
+function renderCouponFeedback(display, isDanger, feedbackText) {
+  const addArr = [];
+  const removeArr = [];
+  const couponFeedbackEl = document.getElementById('coupon-feedback');
+
+  if (display) {
+    removeArr.push('d-none');
+    if (isDanger) {
+      addArr.push('text-danger');
+      removeArr.push('text-success');
+    } else {
+      addArr.push('text-success');
+      removeArr.push('text-danger');
+    }
+  } else {
+    addArr.push('d-none');
+    removeArr.push('text-success');
+    removeArr.push('text-danger');
+  }
+
+  couponFeedbackEl.classList.remove(...removeArr);
+  couponFeedbackEl.classList.add(...addArr);
+  couponFeedbackEl.textContent = feedbackText;
+  if (!display) {
+    couponCodeEl.value = '';
+  }
+}
+
+// 購物車清單 → 產生購物車商品列表
+loadProduct();
+// 購物車清單 → 重新計算訂單紀錄
+updateOrderAmount(false);
+
+// 購物車清單 → 按鈕事件：使用優惠券區塊「確認」，檢核輸入優惠券代碼是否正確
+couponCheckBtnEl.addEventListener('click', () => {
+  if (couponCodeEl.value.trim() === '') {
+    renderCouponFeedback(true, true, '未輸入優惠代碼');
+    return;
+  }
+
+  const matchCoupon = couponMenu.filter(coupon => coupon.code === couponCodeEl.value.trim());
+  if (matchCoupon.length === 1) {
+    if (couponSelectedNameEl.textContent === matchCoupon[0].name) {
+      renderCouponFeedback(true, false, '此優惠代碼已套用');
+    } else if (orderInfo.subtotal < matchCoupon[0].minimumSpend) {
+      renderCouponFeedback(true, true, '此優惠代碼未符合使用條件');
+    } else {
+      couponMenu.map(coupon => (coupon.state = ''));
+      // 更新優惠券清單紀錄
+      matchCoupon[0].state = 'selected';
+      // 更新訂單紀錄
+      orderInfo.discount = matchCoupon[0].discount;
+      orderInfo.coupon = matchCoupon[0];
+
+      // 更新畫面
+      renderCartCoupon(true, matchCoupon[0]);
+      // 隱藏優惠券提示訊息
+      renderCouponFeedback(false, false, '');
+
+      // 重新計算金額
+      updateOrderAmount(true);
+    }
+  } else {
+    renderCouponFeedback(true, true, '查無此優惠代碼');
+  }
+});
+
+// 購物車清單 → 按鈕事件：使用優惠券區塊「選擇」，點擊產生優惠券列表
+couponSelectedBtnEl.addEventListener('click', () => {
+  // 更新畫面
+  renderCouponFeedback(false, false, '');
+  // 更新 Modal 優惠券列表
+  loadCoupon();
+});
+
+// 購物車清單 → 按鈕事件：前往結帳
+btnNextCheckoutEl.addEventListener('click', async () => {
+  // 跳至付款資料畫面
+  await switchStep(0, 1);
+
+  // 隱藏提示訊息
+  renderCouponFeedback(false, false, '');
 });
