@@ -45,6 +45,9 @@
 
   @include media-breakpoint-up(md) {
     writing-mode: vertical-lr; // 垂直從左到右
+    span {
+      margin-bottom: 0.6rem; // 調整字距
+    }
   }
 }
 
