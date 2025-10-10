@@ -496,10 +496,12 @@
     <%- include('./layout/footer'); -%>
 
     <script type="module" src="/assets/js/index.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
 
-    <script>
+    <script type="module">
+      import Swiper from 'swiper';
+      import { Pagination, Autoplay } from 'swiper/modules';
       const swiper = new Swiper('.newsSwiper', {
+        modules: [Pagination, Autoplay],
         // Optional parameters
         direction: 'horizontal',
         loop: true,
