@@ -9,6 +9,23 @@
   }
 }
 
+.z-index-1035 {
+  z-index: 1035 !important;
+}
+
+.z-index-1034 {
+  z-index: 1034 !important; // 比 bs 預設的 fixed 多 （為了遮蓋 back to top 按鈕）
+}
+
+.custom-nav-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba($black, 0.4);
+}
+
 .separator-line-top {
   border-top: 0.8px solid $primary-200;
 }
@@ -89,17 +106,10 @@
   border-radius: 50%;
   padding: map.get($spacers, 2);
   color: $neutral-700;
-  background-color: $primary-50;
-  &:hover:focus,
-  :active {
+  background-color: transparent;
+  &:hover,
+  &:active {
     background-color: $primary-50;
-  }
-  &.collapsed {
-    background-color: transparent;
-    &:hover:focus,
-    :active {
-      background-color: transparent;
-    }
   }
 }
 
