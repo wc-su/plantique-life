@@ -1,14 +1,5 @@
 @use 'sass:map';
 
-.mx-minus-3 {
-  margin-right: - map.get($spacers, 3);
-  margin-left: - map.get($spacers, 3);
-}
-
-.max-w-100-plus-6 {
-  max-width: calc(100% + map.get($spacers, 6));
-}
-
 // 調整手機版 gutter on outside 為 12px
 .px-6px {
   padding-left: 6px;
