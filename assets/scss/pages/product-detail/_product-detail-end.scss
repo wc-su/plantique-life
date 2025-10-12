@@ -27,22 +27,22 @@
   overflow: hidden;
 
   @include media-breakpoint-up(lg) {
-    padding-right: $container-padding-x;
-    padding-left: $container-padding-x;
+    padding-right: calc($container-padding-x / 2);
+    padding-left: calc($container-padding-x / 2);
     margin-right: auto;
     margin-left: auto;
     max-width: map.get($container-max-widths, lg);
   }
   @include media-breakpoint-up(xl) {
-    padding-right: $container-padding-x;
-    padding-left: $container-padding-x;
+    padding-right: calc($container-padding-x / 2);
+    padding-left: calc($container-padding-x / 2);
     margin-right: auto;
     margin-left: auto;
     max-width: map.get($container-max-widths, xl);
   }
   @include media-breakpoint-up(xxl) {
-    padding-right: $container-padding-x;
-    padding-left: $container-padding-x;
+    padding-right: calc($container-padding-x / 2);
+    padding-left: calc($container-padding-x / 2);
     margin-right: auto;
     margin-left: auto;
     max-width: map.get($container-max-widths, xxl);
