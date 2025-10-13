@@ -205,34 +205,11 @@
             </picture>
           </div>
           <div class="d-flex gap-2 gap-lg-4 my-8 align-self-lg-end my-lg-0" id="column-filter">
-            <button
-              type="button"
-              class="column-tag fs-sm text-nowrap btn border border-primary rounded-1 text-primary py-2 px-3 active"
-              data-filter="all"
-            >
-              全部
-            </button>
-            <button
-              type="button"
-              class="column-tag fs-sm text-nowrap btn border border-primary rounded-1 text-primary py-2 px-3"
-              data-filter="guide"
-            >
-              #養護指南
-            </button>
-            <button
-              type="button"
-              class="column-tag fs-sm text-nowrap btn border border-primary rounded-1 text-primary py-2 px-3"
-              data-filter="illustrated-book"
-            >
-              #多肉圖鑑
-            </button>
-            <button
-              type="button"
-              class="column-tag fs-sm text-nowrap btn border border-primary rounded-1 text-primary py-2 px-3"
-              data-filter="proposal"
-            >
-              #生活提案
-            </button>
+            <!-- prettier-ignore -->
+            <%- include('./components/buttons/btn-tag', { active: true, dataFilter: 'all', btnText: '全部' }); -%>
+            <%- include('./components/buttons/btn-tag', { active: false, dataFilter: 'guide', btnText: '#養護指南' }); -%>
+            <%- include('./components/buttons/btn-tag', { active: false, dataFilter: 'illustrated-book', btnText: '#多肉圖鑑' }); -%>
+            <%- include('./components/buttons/btn-tag', { active: false, dataFilter: 'proposal', btnText: '#生活提案' }); -%>
           </div>
         </div>
         <ul class="list-unstyled row g-6" id="">
@@ -253,9 +230,8 @@
                 </p>
                 <div class="d-flex justify-content-between align-items-center mt-2 mt-lg-auto">
                   <p class="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
-                  <a href="#" class="btn text-primary">
-                    <span class="fs-sm fw-medium">閱讀全文</span>
-                  </a>
+                  <%- include('./components/buttons/btn-link', { color: 'primary', rightIcon: true, btnText: '閱讀全文'
+                  }); -%>
                 </div>
               </div>
             </div>
@@ -277,9 +253,8 @@
                 </p>
                 <div class="d-flex justify-content-between align-items-center mt-2 mt-lg-auto">
                   <p class="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
-                  <a href="#" class="btn text-primary">
-                    <span class="fs-sm fw-medium">閱讀全文</span>
-                  </a>
+                  <%- include('./components/buttons/btn-link', { color: 'primary', rightIcon: true, btnText: '閱讀全文'
+                  }); -%>
                 </div>
               </div>
             </div>
@@ -301,9 +276,8 @@
                 </p>
                 <div class="d-flex justify-content-between align-items-center mt-2 mt-lg-auto">
                   <p class="fs-xs fs-lg-sm text-primary-500">2025/01/01</p>
-                  <a href="#" class="btn text-primary">
-                    <span class="fs-sm fw-medium">閱讀全文</span>
-                  </a>
+                  <%- include('./components/buttons/btn-link', { color: 'primary', rightIcon: true, btnText: '閱讀全文'
+                  }); -%>
                 </div>
               </div>
             </div>
@@ -325,17 +299,21 @@
                 </p>
                 <div class="d-flex justify-content-between align-items-center mt-2 mt-lg-auto">
                   <p class="fs-xs fs-lg-sm text-primary-500">2025/01/01</p>
-                  <a href="#" class="btn text-primary">
-                    <span class="fs-sm fw-medium">閱讀全文</span>
-                  </a>
+                  <%- include('./components/buttons/btn-link', { color: 'primary', rightIcon: true, btnText: '閱讀全文'
+                  }); -%>
                 </div>
               </div>
             </div>
           </li>
         </ul>
-        <button type="button" class="btn btn-white border-2 border-neutral-200 mt-8 mt-lg-12 d-block mx-auto">
-          查看更多
-        </button>
+        <div class="d-flex justify-content-center mt-8 mt-lg-12 mx-auto">
+          <!-- prettier-ignore -->
+          <%- include('./components/buttons/btn-filled-or-outline', {
+            type: 'outline', color: 'neutral', shape: 'pill', size: 'sm',
+            rightIcon: true, leftIcon: false, iconName: 'arrow_right_alt',
+            btnText: '查看更多'
+          }); -%>
+        </div>
       </div>
     </section>
     <!-- column section end -->
@@ -346,10 +324,15 @@
         <div class="d-flex flex-column flex-lg-row h-100">
           <div class="about-text-wrapper col-lg-6 py-10 py-lg-0 pe-lg-3 my-lg-auto">
             <h3 class="fs-2 fs-lg-1 text-primary-900">植感生活<br />Plantique Life</h3>
-            <p class="fs-sm fs-lg-8 mt-4 mt-lg-6">
+            <p class="fs-sm fs-lg-8 my-4 my-lg-6">
               在繁忙的節奏裡，植感始終相信綠意能為生活帶來片刻的寧靜與療癒。<br />從多肉出發，讓植物成為你的日常風景，讓療癒成為一種生活態度。
             </p>
-            <a href="#" class="btn btn-primary text-white rounded-pill fs-8 fs-lg-7 px-6 py-3 mt-4 mt-lg-6">關於品牌</a>
+            <!-- prettier-ignore -->
+            <%- include('./components/buttons/btn-filled-or-outline', {
+              type: 'filled', color: 'primary', shape: 'pill', size: 'lg',
+              rightIcon: true, leftIcon: false, iconName: 'arrow_right_alt',
+              btnText: '關於品牌'
+            }); -%>
           </div>
         </div>
       </div>
