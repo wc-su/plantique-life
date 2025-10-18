@@ -23,7 +23,7 @@ columnTags.forEach(tag => {
   });
 });
 
-const swiper = new Swiper('.newsSwiper', {
+const newsSwiper = new Swiper('.newsSwiper', {
   modules: [Pagination, Autoplay],
   direction: 'horizontal',
   loop: true,

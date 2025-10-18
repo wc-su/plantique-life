@@ -496,27 +496,5 @@
     <%- include('./layout/footer'); -%>
 
     <script type="module" src="/assets/js/index.js"></script>
-
-    <script type="module">
-      import Swiper from 'swiper';
-      import { Pagination, Autoplay } from 'swiper/modules';
-      const swiper = new Swiper('.newsSwiper', {
-        modules: [Pagination, Autoplay],
-        // Optional parameters
-        direction: 'horizontal',
-        loop: true,
-        autoHeight: true,
-        autoplay: {
-          delay: 2500,
-          disableOnInteraction: false,
-        },
-
-        // If we need pagination
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-      });
-    </script>
   </body>
 </html>
