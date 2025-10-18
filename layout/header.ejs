@@ -23,14 +23,14 @@
         </li>
         <!-- 未登入 -->
         <!-- prettier-ignore -->
-        <% const navbarSignInBtn = { type: 'filled', color:'primary', shape: 'pill', size: 'sm', btnText:'註冊', rightIcon: false, leftIcon: false, iconName:''} 
+        <% const navbarSignUpBtn = { type: 'filled', color:'primary', shape: 'pill', size: 'sm', btnText:'註冊', rightIcon: false, leftIcon: false, iconName:''} 
         const navbarLoginBtn = { type:'outline', color:'neutral', shape: 'pill', size: 'sm', btnText:'登入', rightIcon: false, leftIcon: false, iconName:'' } %>
 
         <li class="d-none d-lg-block guest me-4">
           <%- include('./components/buttons/btn-filled-or-outline', navbarLoginBtn); -%>
         </li>
         <li class="d-none d-lg-block guest">
-          <%- include('./components/buttons/btn-filled-or-outline', navbarSignInBtn); -%>
+          <%- include('./components/buttons/btn-filled-or-outline', navbarSignUpBtn); -%>
         </li>
         <!-- 登入後 -->
         <!-- 會員選單 -->
