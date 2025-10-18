@@ -42,9 +42,13 @@
 
   @include media-breakpoint-up(lg) {
     width: auto !important;
-    bottom: 80px !important;
+    bottom: 32px !important;
     left: auto !important;
     right: calc(32.5% - 160px);
+  }
+
+  @include media-breakpoint-up(xl) {
+    bottom: 60px !important;
   }
 }
 
