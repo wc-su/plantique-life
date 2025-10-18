@@ -16,12 +16,11 @@
       <div class="container">
         <div class="row">
           <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
-            <div>
+            <div class="d-flex flex-column justify-content-center">
               <img src="/assets/images/img_title_lg.svg" alt="title" class="mb-10" />
-              <a href="#" class="btn-1 bg-primary text-white rounded-pill"
-                ><span class="me-1">立即選購</span>
-                <i class="bi bi-arrow-right"></i>
-              </a>
+              <% const btnFilledPill = { type: 'filled', color:'primary', shape: 'pill', size: 'lg', btnText:'立即選購',
+              rightIcon: true, leftIcon: false, iconName:'arrow_right_alt'} %>
+              <%-include('./components/buttons/btn-filled-or-outline', btnFilledPill); -%>
             </div>
           </div>
           <div class="d-none d-sm-block col-md-10">
@@ -72,13 +71,11 @@
                           結合優雅設計與療癒綠意。<br />這個秋天，送出專屬於你的植感心意！
                         </p>
 
-                        <button
-                          type="button"
-                          class="btn text-primary rounded-pill border-4 p-0 ms-auto d-flex align-items-center"
-                        >
-                          <span class="fs-sm fs-md-8 mb-0 me-2">立即選購</span>
-                          <i class="bi bi-arrow-right"></i>
-                        </button>
+                        <a href="#" class="d-flex justify-content-end">
+                          <% const btnLinkPrimary = { color:'primary', btnText:'活動詳情', rightIcon: true } %>
+                          <%-include('./components/buttons/btn-link', btnLinkPrimary); -%> <% const btnLinkNeutral = {
+                          color:'neutral', btnText:'活動詳情', rightIcon: true } %>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -102,14 +99,9 @@
                         <p class="fs-sm fs-lg-8 text-neutral-400">
                           迷你多肉，輕鬆點綴辦公桌。<br />在忙碌與螢幕之間，留一點空間給綠意。
                         </p>
-
-                        <button
-                          type="button"
-                          class="btn text-primary rounded-pill border-4 p-0 ms-auto d-flex align-items-center"
-                        >
-                          <span class="fs-sm fs-md-8 mb-0 me-2">活動詳情</span>
-                          <i class="bi bi-arrow-right"></i>
-                        </button>
+                        <a href="#" class="d-flex justify-content-end">
+                          <%-include('./components/buttons/btn-link', btnLinkPrimary); -%>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -132,13 +124,9 @@
                           成為我們的會員，把療癒的多肉帶進生活裡。<br />註冊加入即享首購金 250 元，無折抵門檻！
                         </p>
 
-                        <button
-                          type="button"
-                          class="btn text-primary rounded-pill border-4 p-0 ms-auto d-flex align-items-center"
-                        >
-                          <span class="fs-sm fs-md-8 mb-0 me-2">活動詳情</span>
-                          <i class="bi bi-arrow-right"></i>
-                        </button>
+                        <a href="#" class="d-flex justify-content-end">
+                          <%-include('./components/buttons/btn-link', btnLinkPrimary); -%>
+                        </a>
                       </div>
                     </div>
                   </div>

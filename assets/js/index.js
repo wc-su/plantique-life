@@ -29,7 +29,7 @@ const newsSwiper = new Swiper('.newsSwiper', {
   loop: true,
   autoHeight: true,
   autoplay: {
-    delay: 2500,
+    delay: 3000,
     disableOnInteraction: false,
   },
   pagination: {
