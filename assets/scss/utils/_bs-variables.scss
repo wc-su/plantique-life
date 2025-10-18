@@ -241,12 +241,15 @@ $line-height-sm: 1.2 !default;
 
 // btn
 $btn-font-weight: $font-weight-medium !default;
+$btn-disabled-opacity: 0.4 !default;
 
 // border-color
 $border-color: $neutral-200 !default;
 
 // input
 $input-placeholder-color: $neutral-300 !default;
+
+$breadcrumb-active-color: $primary-600 !default;
 
 // modal
 $modal-backdrop-opacity: 0.4 !default;

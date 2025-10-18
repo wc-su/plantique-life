@@ -267,9 +267,9 @@ function loadProductItem(item) {
     btnWrapper.classList.add('justify-content-between', 'order-lg-1', 'mb-3', 'mb-lg-0', 'mt-auto', 'mt-lg-0');
     btnWrapper.innerHTML = `<p class="d-lg-none fs-sm text-neutral-400">數量</p>`;
   }
-  const increaseBtn = document.createElement('button');
-  increaseBtn.type = 'button';
-  increaseBtn.classList.add(
+  const decreaseBtn = document.createElement('button');
+  decreaseBtn.type = 'button';
+  decreaseBtn.classList.add(
     'btn',
     'border',
     'border-2',
@@ -280,7 +280,7 @@ function loadProductItem(item) {
     'justify-content-center',
     'align-items-center',
   );
-  increaseBtn.innerHTML = `<span class="material-symbols-rounded fs-6 fs-lg-5 d-block">remove</span>`;
+  decreaseBtn.innerHTML = `<span class="material-symbols-rounded fs-6 fs-lg-5 d-block">remove</span>`;
   const quantity = document.createElement('span');
   quantity.classList.add(
     'cart-product-quantity',
@@ -293,9 +293,9 @@ function loadProductItem(item) {
     'me-1',
   );
   quantity.textContent = item.count;
-  const decreaseBtn = document.createElement('button');
-  decreaseBtn.type = 'button';
-  decreaseBtn.classList.add(
+  const increaseBtn = document.createElement('button');
+  increaseBtn.type = 'button';
+  increaseBtn.classList.add(
     'btn',
     'border',
     'border-2',
@@ -306,7 +306,7 @@ function loadProductItem(item) {
     'justify-content-center',
     'align-items-center',
   );
-  decreaseBtn.innerHTML = `<span class="material-symbols-rounded fs-6 fs-lg-5 d-block">add_2</span>`;
+  increaseBtn.innerHTML = `<span class="material-symbols-rounded fs-6 fs-lg-5 d-block">add_2</span>`;
   const deleteBtn = document.createElement('button');
   deleteBtn.type = 'button';
   deleteBtn.classList.add(
@@ -322,7 +322,7 @@ function loadProductItem(item) {
     'align-items-center',
   );
   deleteBtn.innerHTML = `<span class="material-symbols-rounded fs-6 fs-lg-5 d-block text-danger">delete</span>`;
-  increaseBtn.addEventListener('click', () => {
+  decreaseBtn.addEventListener('click', () => {
     if (item.count > 1) {
       item.count--;
       subtotalP.textContent = `NT$${(item.salePrice * item.count).toLocaleString()}`;
@@ -331,7 +331,7 @@ function loadProductItem(item) {
       updateOrderAmount(true);
     }
   });
-  decreaseBtn.addEventListener('click', () => {
+  increaseBtn.addEventListener('click', () => {
     item.count++;
     subtotalP.textContent = `NT$${(item.salePrice * item.count).toLocaleString()}`;
     quantity.textContent = item.count;
@@ -353,11 +353,11 @@ function loadProductItem(item) {
     updateOrderAmount(true);
   });
   if (stepNow === 0) {
-    btnWrapper.appendChild(increaseBtn);
+    btnWrapper.appendChild(decreaseBtn);
   }
   btnWrapper.appendChild(quantity);
   if (stepNow === 0) {
-    btnWrapper.appendChild(decreaseBtn);
+    btnWrapper.appendChild(increaseBtn);
     btnWrapper.appendChild(deleteBtn);
   }
 
