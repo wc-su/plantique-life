@@ -81,19 +81,10 @@
 
     <div class="container">
       <!-- breadcrumb -->
-      <nav class="py-4 py-lg-6 fs-sm fs-lg-8 fw-medium">
-        <ol class="breadcrumb mb-0 text-neutral-400">
-          <li><a href="index.html" class="text-neutral-400">首頁</a></li>
-          <li>
-            <span class="material-symbols-rounded align-bottom px-2 fs-6">chevron_right</span>
-          </li>
-          <li><a href="#" class="text-neutral-400">植感精選</a></li>
-          <li>
-            <span class="material-symbols-rounded align-bottom px-2 fs-6">chevron_right</span>
-          </li>
-          <li class="text-primary" aria-current="page">全部</li>
-        </ol>
-      </nav>
+      <div class="py-4 py-lg-6">
+        <%- include('./components/breadcrumb',{ items:[ {name:'首頁',link:'index.html'}, {name:'植感精選',link:'#'},
+        {name:'全部',link:'product-list.html'}, ] }); -%>
+      </div>
 
       <main class="py-8 py-lg-13">
         <!-- 手機版search -->
