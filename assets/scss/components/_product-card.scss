@@ -9,6 +9,7 @@
 .favorite-btn {
   top: 8px;
   right: 8px;
+  z-index: 10;
 
   @include media-breakpoint-up(lg) {
     top: 12px;
