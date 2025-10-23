@@ -33,17 +33,24 @@ btnText:'按鈕內容', rightIcon: true } %> <%-include('./components/buttons/bt
 <% const btnFilledPill = { type: 'filled', color:'primary', shape: 'pill', size: 'lg', btnText:'按鈕內容', rightIcon: false, leftIcon: true, iconName:'arrow_left_alt'} %>
 <%-include('./components/buttons/btn-filled-or-outline',
 btnFilledPill); -%>
+<% const btnFilledPill1 = { type: 'filled', color:'primary', shape: 'pill', size: 'lg', btnText:'按鈕內容(可自訂 data-id 與 class)', dataId: '按鈕data-id', btnClass: '按鈕class', rightIcon: false, leftIcon: true, iconName:'arrow_left_alt'} %>
+<%-include('./components/buttons/btn-filled-or-outline',
+btnFilledPill1); -%>
 <!-- Filled Square -->
 <!-- prettier-ignore -->
 <% const btnFilledSquare = { type: 'filled', color:'primary', shape: 'square', size: 'md', btnText:'按鈕內容', rightIcon: true, leftIcon: false, iconName:'arrow_right_alt'} %>
 <%-include('./components/buttons/btn-filled-or-outline', btnFilledSquare); -%>
 <% const btnFilledSquare1 = { type:'filled', color:'primary', shape: 'square', size: 'sm', btnText:'按鈕內容', rightIcon: false, leftIcon: false, iconName:''} %>
 <%-include('./components/buttons/btn-filled-or-outline', btnFilledSquare1); -%>
+<% const btnFilledSquare2 = { type:'filled', color:'primary', shape: 'square', size: 'sm', btnText:'按鈕內容(可自訂 data-id 與 class)', dataId: '按鈕data-id', btnClass: '按鈕class', rightIcon: false, leftIcon: false, iconName:''} %>
+<%-include('./components/buttons/btn-filled-or-outline', btnFilledSquare2); -%>
 <!-- Outline neutral -->
 <!-- prettier-ignore -->
-<% const btnFilledOutline = { type: 'outline', color:'neutral', shape: 'pill', size: 'lg', btnText:'按鈕內容', rightIcon: false, leftIcon: true, iconName:'arrow_left_alt'} %> <%-include('./components/buttons/btn-filled-or-outline', btnFilledOutline); -%>
-<% const btnFilledOutline1 = { type: 'outline', color:'neutral', shape: 'pill', size: 'sm',btnText:'按鈕內容', rightIcon: true, leftIcon: false, iconName:'arrow_right_alt'} %>
-<%-include('./components/buttons/btn-filled-or-outline', btnFilledOutline1); -%>
+<% const btnOutline = { type: 'outline', color:'neutral', shape: 'pill', size: 'lg', btnText:'按鈕內容', rightIcon: false, leftIcon: true, iconName:'arrow_left_alt'} %> <%-include('./components/buttons/btn-filled-or-outline', btnOutline); -%>
+<% const btnOutline1 = { type: 'outline', color:'neutral', shape: 'pill', size: 'sm',btnText:'按鈕內容', rightIcon: true, leftIcon: false, iconName:'arrow_right_alt'} %>
+<%-include('./components/buttons/btn-filled-or-outline', btnOutline1); -%>
+<% const btnOutline2 = { type: 'outline', color:'neutral', shape: 'pill', size: 'sm',btnText:'按鈕內容(可自訂 data-id 與 class)', dataId: '按鈕data-id', btnClass: '按鈕class', rightIcon: true, leftIcon: false, iconName:'arrow_right_alt'} %>
+<%-include('./components/buttons/btn-filled-or-outline', btnOutline2); -%>
 
 <!-- 只有圖標的按鈕 Only Icon Button -->
 <!-- Filled -->
