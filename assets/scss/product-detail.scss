@@ -12,9 +12,13 @@
 
 // components
 
+@import './components/buttons/btn-social';
+@import './components/buttons/btn-filled-or-outline';
 @import './components/breadcrumb';
+@import './components/product-card';
 
 // section
 
 @import './pages/product-detail/product-swiper';
 @import './pages/product-detail/upper-section';
+@import './pages/product-detail/product-detail-end';

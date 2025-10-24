@@ -7,8 +7,25 @@
     <a class="d-lg-none" href="index.html"
       ><img src="/assets/images/logo-primary-en-sm.svg" alt="Plantique Life 植感生活"
     /></a>
+    <!-- 網頁版導覽列連結  -->
+    <div class="d-none d-lg-flex justify-content-center w-lg-40">
+      <ul class="navbar-nav">
+        <li>
+          <a class="custom-nav-link" href="#">關於品牌</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">最新消息</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">植感商品</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">植藝專欄</a>
+        </li>
+      </ul>
+    </div>
     <!-- 購物車、電腦版註冊登入、會員選單 -->
-    <div class="ms-auto order-lg-2 w-lg-30">
+    <div class="ms-auto w-lg-30">
       <ul class="d-flex list-unstyled align-items-center justify-content-end">
         <li class="me-2 me-lg-4">
           <button class="btn cart-toggle-btn" data-bs-toggle="button" type="button">
@@ -22,17 +39,15 @@
           </button>
         </li>
         <!-- 未登入 -->
-        <!-- TODO: 待替換成 Button 元件 -->
-        <li class="d-none d-lg-block guest">
-          <button
-            class="btn btn-white text-neutral-700 rounded-pill border-2 border-neutral-200 py-3 px-6 me-4"
-            type="button"
-          >
-            登入
-          </button>
+        <!-- prettier-ignore -->
+        <% const navbarSignUpBtn = { type: 'filled', color:'primary', shape: 'pill', size: 'sm', btnText:'註冊', rightIcon: false, leftIcon: false, iconName:''} 
+        const navbarLoginBtn = { type:'outline', color:'neutral', shape: 'pill', size: 'sm', btnText:'登入', rightIcon: false, leftIcon: false, iconName:'' } %>
+
+        <li class="d-none d-lg-block guest me-4">
+          <%- include('./components/buttons/btn-filled-or-outline', navbarLoginBtn); -%>
         </li>
         <li class="d-none d-lg-block guest">
-          <button class="btn btn-primary text-white rounded-pill border-0 py-3 px-6" type="button">註冊</button>
+          <%- include('./components/buttons/btn-filled-or-outline', navbarSignUpBtn); -%>
         </li>
         <!-- 登入後 -->
         <!-- 會員選單 -->
@@ -81,11 +96,11 @@
     >
       <span class="material-symbols-rounded d-block d-lg-none"> density_medium </span>
     </button>
-    <!-- 導覽列連結  -->
-    <div class="collapse navbar-collapse text-center order-lg-1 justify-content-center w-lg-40" id="navbarNav">
-      <ul class="navbar-nav p-6 p-lg-0 gap-3 gap-lg-0">
+    <!-- 手機版導覽列連結 -->
+    <div class="collapse d-lg-none position-absolute text-center bg-white custom-navbar-collapse-mobile" id="navbarNav">
+      <ul class="navbar-nav p-6 gap-3">
         <li>
-          <a class="custom-nav-link" aria-current="page" href="#">關於品牌</a>
+          <a class="custom-nav-link" href="#">關於品牌</a>
         </li>
         <li>
           <a class="custom-nav-link" href="#">最新消息</a>
@@ -98,14 +113,14 @@
         </li>
       </ul>
       <!-- 未登入 -->
-      <ul class="navbar-nav p-6 d-lg-none separator-line-top guest">
-        <li>
+      <ul class="navbar-nav px-6 pb-6 guest">
+        <li class="pt-6 separator-line-top">
           <a class="custom-nav-link" href="#">會員登入</a>
         </li>
       </ul>
       <!-- 登入後 -->
-      <ul class="navbar-nav p-6 d-lg-none separator-line-top member">
-        <li>
+      <ul class="navbar-nav px-6 pb-6 member">
+        <li class="pt-6 separator-line-top">
           <a class="custom-nav-link mb-3" href="#">會員中心</a>
         </li>
         <li class="pb-6">
@@ -125,8 +140,7 @@
 
 <!-- JS: 依登入狀態顯示/隱藏某些元素 -->
 <script>
-  console.log('imhere');
-  let loggedIn = true;
+  let loggedIn = false;
   const guestItems = document.querySelectorAll('.guest');
   const memberItems = document.querySelectorAll('.member');
   if (loggedIn) {

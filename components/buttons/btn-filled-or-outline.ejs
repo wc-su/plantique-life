@@ -1,6 +1,7 @@
 <button
-  class="btn custom-btn-<%= type %>-<%= color %> custom-btn-<%= shape %>-<%= size %> <%= rightIcon?'custom-btn-icon-end':'' %> <%= leftIcon? 'custom-btn-icon-start': ''%>"
+  class="btn custom-btn-<%= type %>-<%= color %> custom-btn-<%= shape %>-<%= size %> <%= rightIcon?'custom-btn-icon-end':'' %> <%= leftIcon? 'custom-btn-icon-start': ''%> <%= (typeof btnClass !== 'undefined' && btnClass)? btnClass:'' %>"
   type="button"
+  data-id="<%= (typeof dataId !== 'undefined' && dataId)? dataId:'' %>"
 >
   <%if (leftIcon) { %>
   <span class="custom-btn-icon material-symbols-rounded"> <%= iconName %> </span>
