@@ -15,16 +15,15 @@
       <div class="container">
         <div class="row">
           <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
-            <div>
+            <div class="d-flex flex-column justify-content-center">
               <img src="/assets/images/img_title_lg.svg" alt="title" class="mb-10" />
-              <a href="#" class="btn-1 bg-primary text-white rounded-pill"
-                ><span class="me-1">立即選購</span>
-                <span class="material-symbols-rounded"> arrow_right_alt </span>
-              </a>
+              <% const btnFilledPill = { type: 'filled', color:'primary', shape: 'pill', size: 'lg', btnText:'立即選購',
+              rightIcon: true, leftIcon: false, iconName:'arrow_right_alt'} %>
+              <%-include('./components/buttons/btn-filled-or-outline', btnFilledPill); -%>
             </div>
           </div>
           <div class="d-none d-sm-block col-md-10">
-            <img src="../assets/images/img_banner_text02_lg.svg" alt="text02" />
+            <img src="/assets/images/img_banner_text02_lg.svg" alt="text02" />
           </div>
         </div>
       </div>
@@ -41,7 +40,9 @@
               <img src="/assets/images/heading-decoration-sm.svg" alt="decorate-sm" class="d-sm-none d-block" />
               <div class="text-center d-flex flex-column justify-content-center align-items-center">
                 <h6 class="fs-8 fs-md-7 text-primary mb-1 mb-md-4">News</h6>
-                <h2 class="fs-3 fs-md-2 m-0 text-neutral-700 news-title mb-8 mb-lg-3">最新消息</h2>
+                <h2 class="fs-3 fs-md-2 m-0 text-neutral-700 news-title mb-8 mb-lg-4">
+                  <span>最</span><span>新</span><span>消</span><span>息</span>
+                </h2>
               </div>
               <img src="/assets/images/heading-decoration.svg" alt="decoration-lg" class="d-sm-block d-none" />
               <img src="/assets/images/heading-decoration-sm.svg" alt="decoration-sm" class="d-sm-none d-block" />
@@ -60,22 +61,20 @@
                       <div class="news-image">
                         <img src="/assets/images/img_news_01.png" alt="中秋禮盒" />
                       </div>
-                      <div class="d-flex flex-column p-4 p-md-6 py-md-5 gap-4 gap-lg-6 w-100">
+                      <div class="d-flex flex-column justify-content-lg-center p-4 p-md-6 py-md-5 gap-4 gap-lg-6 w-100">
                         <div>
                           <p class="fs-md fs-lg-7 text-primary-500 mb-1">2025.08.01 ~ 2025.09.20</p>
-                          <h3 class="fs-4 fs-lg-3 text-neutral-700 lh-sm">送禮不只月餅<br />中秋綠意禮盒預購中！</h3>
+                          <h3 class="fs-4 fs-lg-3 text-neutral-700">送禮不只月餅<br />中秋綠意禮盒預購中！</h3>
                         </div>
                         <p class="fs-sm fs-lg-8 text-neutral-400">
                           結合優雅設計與療癒綠意。<br />這個秋天，送出專屬於你的植感心意！
                         </p>
 
-                        <button
-                          type="button"
-                          class="btn text-primary rounded-pill border-4 p-0 ms-auto d-flex align-items-center"
-                        >
-                          <span class="fs-sm fs-md-8 mb-0 me-2">立即選購</span>
-                          <i class="bi bi-arrow-right"></i>
-                        </button>
+                        <a href="#" class="d-flex justify-content-end">
+                          <% const btnLinkPrimary = { color:'primary', btnText:'活動詳情', rightIcon: true } %>
+                          <%-include('./components/buttons/btn-link', btnLinkPrimary); -%> <% const btnLinkNeutral = {
+                          color:'neutral', btnText:'活動詳情', rightIcon: true } %>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -89,24 +88,19 @@
                       <div class="news-image">
                         <img src="/assets/images/img_news_02.png" alt="抽盆器好禮" />
                       </div>
-                      <div class="d-flex flex-column p-4 p-md-6 py-md-5 gap-4 gap-lg-6 w-100">
+                      <div class="d-flex flex-column justify-content-lg-center p-4 p-md-6 py-md-5 gap-4 gap-lg-6 w-100">
                         <div>
                           <p class="fs-md fs-lg-7 text-primary-500 mb-1">2025.08.01 ~ 2025.08.30</p>
-                          <h3 class="fs-4 fs-lg-3 text-neutral-700 lh-sm">
+                          <h3 class="fs-4 fs-lg-3 text-neutral-700">
                             本月打卡活動開跑！<br /># 我的療癒角落，抽盆器好禮！
                           </h3>
                         </div>
                         <p class="fs-sm fs-lg-8 text-neutral-400">
                           迷你多肉，輕鬆點綴辦公桌。<br />在忙碌與螢幕之間，留一點空間給綠意。
                         </p>
-
-                        <button
-                          type="button"
-                          class="btn text-primary rounded-pill border-4 p-0 ms-auto d-flex align-items-center"
-                        >
-                          <span class="fs-sm fs-md-8 mb-0 me-2">活動詳情</span>
-                          <i class="bi bi-arrow-right"></i>
-                        </button>
+                        <a href="#" class="d-flex justify-content-end">
+                          <%-include('./components/buttons/btn-link', btnLinkPrimary); -%>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -120,22 +114,18 @@
                       <div class="news-image">
                         <img src="/assets/images/img_news_03.png" alt="會員募集" />
                       </div>
-                      <div class="d-flex flex-column p-4 p-md-6 py-md-5 gap-4 gap-lg-6 w-100">
+                      <div class="d-flex flex-column justify-content-lg-center p-4 p-md-6 py-md-5 gap-4 gap-lg-6 w-100">
                         <div>
                           <p class="fs-md fs-lg-7 text-primary-500 mb-1">2025.07.01 ~ 2025.12.31</p>
-                          <h3 class="fs-4 fs-lg-3 text-neutral-700 lh-sm">新會員募集中！<br />加入即享首購金 250 元</h3>
+                          <h3 class="fs-4 fs-lg-3 text-neutral-700">新會員募集中！<br />加入即享首購金 250 元</h3>
                         </div>
                         <p class="fs-sm fs-lg-8 text-neutral-400">
                           成為我們的會員，把療癒的多肉帶進生活裡。<br />註冊加入即享首購金 250 元，無折抵門檻！
                         </p>
 
-                        <button
-                          type="button"
-                          class="btn text-primary rounded-pill border-4 p-0 ms-auto d-flex align-items-center"
-                        >
-                          <span class="fs-sm fs-md-8 mb-0 me-2">活動詳情</span>
-                          <i class="bi bi-arrow-right"></i>
-                        </button>
+                        <a href="#" class="d-flex justify-content-end">
+                          <%-include('./components/buttons/btn-link', btnLinkPrimary); -%>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -333,19 +323,18 @@
             <img src="/assets/images/heading-decoration.svg" alt="decoration" class="d-sm-block d-none" />
             <img src="/assets/images/heading-decoration-sm.svg" alt="decoration" class="d-sm-none d-block" />
           </hgroup>
-          <button class="btn border-neutral-200 rounded-pill d-none d-md-block">
-            <a href="#" class="text-center text-neutral-700 rounded-pill"
-              ><span class="fs-7 me-1">查看更多</span>
-              <span class="material-symbols-rounded align-text-bottom"> arrow_right_alt </span>
-            </a>
-          </button>
+          <div class="d-none d-md-block">
+            <% const btnFilledOutline = { type: 'outline', color:'neutral', shape: 'pill', size: 'lg',
+            btnText:'查看更多', rightIcon: true, leftIcon: false, iconName:'arrow_right_alt'} %>
+            <%-include('./components/buttons/btn-filled-or-outline', btnFilledOutline); -%>
+          </div>
         </div>
       </div>
 
       <!-- 產品卡片 -->
       <div class="container mb-8">
         <div class="position-relative">
-          <div class="swiper swiperProduct">
+          <div class="swiper productSwiper">
             <div class="swiper-wrapper">
               <div class="swiper-slide swiper-slide-prouct">
                 <div>
@@ -419,12 +408,7 @@
         </div>
       </div>
       <div class="d-md-none d-flex justify-content-center">
-        <button class="btn border-neutral-200 rounded-pill">
-          <a href="#" class="text-center text-neutral-700 rounded-pill d-block d-md-none"
-            ><span class="fs-7 me-1">查看更多</span>
-            <span class="material-symbols-rounded align-text-bottom"> arrow_right_alt </span>
-          </a>
-        </button>
+        <%-include('./components/buttons/btn-filled-or-outline', btnFilledOutline); -%>
       </div>
     </section>
     <!-- recommend section end -->
@@ -602,51 +586,5 @@
     <%- include('./layout/footer'); -%>
 
     <script type="module" src="/assets/js/index.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
-    <script>
-      const swiperSingle = new Swiper('.newsSwiper', {
-        direction: 'horizontal',
-        loop: true,
-        slidesPerView: 1, // 預設單張
-        spaceBetween: 12,
-        autoHeight: true,
-        autoplay: {
-          delay: 2500,
-          disableOnInteraction: false,
-        },
-
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-      });
-
-      const swiper = new Swiper('.swiperProduct', {
-        direction: 'horizontal',
-        loop: false,
-
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-
-        watchOverflow: false, // 當滑塊不足以滾動時自動隱藏導航
-
-        breakpoints: {
-          // RWD 響應式
-          0: {
-            slidesPerView: 'auto',
-            spaceBetween: 12,
-            freeMode: true,
-            navigation: false, // 關閉箭頭
-          },
-          1024: {
-            slidesPerView: 4,
-            spaceBetween: 24,
-            freeMode: false,
-          },
-        },
-      });
-    </script>
   </body>
 </html>
