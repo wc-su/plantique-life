@@ -71,6 +71,14 @@
   top: 84px;
 }
 
+.accordion-icon {
+  transition: transform 0.3s;
+}
+
+.accordion-item.active .accordion-icon {
+  transform: rotate(180deg);
+}
+
 .accessories-item {
   &:hover {
     color: $primary-400 !important;
