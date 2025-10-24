@@ -3,13 +3,15 @@ import Swiper from 'swiper';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import '/assets/scss/index.scss';
 
-const columnTags = document.querySelectorAll('#column-filter button');
+const columnFilterEl = document.querySelector('#column-filter');
 const columnItems = document.querySelectorAll('.column-item');
 
-columnTags.forEach(tag => {
-  tag.addEventListener('click', () => {
-    // 更新 active 樣式
-    columnTags.forEach(b => b.classList.remove('active'));
+columnFilterEl.addEventListener('click', e => {
+  const tag = e.target.closest('button');
+
+  if (tag) {
+    const tags = e.currentTarget.querySelectorAll('button');
+    tags.forEach(tag => tag.classList.remove('active'));
     tag.classList.add('active');
 
     const filter = tag.dataset.filter;
@@ -20,7 +22,7 @@ columnTags.forEach(tag => {
         item.style.display = 'none';
       }
     });
-  });
+  }
 });
 
 const newsSwiper = new Swiper('.newsSwiper', {
