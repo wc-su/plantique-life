@@ -16,17 +16,15 @@
           <span class="material-symbols-rounded align-bottom me-2 me-lg-3 fs-6"> mail </span>
           <a href="mailto:PlaniqueLife@example.invalid" class="text-white">PlaniqueLife@gmail.com</a>
         </p>
-        <!-- TODO: 待替換成 button 元件 -->
         <div class="d-flex column-gap-4">
-          <a class="social-link" href="#">
-            <img src="/assets/images/facebook.svg" />
-          </a>
-          <a class="social-link" href="#">
-            <img src="/assets/images/line.svg" />
-          </a>
-          <a class="social-link" href="#">
-            <img src="/assets/images/ig.svg" />
-          </a>
+          <!-- prettier-ignore -->
+          <% const socialBtns = [
+          {svgPath:'../assets/images/facebook.svg' , alt:'facebook-link'}, 
+          {svgPath:'../assets/images/line.svg' , alt:'line-link'},
+          {svgPath:'../assets/images/ig.svg' , alt:'ig-link'} ] %>
+          <% socialBtns.forEach((socialBtn) => { %>
+            <%- include('./components/buttons/btn-social', socialBtn); -%>
+          <% }); %>
         </div>
       </section>
       <!-- 網站地圖 -->
