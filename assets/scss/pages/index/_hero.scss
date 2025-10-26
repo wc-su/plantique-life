@@ -5,7 +5,6 @@
   padding-bottom: 16px;
   padding-left: 28px;
   padding-right: 28px;
-  border-radius: fill;
 }
 
 .hero {
@@ -27,11 +26,15 @@
 }
 
 .news-image {
-  max-height: 280px;
+  max-width: 538px;
+  max-height: 220px;
   overflow: hidden;
   img {
     object-fit: cover;
     object-position: bottom;
+  }
+  @include media-breakpoint-up(lg) {
+    max-height: 280px;
   }
 }
 
@@ -41,6 +44,9 @@
 
   @include media-breakpoint-up(md) {
     writing-mode: vertical-lr; // 垂直從左到右
+    span {
+      margin-bottom: 0.6rem; // 調整字距
+    }
   }
 }
 
@@ -56,7 +62,7 @@
 }
 
 .swiper-pagination-bullet-active {
-  width: 72px;
+  width: 80px;
 }
 
 .swiper-slide-prouct {
