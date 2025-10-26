@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>植藝專欄 | PLANTIQUE LIFE</title>
+    <script type="module" crossorigin src="/plantique-life/assets/article-list-BtiLOPOt.js"></script>
+    <link rel="modulepreload" crossorigin href="/plantique-life/assets/index-D9ISY5cH.js">
+    <link rel="modulepreload" crossorigin href="/plantique-life/assets/bootstrap.min-BFbKqOoq.js">
+    <link rel="stylesheet" crossorigin href="/plantique-life/assets/article-list-BcB6OnE5.css">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg sticky-top py-2 py-lg-4 bg-white z-index-1035">
+  <div class="container">
+    <!-- LOGO -->
+    <a class="d-none d-lg-block w-lg-30" href="index.html"
+      ><img src="/plantique-life/assets/logo-primary-en-zh-lg-Dv4xVOzA.svg" alt="Plantique Life 植感生活"
+    /></a>
+    <a class="d-lg-none" href="index.html"
+      ><img src="/plantique-life/assets/logo-primary-en-sm-DRZaQepn.svg" alt="Plantique Life 植感生活"
+    /></a>
+    <!-- 網頁版導覽列連結  -->
+    <div class="d-none d-lg-flex justify-content-center w-lg-40">
+      <ul class="navbar-nav">
+        <li>
+          <a class="custom-nav-link" href="#">關於品牌</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">最新消息</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">植感商品</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">植藝專欄</a>
+        </li>
+      </ul>
+    </div>
+    <!-- 購物車、電腦版註冊登入、會員選單 -->
+    <div class="ms-auto w-lg-30">
+      <ul class="d-flex list-unstyled align-items-center justify-content-end">
+        <li class="me-2 me-lg-4">
+          <button
+            class="btn cart-toggle-btn"
+            data-bs-toggle="offcanvas"
+            type="button"
+            data-bs-target="#headerOffcanvas"
+            aria-controls="headerOffcanvas"
+          >
+            <div class="position-relative">
+              <span class="material-symbols-rounded d-block"> shopping_cart </span>
+              <span
+                class="badge rounded-pill text-bg-danger text-white lh-base py-0 px-1 position-absolute top-0 start-100 cart-badge"
+                id="header-offcanvas-text"
+                >0</span
+              >
+            </div>
+          </button>
+        </li>
+        <!-- 未登入 -->
+        <!-- prettier-ignore -->
+        
+
+        <li class="d-none d-lg-block guest me-4">
+          <button
+  class="btn custom-btn-outline-neutral custom-btn-pill-sm   "
+  type="button"
+  data-id=""
+>
+   登入 
+</button>
+        </li>
+        <li class="d-none d-lg-block guest">
+          <button
+  class="btn custom-btn-filled-primary custom-btn-pill-sm   "
+  type="button"
+  data-id=""
+>
+   註冊 
+</button>
+        </li>
+        <!-- 登入後 -->
+        <!-- 會員選單 -->
+        <li class="d-none d-lg-block position-relative member">
+          <!-- 會員選單按鈕 -->
+          <button
+            class="btn member-menu-toggle-btn collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#memberMenu"
+            aria-controls="memberMenu"
+            aria-expanded="false"
+            aria-label="Toggle member menu"
+          >
+            <span class="material-symbols-rounded d-block"> person </span>
+          </button>
+          <!-- 會員選單內容 -->
+          <ul class="collapse position-absolute list-unstyled bg-white text-center member-menu" id="memberMenu">
+            <ul class="list-unstyled p-6">
+              <li class="mb-3"><a class="member-menu-link" href="#">會員中心</a></li>
+              <li>
+                <a class="member-menu-link" href="#">訂單查詢</a>
+              </li>
+            </ul>
+            <ul class="list-unstyled px-6 pb-6">
+              <li class="pt-6 separator-line-top">
+                <a class="member-menu-link py-1 d-flex justify-content-center align-items-center" href="#"
+                  >登出 <span class="ms-2 material-symbols-rounded"> logout </span></a
+                >
+              </li>
+            </ul>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!-- 手機版漢堡選單按鈕 -->
+    <button
+      id="custom-nav-toggle-btn"
+      class="btn custom-nav-toggle-btn d-block d-lg-none collapsed"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="material-symbols-rounded d-block d-lg-none"> density_medium </span>
+    </button>
+    <!-- 手機版導覽列連結 -->
+    <div class="collapse d-lg-none position-absolute text-center bg-white custom-navbar-collapse-mobile" id="navbarNav">
+      <ul class="navbar-nav p-6 gap-3">
+        <li>
+          <a class="custom-nav-link" href="#">關於品牌</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">最新消息</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">植感商品</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">植藝專欄</a>
+        </li>
+      </ul>
+      <!-- 未登入 -->
+      <ul class="navbar-nav px-6 pb-6 guest">
+        <li class="pt-6 separator-line-top">
+          <a class="custom-nav-link" href="#">會員登入</a>
+        </li>
+      </ul>
+      <!-- 登入後 -->
+      <ul class="navbar-nav px-6 pb-6 member">
+        <li class="pt-6 separator-line-top">
+          <a class="custom-nav-link mb-3" href="#">會員中心</a>
+        </li>
+        <li class="pb-6">
+          <a class="custom-nav-link" href="#">訂單查詢</a>
+        </li>
+        <li class="pt-6 separator-line-top">
+          <a class="custom-nav-link py-1 d-flex justify-content-center align-items-center" href="#"
+            >登出 <span class="ms-2 material-symbols-rounded"> logout </span></a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- 手機版導覽列遮罩 -->
+<div id="custom-nav-overlay" class="custom-nav-overlay z-index-1034 d-none d-lg-none"></div>
+<!-- 購物車內容 -->
+<div
+  class="offcanvas offcanvas-end header-offcanvas border-start-0"
+  data-bs-scroll="true"
+  tabindex="-1"
+  id="headerOffcanvas"
+  aria-labelledby="headerOffcanvasLabel"
+>
+  <div class="offcanvas-header position-relative">
+    <p class="h5 text-primary-700 offcanvas-title" id="headerOffcanvasLabel">購物車</p>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column">
+    <ul class="header-offcanvas-cart list-unstyled d-flex flex-column gap-4 mb-8" id="header-offcanvas-cart"></ul>
+    <div class="mt-auto">
+      <!-- prettier-ignore -->
+      <button
+  class="btn custom-btn-filled-primary custom-btn-pill-sm custom-btn-icon-end  justify-content-center w-100"
+  type="button"
+  data-id="headerGoCartBtn"
+>
+   去結帳 
+  <span class="custom-btn-icon material-symbols-rounded"> arrow_right_alt </span>
+  
+</button>
+    </div>
+  </div>
+</div>
+
+<!-- JS: 依登入狀態顯示/隱藏某些元素 -->
+
+<!-- JS: 手機版導覽列遮罩 -->
+
+<!-- 購物車 -->
+
+    <!-- life section start -->
+    <section class="life-section">
+      <div class="container-fluid container-lg">
+        <div class="d-flex flex-column flex-lg-row py-md-15">
+          <div class="life-text-wrapper col-lg-6 py-10 py-lg-0 pe-lg-15 my-lg-auto">
+            <h6 class="card-text fs-5 fs-md-4 text-primary mb-2">Plantique Life</h6>
+            <div class="d-flex justify-content-between">
+              <div class="d-flex flex-column text-primary-900">
+                <h3 class="fs-2 fs-lg-1 mb-1">探索植感生活</h3>
+                <h3 class="fs-2 fs-lg-1">提案</h3>
+              </div>
+              <picture class="align-self-end me-6">
+                <source srcset="data:image/svg+xml,%3csvg%20width='60'%20height='81'%20viewBox='0%200%2060%2081'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M60%200.714289L0.790235%2080.1191L0%2079.524L59.2098%200.119141L60%200.714289Z'%20fill='%238C9761'/%3e%3c/svg%3e" media="(min-width: 768px)" />
+                <img src="data:image/svg+xml,%3csvg%20width='32'%20height='41'%20viewBox='0%200%2032%2041'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M31%200.709894L1.77996%2040.1191L1%2039.5284L30.22%200.119141L31%200.709894Z'%20fill='%238C9761'/%3e%3c/svg%3e" class="img-fluid" alt="heading-decoration" />
+              </picture>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- life section end -->
+
+    <!-- tags section start -->
+    <div class="container">
+      <div class="d-flex gap-2 gap-lg-4 my-8 align-self-lg-end my-lg-0 py-md-15" id="column-filter">
+        <button
+          type="button"
+          class="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3 active"
+          data-filter="all"
+        >
+          全部
+        </button>
+        <button
+          type="button"
+          class="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
+          data-filter="guide"
+        >
+          #養護指南
+        </button>
+        <button
+          type="button"
+          class="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
+          data-filter="illustrated-book"
+        >
+          #多肉圖鑑
+        </button>
+        <button
+          type="button"
+          class="column-tag fs-sm fs-md-md text-nowrap btn border border-primary rounded-2 text-primary py-2 px-3"
+          data-filter="proposal"
+        >
+          #生活提案
+        </button>
+      </div>
+    </div>
+    <!-- tags section end -->
+
+    <!-- maintenance section start -->
+    <section class="column-section">
+      <div class="container">
+        <div class="mb-12 mb-md-15">
+          <div class="mb-8 mb-md-12">
+            <!-- title -->
+            <div class="d-flex justify-content-between align-items-center mb-6">
+              <h2 class="fs-md-2 text-neutral-700"><span class="fs-7 text-primary align-top me-1">#</span>養護指南</h2>
+              <button type="button" class="btn p-0 bg-transparent">
+                <picture>
+                  <source srcset="/plantique-life/assets/btn_anim_lg-CVOKoEE1.svg" media="(min-width: 768px)" />
+                  <img src="/plantique-life/assets/btn_anim_sm-DVf8Wakh.svg" alt="更多文章" class="img-fluid" />
+                </picture>
+              </button>
+            </div>
+            <!-- card -->
+            <div class="row gy-6">
+              <div class="col-lg-4 column-item">
+                <div class="card flex-lg-row d-lg-flex flex-lg-column border-0 rounded-0">
+                  <img
+                    src="/plantique-life/assets/img_column_01-BQy0FXLE.png"
+                    class="articaleCard-img-top object-fit-cover"
+                    alt="column_01"
+                  />
+                  <div class="card-body d-flex flex-column p-0 pt-3 pt-lg-0 mt-lg-3 gap-2 gap-lg-3">
+                    <h4 class="card-title fs-7 fs-lg-6 text-neutral-700 m-0">新手必看：五種不易失敗的多肉推薦</h4>
+                    <span class="align-self-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100"
+                      ># 養護指南</span
+                    >
+                    <p class="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis">
+                      第一次養多肉就上手！<br />精選五款易照顧、好生長的多肉，輕鬆成為植栽達人。
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
+                      <a href="#" class="d-flex justify-content-end">
+                        
+                        <button
+  class="btn custom-btn-link-primary custom-btn-link-sm custom-btn-icon-end"
+  type="button"
+>
+  閱讀全文 
+  <span class="custom-btn-icon material-symbols-rounded"> arrow_right_alt </span>
+  
+</button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 column-item">
+                <div class="card flex-lg-row d-lg-flex flex-lg-column border-0 rounded-0">
+                  <img
+                    src="/plantique-life/assets/img_column_07-CstqDUem.png"
+                    class="articaleCard-img-top object-fit-cover"
+                    alt="column_07"
+                  />
+                  <div class="card-body d-flex flex-column p-0 pt-3 pt-lg-0 mt-lg-3 gap-2 gap-lg-3">
+                    <h4 class="card-title fs-7 fs-lg-6 text-neutral-700 m-0 text-truncate">
+                      多肉植物澆水指南：澆多少？幾天一次才剛好？
+                    </h4>
+                    <span class="align-self-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100"
+                      ># 養護指南</span
+                    >
+                    <p class="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis">
+                      多肉植物看似好養，其實澆水最關鍵。澆太多會爛根，太少又會乾扁。記得遵守「乾透再澆透」原則，讓土壤完全乾再澆水至盆底流出為止。
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
+                      <a href="#" class="d-flex justify-content-end">
+                        <button
+  class="btn custom-btn-link-primary custom-btn-link-sm custom-btn-icon-end"
+  type="button"
+>
+  閱讀全文 
+  <span class="custom-btn-icon material-symbols-rounded"> arrow_right_alt </span>
+  
+</button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 column-item">
+                <div class="card flex-lg-row d-lg-flex flex-lg-column border-0 rounded-0">
+                  <img
+                    src="/plantique-life/assets/img_column_06-BwgbWNUw.png"
+                    class="articaleCard-img-top object-fit-cover"
+                    alt="column_06"
+                  />
+                  <div class="card-body d-flex flex-column p-0 pt-3 pt-lg-0 mt-lg-3 gap-2 gap-lg-3">
+                    <h4 class="card-title fs-7 fs-lg-6 text-neutral-700 m-0 text-truncate">
+                      在陽台種一盆療癒：多肉植物打造你的綠意角落
+                    </h4>
+                    <span class="align-self-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100"
+                      ># 養護指南</span
+                    >
+                    <p class="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis">
+                      多肉植物們擁有多樣的顏色、形狀與質地，也乘載著一種「氛圍感」。你會發現，當一盆多肉出現在書桌上,，氛圍感立刻不一樣
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="fs-xs fs-lg-sm text-primary-500">2025/01/01</p>
+                      <a href="#" class="d-flex justify-content-end">
+                        <button
+  class="btn custom-btn-link-primary custom-btn-link-sm custom-btn-icon-end"
+  type="button"
+>
+  閱讀全文 
+  <span class="custom-btn-icon material-symbols-rounded"> arrow_right_alt </span>
+  
+</button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- succulent section start -->
+          <div class="mb-8 mb-md-12">
+            <!-- title -->
+            <div class="d-flex justify-content-between align-items-center mb-6">
+              <h2 class="fs-md-2 text-neutral-700"><span class="fs-7 text-primary align-top me-1">#</span>多肉圖鑑</h2>
+              <button type="button" class="btn p-0 bg-transparent">
+                <picture>
+                  <source srcset="/plantique-life/assets/btn_anim_lg-CVOKoEE1.svg" media="(min-width: 768px)" />
+                  <img src="/plantique-life/assets/btn_anim_sm-DVf8Wakh.svg" alt="更多文章" class="img-fluid" />
+                </picture>
+              </button>
+            </div>
+            <!-- card -->
+            <div class="row gy-6">
+              <div class="col-lg-4 column-item">
+                <div class="card flex-lg-row d-lg-flex flex-lg-column border-0 rounded-0">
+                  <img
+                    src="/plantique-life/assets/img_column_08-C7WIHC-x.png"
+                    class="articaleCard-img-top object-fit-cover"
+                    alt="column_08"
+                  />
+                  <div class="card-body d-flex flex-column p-0 pt-3 pt-lg-0 mt-lg-3 gap-2 gap-lg-3">
+                    <h4 class="card-title fs-7 fs-lg-6 text-neutral-700 m-0">用多肉妝點生活角落：6 種療癒系空間提案</h4>
+                    <span class="align-self-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100"
+                      ># 多肉圖鑑</span
+                    >
+                    <p class="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis">
+                      讓空間煥然一新。無論是放在玻璃瓶中營造清新感，或搭配木質擺件呈現自然氣息，多肉都能巧妙融入各種風格。讓植物成為日常的一部分，也讓心靈在一片綠意中得到休息。
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
+                      <a href="#" class="d-flex justify-content-end">
+                        <button
+  class="btn custom-btn-link-primary custom-btn-link-sm custom-btn-icon-end"
+  type="button"
+>
+  閱讀全文 
+  <span class="custom-btn-icon material-symbols-rounded"> arrow_right_alt </span>
+  
+</button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 column-item">
+                <div class="card flex-lg-row d-lg-flex flex-lg-column border-0 rounded-0">
+                  <img
+                    src="/plantique-life/assets/img_column_02-BRyoh7Fa.png"
+                    class="articaleCard-img-top object-fit-cover"
+                    alt="column_02"
+                  />
+                  <div class="card-body d-flex flex-column p-0 pt-3 pt-lg-0 mt-lg-3 gap-2 gap-lg-3">
+                    <h4 class="card-title fs-7 fs-lg-6 text-neutral-700 m-0 text-truncate">圓滾滾的療癒系：綠之鈴</h4>
+                    <span class="align-self-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100"
+                      ># 多肉圖鑑</span
+                    >
+                    <p class="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis">
+                      它喜歡明亮散光與乾爽環境，是懶人也能輕鬆照顧的多肉代表。懸掛於窗邊或書桌架上，隨微風輕輕搖曳的姿態，為空間增添柔和與生命力。每一顆小球，都是自然送來的療癒能量。
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
+                      <a href="#" class="d-flex justify-content-end">
+                        <button
+  class="btn custom-btn-link-primary custom-btn-link-sm custom-btn-icon-end"
+  type="button"
+>
+  閱讀全文 
+  <span class="custom-btn-icon material-symbols-rounded"> arrow_right_alt </span>
+  
+</button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 column-item">
+                <div class="card flex-lg-row d-lg-flex flex-lg-column border-0 rounded-0">
+                  <img
+                    src="/plantique-life/assets/img_column_05-CntJk6jG.png"
+                    class="articaleCard-img-top object-fit-cover"
+                    alt="column_05"
+                  />
+                  <div class="card-body d-flex flex-column p-0 pt-3 pt-lg-0 mt-lg-3 gap-2 gap-lg-3">
+                    <h4 class="card-title fs-7 fs-lg-6 text-neutral-700 m-0 text-truncate">
+                      從陽台到書桌，多肉如何成為你的生活陪伴？
+                    </h4>
+                    <span class="align-self-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100"
+                      ># 多肉圖鑑</span
+                    >
+                    <p class="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis">
+                      無論是晨光中的陽台，還是夜燈下的書桌，多肉植物都能成為最安靜的陪伴者。它們不需要語言，只以緩慢的成長提醒我們放慢腳步。
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="fs-xs fs-lg-sm text-primary-500">2025/01/01</p>
+                      <a href="#" class="d-flex justify-content-end">
+                        <button
+  class="btn custom-btn-link-primary custom-btn-link-sm custom-btn-icon-end"
+  type="button"
+>
+  閱讀全文 
+  <span class="custom-btn-icon material-symbols-rounded"> arrow_right_alt </span>
+  
+</button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- succulent section end -->
+          <!-- life section start -->
+          <div class="">
+            <!-- title -->
+            <div class="d-flex justify-content-between align-items-center mb-6">
+              <h2 class="fs-md-2 text-neutral-700"><span class="fs-7 text-primary align-top me-1">#</span>生活提案</h2>
+              <button type="button" class="btn p-0 bg-transparent">
+                <picture>
+                  <source srcset="/plantique-life/assets/btn_anim_lg-CVOKoEE1.svg" media="(min-width: 768px)" />
+                  <img src="/plantique-life/assets/btn_anim_sm-DVf8Wakh.svg" alt="更多文章" class="img-fluid" />
+                </picture>
+              </button>
+            </div>
+            <!-- card -->
+            <div class="row gy-6">
+              <div class="col-lg-4 column-item">
+                <div class="card flex-lg-row d-lg-flex flex-lg-column border-0 rounded-0">
+                  <img
+                    src="/plantique-life/assets/img_column_09-CmR1GhAJ.png"
+                    class="articaleCard-img-top object-fit-cover"
+                    alt="column_09"
+                  />
+                  <div class="card-body d-flex flex-column p-0 pt-3 pt-lg-0 mt-lg-3 gap-2 gap-lg-3">
+                    <h4 class="card-title fs-7 fs-lg-6 text-neutral-700 m-0">銀白葉緣下的冷冽優雅：白銀之月</h4>
+                    <span class="align-self-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100"
+                      ># 生活提案</span
+                    >
+                    <p class="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis">
+                      它的存在，讓任何空間瞬間多了幾分靜謐與格調。置於極簡風書房或水泥系花盆中，特別襯托現代感。陽光輕照時，那細緻的銀粉微微閃爍，彷彿一輪靜謐的月色，在你身邊悄然綻放。
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
+                      <a href="#" class="d-flex justify-content-end">
+                        <button
+  class="btn custom-btn-link-primary custom-btn-link-sm custom-btn-icon-end"
+  type="button"
+>
+  閱讀全文 
+  <span class="custom-btn-icon material-symbols-rounded"> arrow_right_alt </span>
+  
+</button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 column-item">
+                <div class="card flex-lg-row d-lg-flex flex-lg-column border-0 rounded-0">
+                  <img
+                    src="/plantique-life/assets/img_column_10-B6ZIYemc.png"
+                    class="articaleCard-img-top object-fit-cover"
+                    alt="column_10"
+                  />
+                  <div class="card-body d-flex flex-column p-0 pt-3 pt-lg-0 mt-lg-3 gap-2 gap-lg-3">
+                    <h4 class="card-title fs-7 fs-lg-6 text-neutral-700 m-0 text-truncate">
+                      如冰似玉的晶透珍品：冰璃玉
+                    </h4>
+                    <span class="align-self-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100"
+                      ># 生活提案</span
+                    >
+                    <p class="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis">
+                      它喜歡陽光，也享受乾燥環境，是收藏級的療癒小寶石。放在玻璃花盆中觀賞，透光之間，映出自然最乾淨的美學。
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="fs-xs fs-lg-sm text-primary-500">2025/08/03</p>
+                      <a href="#" class="d-flex justify-content-end">
+                        <button
+  class="btn custom-btn-link-primary custom-btn-link-sm custom-btn-icon-end"
+  type="button"
+>
+  閱讀全文 
+  <span class="custom-btn-icon material-symbols-rounded"> arrow_right_alt </span>
+  
+</button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 column-item">
+                <div class="card flex-lg-row d-lg-flex flex-lg-column border-0 rounded-0">
+                  <img
+                    src="/plantique-life/assets/img_column_03-Cg6Fcyiu.png"
+                    class="articaleCard-img-top object-fit-cover"
+                    alt="column_03"
+                  />
+                  <div class="card-body d-flex flex-column p-0 pt-3 pt-lg-0 mt-lg-3 gap-2 gap-lg-3">
+                    <h4 class="card-title fs-7 fs-lg-6 text-neutral-700 m-0 text-truncate">
+                      為你的空間選一種氣質：多肉的氛圍搭配提案
+                    </h4>
+                    <span class="align-self-start fs-xs fs-lg-sm text-secondary px-2 px-lg-3 py-1 bg-secondary-100"
+                      ># 生活提案</span
+                    >
+                    <p class="card-text fs-sm fs-lg-8 text-neutral-400 multiline-ellipsis">
+                      不同多肉，有著不同的性格與氛圍。想打造柔和溫暖感，可選熊童子或星美人；若偏好冷調簡約，可搭配白銀之月或子持蓮華。小型多肉適合桌面布置，群植組合則能讓整體更有層次。
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="fs-xs fs-lg-sm text-primary-500">2025/01/01</p>
+                      <a href="#" class="d-flex justify-content-end">
+                        <button
+  class="btn custom-btn-link-primary custom-btn-link-sm custom-btn-icon-end"
+  type="button"
+>
+  閱讀全文 
+  <span class="custom-btn-icon material-symbols-rounded"> arrow_right_alt </span>
+  
+</button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- life section end -->
+        </div>
+      </div>
+    </section>
+    <!-- maintenance section end -->
+
+    <footer class="footer bg-primary-500 py-12 py-lg-15">
+  <div class="container">
+    <div class="row mb-10 mb-lg-6">
+      <!-- 營業資訊 -->
+      <section class="col-lg-4 order-lg-2 mb-10 mb-lg-0">
+        <div class="mb-4 mb-lg-6">
+          <a class="d-block pt-3 pb-2" href="index.html">
+            <img src="/plantique-life/assets/logo-white-en-lg-CGcqdvxj.svg" alt="Plantique Life" />
+          </a>
+        </div>
+        <p class="text-white mb-2 d-flex align-items-center">
+          <span class="material-symbols-rounded align-bottom me-2 me-lg-3 fs-6"> schedule </span>平日&ensp;
+          <time datetime="09:00">09:00</time>&thinsp;-&thinsp;<time datetime="21:00">21:00</time>
+        </p>
+        <p class="text-white mb-4 mb-lg-6 d-flex align-items-center">
+          <span class="material-symbols-rounded align-bottom me-2 me-lg-3 fs-6"> mail </span>
+          <a href="mailto:PlaniqueLife@example.invalid" class="text-white">PlaniqueLife@gmail.com</a>
+        </p>
+        <div class="d-flex column-gap-4">
+          <!-- prettier-ignore -->
+          
+          
+            <button class="btn custom-btn-social" type="button">
+  <img class="custom-btn-icon" src="data:image/svg+xml,%3csvg%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='white'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M15.3172%202C16.5936%202.00005%2016.9964%202.21866%2017.5855%202.35823C17.8288%202.41586%2017.9999%202.62499%2018%202.86457V6.04795C17.9999%206.20237%2017.9284%206.34884%2017.8044%206.44784C17.6804%206.5468%2017.5168%206.58818%2017.3579%206.56077C16.6076%206.43093%2016.4594%206.37286%2015.7627%206.37286C15.3661%206.37286%2015.1033%206.42876%2014.9065%206.51449C14.7128%206.59898%2014.544%206.72914%2014.3603%206.93752C14.0515%207.28773%2013.8306%207.98915%2013.8305%209.19522V9.80987H17.4547C17.63%209.80987%2017.7948%209.89065%2017.8973%2010.0265C17.9997%2010.1623%2018.0271%2010.3369%2017.9719%2010.4958L16.8542%2013.7134C16.78%2013.9269%2016.5705%2014.0712%2016.3351%2014.0707L13.8305%2014.0642V21.4788C13.8305%2021.7667%2013.5863%2021.9998%2013.2852%2022H9.60387C9.30262%2022%209.0586%2021.7668%209.0586%2021.4788V14.0633H6.54528C6.24402%2014.0633%206%2013.8301%206%2013.5422V10.3245C6%2010.0366%206.24402%209.80339%206.54528%209.80339H9.0586V9.15357C9.0586%206.9238%209.52597%205.12598%2010.5811%203.87911C11.6542%202.61109%2013.2596%202%2015.3172%202ZM15.3172%203.0423C13.4953%203.0423%2012.2431%203.57404%2011.4295%204.53541C10.5981%205.51804%2010.1492%207.03662%2010.1492%209.15357V10.3245C10.1491%2010.6123%209.90495%2010.8456%209.60387%2010.8457H7.09056V13.021H9.60387C9.90492%2013.0212%2010.149%2013.2544%2010.1492%2013.5422V20.9577H12.739V13.5422C12.7391%2013.4039%2012.7974%2013.2715%2012.8998%2013.1737C13.0023%2013.076%2013.1413%2013.0207%2013.2862%2013.021L15.9429%2013.0266L16.6993%2010.8531H13.2852C12.984%2010.8531%2012.739%2010.6189%2012.739%2010.331V9.19522C12.739%207.93392%2012.9574%206.91075%2013.5264%206.26548C13.7814%205.97626%2014.073%205.7318%2014.4542%205.56568C14.8327%205.40077%2015.2603%205.32963%2015.7627%205.32963C16.2845%205.32963%2016.5799%205.36623%2016.9094%205.4222V3.25984C16.4803%203.13762%2016.1733%203.04234%2015.3172%203.0423Z'/%3e%3c/svg%3e" alt="facebook-link" />
+</button>
+          
+            <button class="btn custom-btn-social" type="button">
+  <img class="custom-btn-icon" src="/plantique-life/assets/line-CnBc3KYC.svg" alt="line-link" />
+</button>
+          
+            <button class="btn custom-btn-social" type="button">
+  <img class="custom-btn-icon" src="data:image/svg+xml,%3csvg%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='white'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M12.0037%207.10905C13.31%207.10915%2014.5412%207.61953%2015.4645%208.54283C16.3877%209.46618%2016.8974%2010.6974%2016.8974%2012.0037C16.8973%2013.31%2016.3878%2014.5412%2015.4645%2015.4645L15.4627%2015.4663C14.5341%2016.387%2013.3113%2016.8973%2012.0037%2016.8974C10.6972%2016.8974%209.46529%2016.3879%208.54191%2015.4645C7.61869%2014.5412%207.10911%2013.3099%207.10905%2012.0037C7.10905%2010.6974%207.61878%209.46617%208.54191%208.54283C9.46529%207.61945%2010.6972%207.10905%2012.0037%207.10905ZM12.0037%208.23428C10.9954%208.23428%2010.0497%208.62537%209.33754%209.33754C8.62533%2010.0497%208.23428%2010.9953%208.23428%2012.0037C8.23434%2013.0118%208.62549%2013.9567%209.33754%2014.6689C10.0497%2015.3811%2010.9953%2015.7721%2012.0037%2015.7721C13.0105%2015.772%2013.95%2015.3817%2014.6707%2014.667C15.3817%2013.9551%2015.7721%2013.011%2015.7721%2012.0037C15.7721%2010.9953%2015.3811%2010.0497%2014.6689%209.33754C13.9568%208.62552%2013.0118%208.23438%2012.0037%208.23428Z'/%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M17.1793%205.30356C17.9493%205.30367%2018.5738%205.92804%2018.5738%206.69797C18.5737%207.46786%2017.9492%208.09226%2017.1793%208.09237C16.4094%208.09237%2015.785%207.46793%2015.7849%206.69797C15.7849%205.92797%2016.4094%205.30356%2017.1793%205.30356ZM17.1793%206.42879C17.0307%206.42879%2016.9102%206.54932%2016.9102%206.69797C16.9102%206.84658%2017.0307%206.96714%2017.1793%206.96714C17.3279%206.96703%2017.4485%206.84652%2017.4485%206.69797C17.4485%206.54938%2017.3279%206.4289%2017.1793%206.42879Z'/%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M17.617%203C19.4801%203%2021%204.51991%2021%206.38301V17.617C21%2019.487%2019.487%2021%2017.617%2021H6.38301C4.51991%2021%203%2019.4801%203%2017.617V6.38301C3%204.51991%204.51991%203%206.38301%203H17.617ZM6.38301%204.12431C5.14126%204.12431%204.12431%205.14126%204.12431%206.38301V17.617C4.12431%2018.8587%205.14126%2019.8757%206.38301%2019.8757H17.617C18.8657%2019.8757%2019.8757%2018.8657%2019.8757%2017.617V6.38301C19.8757%205.14126%2018.8587%204.12431%2017.617%204.12431H6.38301Z'/%3e%3c/svg%3e" alt="ig-link" />
+</button>
+          
+        </div>
+      </section>
+      <!-- 網站地圖 -->
+      <section class="col-lg-8 order-lg-1">
+        <div class="d-flex justify-content-between gap-lg-6 justify-content-lg-start text-center">
+          <div>
+            <p class="text-primary-200 mb-4 mb-lg-6">Member</p>
+            <ul class="list-unstyled">
+              <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="#">會員權益</a></li>
+              <li><a class="link-white site-map-link" href="#">會員帳戶</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-primary-200 mb-4 mb-lg-6">About Us</p>
+            <ul class="list-unstyled">
+              <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="#">關於植感</a></li>
+              <li><a class="link-white site-map-link" href="#">植藝生活</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-primary-200 mb-4 mb-lg-6">Product</p>
+            <ul class="list-unstyled">
+              <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="#">植感精選</a></li>
+              <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="#">所有商品</a></li>
+              <li><a class="link-white site-map-link" href="#">配件商品</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-primary-200 mb-4 mb-lg-6">FAQs</p>
+            <ul class="list-unstyled">
+              <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="#">購物須知 </a></li>
+              <li><a class="link-white site-map-link" href="#">退換貨政策</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- Copyright -->
+    <div
+      class="d-flex flex-column text-center justify-content-center flex-lg-row justify-content-lg-start align-items-center text-lg-start"
+    >
+      <p class="text-white me-0 mb-lg-0 me-lg-6 mb-1">© 2025 PlantiqueLife All rights reserved.</p>
+      <ul class="d-flex list-unstyled">
+        <li class="me-3 me-lg-6"><a class="link-white" href="#">隱私權政策</a></li>
+        <li><a class="link-white" href="#">使用者條款</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>
