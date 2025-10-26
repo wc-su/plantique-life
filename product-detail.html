@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>荒原綠影 | 植感生活 PLANTIQUE LIFE</title>
+    <script type="module" crossorigin src="/plantique-life/assets/product-detail-DndcbyqR.js"></script>
+    <link rel="modulepreload" crossorigin href="/plantique-life/assets/index-D9ISY5cH.js">
+    <link rel="modulepreload" crossorigin href="/plantique-life/assets/breadcrumb-D2pkHAmW.js">
+    <link rel="modulepreload" crossorigin href="/plantique-life/assets/bootstrap.min-BFbKqOoq.js">
+    <link rel="stylesheet" crossorigin href="/plantique-life/assets/breadcrumb-BB0hfab5.css">
+    <link rel="stylesheet" crossorigin href="/plantique-life/assets/product-detail-C-yivAuY.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg sticky-top py-2 py-lg-4 bg-white z-index-1035">
+  <div class="container">
+    <!-- LOGO -->
+    <a class="d-none d-lg-block w-lg-30" href="index.html"
+      ><img src="/plantique-life/assets/logo-primary-en-zh-lg-Dv4xVOzA.svg" alt="Plantique Life 植感生活"
+    /></a>
+    <a class="d-lg-none" href="index.html"
+      ><img src="/plantique-life/assets/logo-primary-en-sm-DRZaQepn.svg" alt="Plantique Life 植感生活"
+    /></a>
+    <!-- 網頁版導覽列連結  -->
+    <div class="d-none d-lg-flex justify-content-center w-lg-40">
+      <ul class="navbar-nav">
+        <li>
+          <a class="custom-nav-link" href="#">關於品牌</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">最新消息</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">植感商品</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">植藝專欄</a>
+        </li>
+      </ul>
+    </div>
+    <!-- 購物車、電腦版註冊登入、會員選單 -->
+    <div class="ms-auto w-lg-30">
+      <ul class="d-flex list-unstyled align-items-center justify-content-end">
+        <li class="me-2 me-lg-4">
+          <button
+            class="btn cart-toggle-btn"
+            data-bs-toggle="offcanvas"
+            type="button"
+            data-bs-target="#headerOffcanvas"
+            aria-controls="headerOffcanvas"
+          >
+            <div class="position-relative">
+              <span class="material-symbols-rounded d-block"> shopping_cart </span>
+              <span
+                class="badge rounded-pill text-bg-danger text-white lh-base py-0 px-1 position-absolute top-0 start-100 cart-badge"
+                id="header-offcanvas-text"
+                >0</span
+              >
+            </div>
+          </button>
+        </li>
+        <!-- 未登入 -->
+        <!-- prettier-ignore -->
+        
+
+        <li class="d-none d-lg-block guest me-4">
+          <button
+  class="btn custom-btn-outline-neutral custom-btn-pill-sm   "
+  type="button"
+  data-id=""
+>
+   登入 
+</button>
+        </li>
+        <li class="d-none d-lg-block guest">
+          <button
+  class="btn custom-btn-filled-primary custom-btn-pill-sm   "
+  type="button"
+  data-id=""
+>
+   註冊 
+</button>
+        </li>
+        <!-- 登入後 -->
+        <!-- 會員選單 -->
+        <li class="d-none d-lg-block position-relative member">
+          <!-- 會員選單按鈕 -->
+          <button
+            class="btn member-menu-toggle-btn collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#memberMenu"
+            aria-controls="memberMenu"
+            aria-expanded="false"
+            aria-label="Toggle member menu"
+          >
+            <span class="material-symbols-rounded d-block"> person </span>
+          </button>
+          <!-- 會員選單內容 -->
+          <ul class="collapse position-absolute list-unstyled bg-white text-center member-menu" id="memberMenu">
+            <ul class="list-unstyled p-6">
+              <li class="mb-3"><a class="member-menu-link" href="#">會員中心</a></li>
+              <li>
+                <a class="member-menu-link" href="#">訂單查詢</a>
+              </li>
+            </ul>
+            <ul class="list-unstyled px-6 pb-6">
+              <li class="pt-6 separator-line-top">
+                <a class="member-menu-link py-1 d-flex justify-content-center align-items-center" href="#"
+                  >登出 <span class="ms-2 material-symbols-rounded"> logout </span></a
+                >
+              </li>
+            </ul>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!-- 手機版漢堡選單按鈕 -->
+    <button
+      id="custom-nav-toggle-btn"
+      class="btn custom-nav-toggle-btn d-block d-lg-none collapsed"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="material-symbols-rounded d-block d-lg-none"> density_medium </span>
+    </button>
+    <!-- 手機版導覽列連結 -->
+    <div class="collapse d-lg-none position-absolute text-center bg-white custom-navbar-collapse-mobile" id="navbarNav">
+      <ul class="navbar-nav p-6 gap-3">
+        <li>
+          <a class="custom-nav-link" href="#">關於品牌</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">最新消息</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">植感商品</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" href="#">植藝專欄</a>
+        </li>
+      </ul>
+      <!-- 未登入 -->
+      <ul class="navbar-nav px-6 pb-6 guest">
+        <li class="pt-6 separator-line-top">
+          <a class="custom-nav-link" href="#">會員登入</a>
+        </li>
+      </ul>
+      <!-- 登入後 -->
+      <ul class="navbar-nav px-6 pb-6 member">
+        <li class="pt-6 separator-line-top">
+          <a class="custom-nav-link mb-3" href="#">會員中心</a>
+        </li>
+        <li class="pb-6">
+          <a class="custom-nav-link" href="#">訂單查詢</a>
+        </li>
+        <li class="pt-6 separator-line-top">
+          <a class="custom-nav-link py-1 d-flex justify-content-center align-items-center" href="#"
+            >登出 <span class="ms-2 material-symbols-rounded"> logout </span></a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- 手機版導覽列遮罩 -->
+<div id="custom-nav-overlay" class="custom-nav-overlay z-index-1034 d-none d-lg-none"></div>
+<!-- 購物車內容 -->
+<div
+  class="offcanvas offcanvas-end header-offcanvas border-start-0"
+  data-bs-scroll="true"
+  tabindex="-1"
+  id="headerOffcanvas"
+  aria-labelledby="headerOffcanvasLabel"
+>
+  <div class="offcanvas-header position-relative">
+    <p class="h5 text-primary-700 offcanvas-title" id="headerOffcanvasLabel">購物車</p>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column">
+    <ul class="header-offcanvas-cart list-unstyled d-flex flex-column gap-4 mb-8" id="header-offcanvas-cart"></ul>
+    <div class="mt-auto">
+      <!-- prettier-ignore -->
+      <button
+  class="btn custom-btn-filled-primary custom-btn-pill-sm custom-btn-icon-end  justify-content-center w-100"
+  type="button"
+  data-id="headerGoCartBtn"
+>
+   去結帳 
+  <span class="custom-btn-icon material-symbols-rounded"> arrow_right_alt </span>
+  
+</button>
+    </div>
+  </div>
+</div>
+
+<!-- JS: 依登入狀態顯示/隱藏某些元素 -->
+
+<!-- JS: 手機版導覽列遮罩 -->
+
+<!-- 購物車 -->
+
+    <!-- upper-part-start -->
+
+    <section class="py-8 py-lg-13">
+      <div class="container">
+        <div class="mb-6 mb-lg-12">
+          <!-- prettier-ignore -->
+          <nav style="--bs-breadcrumb-divider: 'chevron_right'" aria-label="breadcrumb">
+  <ol class="breadcrumb fs-sm fs-lg-8 row-gap-2 mb-0">
+    
+    <li class="breadcrumb-item d-flex align-items-center ">
+      
+      <a href="index.html"> 首頁 </a>
+      
+    </li>
+    
+    <li class="breadcrumb-item d-flex align-items-center ">
+      
+      <a href="#"> 植感精選 </a>
+      
+    </li>
+    
+    <li class="breadcrumb-item d-flex align-items-center ">
+      
+      <a href="#"> 療癒組盆 </a>
+      
+    </li>
+    
+    <li class="breadcrumb-item d-flex align-items-center active">
+       荒原綠影 
+    </li>
+    
+  </ol>
+</nav>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row">
+          <div class="gx-0 gx-sm-6 col-lg-7">
+            <div class="mb-3 mb-lg-0">
+              <div class="swiper product-swiper-container">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                    <img src="/plantique-life/assets/img_product_13-ByJQwkSE.png" alt="img_product_13" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="/plantique-life/assets/img_product_13-1-_TJ_21rm.png" alt="img_product_13-1" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="/plantique-life/assets/img_product_13-3-CokqUnd8.png" alt="img_product_13-3" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="/plantique-life/assets/img_product_13-4-BW-TYRZs.png" alt="img_product_13-4" />
+                  </div>
+                </div>
+                <div class="swiper-pagination d-flex d-lg-none justify-content-center"></div>
+              </div>
+              <div thumbsSlider="" class="swiper thumb-swiper d-none d-lg-flex pt-6">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                    <img src="/plantique-life/assets/img_product_13-ByJQwkSE.png" alt="thumb_img_product_13" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="/plantique-life/assets/img_product_13-1-_TJ_21rm.png" alt="thumb_img_product_13-1" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="/plantique-life/assets/img_product_13-3-CokqUnd8.png" alt="thumb_img_product_13-3" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img src="/plantique-life/assets/img_product_13-4-BW-TYRZs.png" alt="thumb_img_product_13-4" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-5">
+            <div class="d-flex flex-column gap-8 gap-md-5 gap-xl-4 gap-xxl-10">
+              <!-- info -->
+
+              <div class="d-flex flex-column gap-1 gap-xl-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fs-xs fs-lg-sm text-primary bg-primary-100 px-2 px-lg-3 py-1">質感精選</span>
+                  <button type="button" class="btn bg-transparent border-0 p-0">
+                    <span
+                      class="material-symbols-rounded text-neutral-700 p-2 p-lg-3 bg-white bg-opacity-40 rounded-circle"
+                    >
+                      favorite
+                    </span>
+                  </button>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                  <h2 class="fs-5 fs-lg-4 text-neutral-700">荒原綠影</h2>
+                  <span class="fs-sm fs-lg-8 text-danger">剩餘 5 件</span>
+                </div>
+
+                <p class="noto-serif-tc fw-bold fs-5 fs-lg-4 lh-sm text-primary-700">NT$2,400</p>
+              </div>
+
+              <!-- payment -->
+
+              <div class="fs-sm fs-lg-8 text-neutral-400">
+                <div class="d-flex gap-lg-6">
+                  <span>付款方式</span>
+                  <ul class="d-flex flex-column">
+                    <li>全館滿 5,000 免運</li>
+                    <li>仙人掌系列買五送一</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- add-on -->
+
+              <div>
+                <span class="d-block fs-sm fs-lg-8 text-neutral-400 mb-3 mb-xl-6">加購商品</span>
+                <ul class="list-unstyled d-flex flex-column gap-3 gap-lg-4">
+                  <li class="d-flex justify-content-between align-items-center gap-3 gap-lg-4">
+                    <!-- prettier-ignore -->
+                    <div class="add-on-product">
+  <img src="/plantique-life/assets/img_product_add_01-D4A3_wI3.png" alt="img_product_add_01" />
+</div>
+<div class="d-flex flex-column flex-xl-row justify-content-between align-items-lg-center gap-3 gap-lg-4 flex-grow-1">
+  <div class="d-flex flex-column gap-1 gap-lg-2 flex-shrink-0">
+    <h4 class="fs-7 text-neutral-700">噴霧器</h4>
+    <p class="noto-serif-tc fw-bold fs-lg-7 lh-sm text-primary-700">
+      NT$129 
+      <s class="fs-sm fs-lg-8 text-neutral-400 ms-1 ms-lg-2">$249</s>
+      
+    </p>
+  </div>
+  <div class="d-flex justify-content-between align-items-center gap-1 gap-lg-2">
+    <button
+      type="button"
+      class="btn p-2 rounded-circle border border-2 d-flex justify-content-center align-items-center flex-shrink-0 flex-grow-0 btn-circle-sm"
+    >
+      <span class="material-symbols-rounded align-bottom"> remove </span>
+    </button>
+    <span class="noto-serif-tc fw-bold fs-lg-7 lh-sm text-center add-on-counter">0</span>
+    <button
+      type="button"
+      class="btn p-2 rounded-circle border border-2 d-flex justify-content-center align-items-center btn-circle-sm"
+    >
+      <span class="material-symbols-rounded align-bottom"> add_2 </span>
+    </button>
+  </div>
+</div>
+
+                  </li>
+                  <li class="d-flex justify-content-between align-items-center gap-3 gap-lg-4">
+                    <!-- prettier-ignore -->
+                    <div class="add-on-product">
+  <img src="/plantique-life/assets/img_product_add_02-CPWs9Z50.png" alt="img_product_add_02" />
+</div>
+<div class="d-flex flex-column flex-xl-row justify-content-between align-items-lg-center gap-3 gap-lg-4 flex-grow-1">
+  <div class="d-flex flex-column gap-1 gap-lg-2 flex-shrink-0">
+    <h4 class="fs-7 text-neutral-700">日本赤玉土</h4>
+    <p class="noto-serif-tc fw-bold fs-lg-7 lh-sm text-primary-700">
+      NT$300 
+    </p>
+  </div>
+  <div class="d-flex justify-content-between align-items-center gap-1 gap-lg-2">
+    <button
+      type="button"
+      class="btn p-2 rounded-circle border border-2 d-flex justify-content-center align-items-center flex-shrink-0 flex-grow-0 btn-circle-sm"
+    >
+      <span class="material-symbols-rounded align-bottom"> remove </span>
+    </button>
+    <span class="noto-serif-tc fw-bold fs-lg-7 lh-sm text-center add-on-counter">0</span>
+    <button
+      type="button"
+      class="btn p-2 rounded-circle border border-2 d-flex justify-content-center align-items-center btn-circle-sm"
+    >
+      <span class="material-symbols-rounded align-bottom"> add_2 </span>
+    </button>
+  </div>
+</div>
+
+                  </li>
+                </ul>
+              </div>
+
+              <!-- add-to-cart -->
+
+              <div
+                class="d-lg-flex flex-lg-column flex-lg-wrap flex-xl-row justify-content-lg-between align-items-center gap-lg-4 gap-xl-3"
+              >
+                <div
+                  class="d-flex justify-content-lg-between align-items-center flex-lg-grow-1 gap-3 gap-lg-6 mb-4 mb-lg-0"
+                >
+                  <div class="w-50 w-lg-auto d-flex justify-content-between align-items-center gap-1 gap-lg-2">
+                    <button
+                      type="button"
+                      class="btn d-flex justify-content-center align-items-center p-4 rounded-circle border border-2 flex-shrink-0 flex-grow-0 btn-circle-lg"
+                    >
+                      <span class="material-symbols-rounded align-bottom"> remove </span>
+                    </button>
+                    <span class="noto-serif-tc fw-bold fs-6 lh-sm text-center product-counter">1</span>
+                    <button
+                      type="button"
+                      class="btn d-flex justify-content-center align-items-center p-4 rounded-circle border border-2 flex-lg-shrink-0 btn-circle-lg"
+                    >
+                      <span class="material-symbols-rounded align-bottom"> add_2 </span>
+                    </button>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="w-50 w-lg-auto btn fs-lg-7 border border-2 border-neutral-200 rounded-pill d-flex justify-content-center align-items-center px-6 px-lg-7 py-3 py-lg-4 flex-lg-shrink-0"
+                  >
+                    <span class="material-symbols-rounded me-2"> shopping_cart </span>
+                    加入購物車
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  class="btn border-0 fs-lg-7 text-white bg-primary rounded-pill px-6 px-lg-7 py-3 py-lg-4 w-100 w-xl-auto flex-grow-1"
+                >
+                  立即購買
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- upper-part-end -->
+
+    <!-- bottom-part-start -->
+
+    <!-- 產品細節 Tab 區塊 -->
+    <section class="py-8 py-lg-13">
+      <!-- Tab 按鈕 -->
+      <div class="custom-container-lg">
+        <ul
+          class="nav d-flex flex-nowrap gap-3 gap-lg-6 text-center border-bottom mb-6 mb-lg-12"
+          id="productDetailTab"
+          role="tablist"
+        >
+          <li class="w-100" role="presentation">
+            <button
+              class="btn px-0 py-4 w-100 rounded-0 border-0 fs-7 text-neutral-400 custom-tab-btn active"
+              id="introduction-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#introduction-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="introduction-tab-pane"
+              aria-selected="true"
+            >
+              介紹
+            </button>
+          </li>
+          <li class="w-100" role="presentation">
+            <button
+              class="btn px-0 py-4 w-100 rounded-0 border-0 fs-7 text-neutral-400 custom-tab-btn"
+              id="care-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#care-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="care-tab-pane"
+              aria-selected="false"
+            >
+              照顧方式
+            </button>
+          </li>
+          <li class="w-100" role="presentation">
+            <button
+              class="btn px-0 py-4 w-100 rounded-0 border-0 fs-7 text-neutral-400 custom-tab-btn"
+              id="notice-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#notice-tab-pane"
+              type="button"
+              role="tab"
+              aria-controls="notice-tab-pane"
+              aria-selected="false"
+            >
+              注意事項
+            </button>
+          </li>
+        </ul>
+      </div>
+      <!-- Tab 內容 -->
+      <div class="tab-content" id="productDetailTabContent">
+        <!-- 介紹 Tab 的內容 -->
+        <div
+          class="tab-pane fade show active"
+          id="introduction-tab-pane"
+          role="tabpanel"
+          aria-labelledby="introduction-tab"
+          tabindex="0"
+        >
+          <!-- 當前商品字卡 -->
+          <div class="container mb-lg-10">
+            <div class="row align-items-center">
+              <div class="card border-0 col-lg-6">
+                <div class="card-body px-0 py-3 p-lg-6">
+                  <h3 class="card-title h4 text-neutral-700">荒原綠影</h3>
+                  <p class="card-text text-neutral-400">
+                    以三款仙人掌組成的荒漠組盆。我們精心挑選各式仙人掌，它們身形各異，有的高聳挺拔，有的嬌小圓潤，有的則滿佈刺毛，每一株都是荒野中的獨立角色。
+                  </p>
+                </div>
+              </div>
+              <img class="d-lg-block d-none col-lg-6" src="/plantique-life/assets/img_product_13-3-CokqUnd8.png" alt="product_13-3" />
+            </div>
+          </div>
+          <img class="d-block d-lg-none mb-6 w-100" src="/plantique-life/assets/img_product_13-3-CokqUnd8.png" alt="product_13-3" />
+          <!-- 組盆內容 -->
+          <div class="container">
+            <p class="text-primary ps-lg-6 section-decoration-line-right overflow-hidden">組盆內容</p>
+            <div class="row align-items-center py-6 py-lg-40">
+              <div class="card border-0 col-xl-4 mb-3 mb-lg-0">
+                <div class="card-body px-0 py-3 p-lg-6">
+                  <h3 class="card-title h4 text-neutral-700">白烏​帽子</h3>
+                  <h6 class="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
+                    Opuntia microdasys var. albispina
+                  </h6>
+                  <p class="card-text text-neutral-400">
+                    掌狀莖覆滿​白色​細緻絨毛狀​刺座，​外觀柔​和​卻兼​具仙​人掌​的​堅韌​特性，​是​造型​獨特且​充滿​可​愛感​的​品種。
+                  </p>
+                </div>
+              </div>
+              <div class="card border-0 col-xl-4 mb-3 mb-lg-0">
+                <div class="card-body px-0 py-3 p-lg-6">
+                  <h3 class="card-title h4 text-neutral-700">緋牡丹錦​</h3>
+                  <h6 class="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
+                    Gymnocalycium mihanovichii var. friedrichii
+                  </h6>
+                  <p class="card-text text-neutral-400">
+                    以​鮮紅、​橙黃、​粉紫​等​錦斑色​澤​聞名，​宛如​一​朵​小小​的​彩色​牡丹，​鮮豔​奪目，​是​觀賞​價值​極​高​的​仙人​掌​種類。
+                  </p>
+                </div>
+              </div>
+              <div class="card border-0 col-xl-4">
+                <div class="card-body px-0 py-3 p-lg-6">
+                  <h3 class="card-title h4 text-neutral-700">熊童子</h3>
+                  <h6 class="card-subtitle mt-0 mb-2 text-primary noto-sans-tc fs-sm lh-base fw-medium">
+                    Cotyledon tomentosa
+                  </h6>
+                  <p class="card-text text-neutral-400">
+                    圓潤​厚實​的​葉片​覆​有​細絨毛，​葉尖​呈​爪狀，​宛如​小熊​的​掌心，​造型​療癒，​深受​多​肉愛好者​喜愛。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="custom-container-lg">
+            <img class="d-block" src="/plantique-life/assets/img_product_13-2-C2l5tT9r.png" alt="product_13-2" />
+          </div>
+        </div>
+        <!-- 照顧方式 Tab 的內容 -->
+        <div class="tab-pane fade" id="care-tab-pane" role="tabpanel" aria-labelledby="care-tab" tabindex="0">
+          <!-- 照顧方式的內容 -->
+        </div>
+        <!-- 注意事項 Tab 的內容 -->
+        <div class="tab-pane fade" id="notice-tab-pane" role="tabpanel" aria-labelledby="notice-tab" tabindex="0">
+          <!-- 注意事項的內容 -->
+        </div>
+      </div>
+    </section>
+    <!-- 相關商品區塊 -->
+    <section class="container py-12 py-lg-15">
+      <p class="text-neutral-400 fs-7 mb-8 mb-lg-10 section-decoration-line-both overflow-hidden">相關商品</p>
+      <!-- 相關商品卡片 -->
+      <div class="row px-6px px-lg-0">
+        <!-- prettier-ignore -->
+        
+        
+        <div class="col-6 col-lg-3 gx-3 gx-lg-6 gy-6 gy-lg-0 adjust-product-card-img-size">
+          <div class="card rounded-0 border-0 product-card">
+  <div class="position-relative overflow-hidden product-card-img-height">
+    <img
+      src="/plantique-life/assets/img_product_07-p-BSOo11.png"
+      class="card-img-top rounded-0 h-100 w-100 object-fit-cover product-card-img"
+      alt="product_07"
+    />
+    <div class="position-absolute favorite-btn"><button class="btn custom-btn-fav" data-bs-toggle="button" type="button">
+  <span class="custom-btn-icon material-symbols-rounded"> favorite </span>
+</button>
+</div>
+  </div>
+  <div class="card-body p-0 pt-3 pt-lg-5">
+    <span
+      class="fs-xs fs-lg-sm px-2 px-lg-3 py-1 text-primary bg-primary-100"
+    >
+      質感精選
+    </span>
+    <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
+      <div class="d-flex flex-column justify-content-between">
+        <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
+          <a
+            href="#"
+            class="stretched-link text-decoration-none text-neutral-700"
+          >
+            雪夜之森
+          </a>
+        </h5>
+        <div class="d-md-flex align-items-baseline">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
+            2,400
+          </p>
+          
+        </div>
+      </div>
+      <button type="button" class="btn bg-transparent border-0 p-0">
+        <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3"> shopping_cart </span>
+      </button>
+    </div>
+  </div>
+</div>
+        </div>
+        
+        <div class="col-6 col-lg-3 gx-3 gx-lg-6 gy-6 gy-lg-0 adjust-product-card-img-size">
+          <div class="card rounded-0 border-0 product-card">
+  <div class="position-relative overflow-hidden product-card-img-height">
+    <img
+      src="/plantique-life/assets/img_product_08-B-ePgOsy.png"
+      class="card-img-top rounded-0 h-100 w-100 object-fit-cover product-card-img"
+      alt="product_08"
+    />
+    <div class="position-absolute favorite-btn"><button class="btn custom-btn-fav" data-bs-toggle="button" type="button">
+  <span class="custom-btn-icon material-symbols-rounded"> favorite </span>
+</button>
+</div>
+  </div>
+  <div class="card-body p-0 pt-3 pt-lg-5">
+    <span
+      class="fs-xs fs-lg-sm px-2 px-lg-3 py-1 text-primary bg-primary-100"
+    >
+      質感精選
+    </span>
+    <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
+      <div class="d-flex flex-column justify-content-between">
+        <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
+          <a
+            href="#"
+            class="stretched-link text-decoration-none text-neutral-700"
+          >
+            植語時光
+          </a>
+        </h5>
+        <div class="d-md-flex align-items-baseline">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
+            3,000
+          </p>
+          
+        </div>
+      </div>
+      <button type="button" class="btn bg-transparent border-0 p-0">
+        <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3"> shopping_cart </span>
+      </button>
+    </div>
+  </div>
+</div>
+        </div>
+        
+        <div class="col-6 col-lg-3 gx-3 gx-lg-6 gy-6 gy-lg-0 adjust-product-card-img-size">
+          <div class="card rounded-0 border-0 product-card">
+  <div class="position-relative overflow-hidden product-card-img-height">
+    <img
+      src="/plantique-life/assets/img_product_13-ByJQwkSE.png"
+      class="card-img-top rounded-0 h-100 w-100 object-fit-cover product-card-img"
+      alt="product_13"
+    />
+    <div class="position-absolute favorite-btn"><button class="btn custom-btn-fav" data-bs-toggle="button" type="button">
+  <span class="custom-btn-icon material-symbols-rounded"> favorite </span>
+</button>
+</div>
+  </div>
+  <div class="card-body p-0 pt-3 pt-lg-5">
+    <span
+      class="fs-xs fs-lg-sm px-2 px-lg-3 py-1 text-primary bg-primary-100"
+    >
+      質感精選
+    </span>
+    <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
+      <div class="d-flex flex-column justify-content-between">
+        <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
+          <a
+            href="#"
+            class="stretched-link text-decoration-none text-neutral-700"
+          >
+            荒原綠影
+          </a>
+        </h5>
+        <div class="d-md-flex align-items-baseline">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
+            2,400
+          </p>
+          
+        </div>
+      </div>
+      <button type="button" class="btn bg-transparent border-0 p-0">
+        <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3"> shopping_cart </span>
+      </button>
+    </div>
+  </div>
+</div>
+        </div>
+        
+        <div class="col-6 col-lg-3 gx-3 gx-lg-6 gy-6 gy-lg-0 adjust-product-card-img-size">
+          <div class="card rounded-0 border-0 product-card">
+  <div class="position-relative overflow-hidden product-card-img-height">
+    <img
+      src="/plantique-life/assets/img_product_09-BCAGLXpf.png"
+      class="card-img-top rounded-0 h-100 w-100 object-fit-cover product-card-img"
+      alt="product_09"
+    />
+    <div class="position-absolute favorite-btn"><button class="btn custom-btn-fav" data-bs-toggle="button" type="button">
+  <span class="custom-btn-icon material-symbols-rounded"> favorite </span>
+</button>
+</div>
+  </div>
+  <div class="card-body p-0 pt-3 pt-lg-5">
+    <span
+      class="fs-xs fs-lg-sm px-2 px-lg-3 py-1 text-primary bg-primary-100"
+    >
+      質感精選
+    </span>
+    <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
+      <div class="d-flex flex-column justify-content-between">
+        <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
+          <a
+            href="#"
+            class="stretched-link text-decoration-none text-neutral-700"
+          >
+            森語花信
+          </a>
+        </h5>
+        <div class="d-md-flex align-items-baseline">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
+            3,500
+          </p>
+          
+        </div>
+      </div>
+      <button type="button" class="btn bg-transparent border-0 p-0">
+        <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3"> shopping_cart </span>
+      </button>
+    </div>
+  </div>
+</div>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- bottom-part-end -->
+
+    <footer class="footer bg-primary-500 py-12 py-lg-15">
+  <div class="container">
+    <div class="row mb-10 mb-lg-6">
+      <!-- 營業資訊 -->
+      <section class="col-lg-4 order-lg-2 mb-10 mb-lg-0">
+        <div class="mb-4 mb-lg-6">
+          <a class="d-block pt-3 pb-2" href="index.html">
+            <img src="/plantique-life/assets/logo-white-en-lg-CGcqdvxj.svg" alt="Plantique Life" />
+          </a>
+        </div>
+        <p class="text-white mb-2 d-flex align-items-center">
+          <span class="material-symbols-rounded align-bottom me-2 me-lg-3 fs-6"> schedule </span>平日&ensp;
+          <time datetime="09:00">09:00</time>&thinsp;-&thinsp;<time datetime="21:00">21:00</time>
+        </p>
+        <p class="text-white mb-4 mb-lg-6 d-flex align-items-center">
+          <span class="material-symbols-rounded align-bottom me-2 me-lg-3 fs-6"> mail </span>
+          <a href="mailto:PlaniqueLife@example.invalid" class="text-white">PlaniqueLife@gmail.com</a>
+        </p>
+        <div class="d-flex column-gap-4">
+          <!-- prettier-ignore -->
+          
+          
+            <button class="btn custom-btn-social" type="button">
+  <img class="custom-btn-icon" src="data:image/svg+xml,%3csvg%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='white'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M15.3172%202C16.5936%202.00005%2016.9964%202.21866%2017.5855%202.35823C17.8288%202.41586%2017.9999%202.62499%2018%202.86457V6.04795C17.9999%206.20237%2017.9284%206.34884%2017.8044%206.44784C17.6804%206.5468%2017.5168%206.58818%2017.3579%206.56077C16.6076%206.43093%2016.4594%206.37286%2015.7627%206.37286C15.3661%206.37286%2015.1033%206.42876%2014.9065%206.51449C14.7128%206.59898%2014.544%206.72914%2014.3603%206.93752C14.0515%207.28773%2013.8306%207.98915%2013.8305%209.19522V9.80987H17.4547C17.63%209.80987%2017.7948%209.89065%2017.8973%2010.0265C17.9997%2010.1623%2018.0271%2010.3369%2017.9719%2010.4958L16.8542%2013.7134C16.78%2013.9269%2016.5705%2014.0712%2016.3351%2014.0707L13.8305%2014.0642V21.4788C13.8305%2021.7667%2013.5863%2021.9998%2013.2852%2022H9.60387C9.30262%2022%209.0586%2021.7668%209.0586%2021.4788V14.0633H6.54528C6.24402%2014.0633%206%2013.8301%206%2013.5422V10.3245C6%2010.0366%206.24402%209.80339%206.54528%209.80339H9.0586V9.15357C9.0586%206.9238%209.52597%205.12598%2010.5811%203.87911C11.6542%202.61109%2013.2596%202%2015.3172%202ZM15.3172%203.0423C13.4953%203.0423%2012.2431%203.57404%2011.4295%204.53541C10.5981%205.51804%2010.1492%207.03662%2010.1492%209.15357V10.3245C10.1491%2010.6123%209.90495%2010.8456%209.60387%2010.8457H7.09056V13.021H9.60387C9.90492%2013.0212%2010.149%2013.2544%2010.1492%2013.5422V20.9577H12.739V13.5422C12.7391%2013.4039%2012.7974%2013.2715%2012.8998%2013.1737C13.0023%2013.076%2013.1413%2013.0207%2013.2862%2013.021L15.9429%2013.0266L16.6993%2010.8531H13.2852C12.984%2010.8531%2012.739%2010.6189%2012.739%2010.331V9.19522C12.739%207.93392%2012.9574%206.91075%2013.5264%206.26548C13.7814%205.97626%2014.073%205.7318%2014.4542%205.56568C14.8327%205.40077%2015.2603%205.32963%2015.7627%205.32963C16.2845%205.32963%2016.5799%205.36623%2016.9094%205.4222V3.25984C16.4803%203.13762%2016.1733%203.04234%2015.3172%203.0423Z'/%3e%3c/svg%3e" alt="facebook-link" />
+</button>
+          
+            <button class="btn custom-btn-social" type="button">
+  <img class="custom-btn-icon" src="/plantique-life/assets/line-CnBc3KYC.svg" alt="line-link" />
+</button>
+          
+            <button class="btn custom-btn-social" type="button">
+  <img class="custom-btn-icon" src="data:image/svg+xml,%3csvg%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='white'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M12.0037%207.10905C13.31%207.10915%2014.5412%207.61953%2015.4645%208.54283C16.3877%209.46618%2016.8974%2010.6974%2016.8974%2012.0037C16.8973%2013.31%2016.3878%2014.5412%2015.4645%2015.4645L15.4627%2015.4663C14.5341%2016.387%2013.3113%2016.8973%2012.0037%2016.8974C10.6972%2016.8974%209.46529%2016.3879%208.54191%2015.4645C7.61869%2014.5412%207.10911%2013.3099%207.10905%2012.0037C7.10905%2010.6974%207.61878%209.46617%208.54191%208.54283C9.46529%207.61945%2010.6972%207.10905%2012.0037%207.10905ZM12.0037%208.23428C10.9954%208.23428%2010.0497%208.62537%209.33754%209.33754C8.62533%2010.0497%208.23428%2010.9953%208.23428%2012.0037C8.23434%2013.0118%208.62549%2013.9567%209.33754%2014.6689C10.0497%2015.3811%2010.9953%2015.7721%2012.0037%2015.7721C13.0105%2015.772%2013.95%2015.3817%2014.6707%2014.667C15.3817%2013.9551%2015.7721%2013.011%2015.7721%2012.0037C15.7721%2010.9953%2015.3811%2010.0497%2014.6689%209.33754C13.9568%208.62552%2013.0118%208.23438%2012.0037%208.23428Z'/%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M17.1793%205.30356C17.9493%205.30367%2018.5738%205.92804%2018.5738%206.69797C18.5737%207.46786%2017.9492%208.09226%2017.1793%208.09237C16.4094%208.09237%2015.785%207.46793%2015.7849%206.69797C15.7849%205.92797%2016.4094%205.30356%2017.1793%205.30356ZM17.1793%206.42879C17.0307%206.42879%2016.9102%206.54932%2016.9102%206.69797C16.9102%206.84658%2017.0307%206.96714%2017.1793%206.96714C17.3279%206.96703%2017.4485%206.84652%2017.4485%206.69797C17.4485%206.54938%2017.3279%206.4289%2017.1793%206.42879Z'/%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M17.617%203C19.4801%203%2021%204.51991%2021%206.38301V17.617C21%2019.487%2019.487%2021%2017.617%2021H6.38301C4.51991%2021%203%2019.4801%203%2017.617V6.38301C3%204.51991%204.51991%203%206.38301%203H17.617ZM6.38301%204.12431C5.14126%204.12431%204.12431%205.14126%204.12431%206.38301V17.617C4.12431%2018.8587%205.14126%2019.8757%206.38301%2019.8757H17.617C18.8657%2019.8757%2019.8757%2018.8657%2019.8757%2017.617V6.38301C19.8757%205.14126%2018.8587%204.12431%2017.617%204.12431H6.38301Z'/%3e%3c/svg%3e" alt="ig-link" />
+</button>
+          
+        </div>
+      </section>
+      <!-- 網站地圖 -->
+      <section class="col-lg-8 order-lg-1">
+        <div class="d-flex justify-content-between gap-lg-6 justify-content-lg-start text-center">
+          <div>
+            <p class="text-primary-200 mb-4 mb-lg-6">Member</p>
+            <ul class="list-unstyled">
+              <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="#">會員權益</a></li>
+              <li><a class="link-white site-map-link" href="#">會員帳戶</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-primary-200 mb-4 mb-lg-6">About Us</p>
+            <ul class="list-unstyled">
+              <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="#">關於植感</a></li>
+              <li><a class="link-white site-map-link" href="#">植藝生活</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-primary-200 mb-4 mb-lg-6">Product</p>
+            <ul class="list-unstyled">
+              <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="#">植感精選</a></li>
+              <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="#">所有商品</a></li>
+              <li><a class="link-white site-map-link" href="#">配件商品</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-primary-200 mb-4 mb-lg-6">FAQs</p>
+            <ul class="list-unstyled">
+              <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="#">購物須知 </a></li>
+              <li><a class="link-white site-map-link" href="#">退換貨政策</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- Copyright -->
+    <div
+      class="d-flex flex-column text-center justify-content-center flex-lg-row justify-content-lg-start align-items-center text-lg-start"
+    >
+      <p class="text-white me-0 mb-lg-0 me-lg-6 mb-1">© 2025 PlantiqueLife All rights reserved.</p>
+      <ul class="d-flex list-unstyled">
+        <li class="me-3 me-lg-6"><a class="link-white" href="#">隱私權政策</a></li>
+        <li><a class="link-white" href="#">使用者條款</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>
