@@ -67,3 +67,7 @@ const productSwiper = new Swiper('.productSwiper', {
     },
   },
 });
+
+document.querySelector('#slogan > button').addEventListener('click', () => {
+  location.href = `${import.meta.env.BASE_URL}product-list.html`;
+});
