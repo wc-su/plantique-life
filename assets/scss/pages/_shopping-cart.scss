@@ -258,6 +258,13 @@ input.form-control {
   }
 }
 
+.checkout-btn-basis {
+  // 基礎寬度為 50%，並考慮間距
+  flex-basis: calc(50% - calc(map-get($spacers, 4) / 2));
+  // 控制何時會換行
+  min-width: 136px;
+}
+
 .confirm-modal {
   .modal-dialog {
     @include media-breakpoint-up(lg) {
