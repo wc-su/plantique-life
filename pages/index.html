@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
     <title>植感生活 | PLANTIQUE LIFE</title>
   </head>
@@ -19,7 +18,7 @@
             <div class="d-flex flex-column justify-content-center">
               <img src="/assets/images/img_title_lg.svg" alt="title" class="mb-10" />
               <% const btnFilledPill = { type: 'filled', color:'primary', shape: 'pill', size: 'lg', btnText:'立即選購',
-              rightIcon: true, leftIcon: false, iconName:'arrow_right_alt'} %>
+              rightIcon: true, leftIcon: false, iconName:'arrow_right_alt', btnClass: 'text-nowrap'} %>
               <%-include('./components/buttons/btn-filled-or-outline', btnFilledPill); -%>
             </div>
           </div>
@@ -308,7 +307,122 @@
     <!-- category section end -->
 
     <!-- recommend section start -->
+    <section class="py-12 py-lg-15">
+      <!-- 標題 -->
+      <div class="container mb-12">
+        <div class="d-flex justify-content-center justify-content-md-between align-items-center align-items-md-end">
+          <hgroup class="d-flex justify-content-start align-items-end align-items-lg-center gap-6 gap-lg-10">
+            <img src="/assets/images/heading-decoration.svg" alt="decoration" class="d-sm-block d-none" />
+            <img src="/assets/images/heading-decoration-sm.svg" alt="decoration" class="d-sm-none d-block" />
+            <div class="text-center">
+              <small class="d-block fw-bold lh-sm fs-8 fs-lg-7 align-middle text-primary noto-serif-tc mb-1">
+                Recommend
+              </small>
+              <h2 class="fs-3 fs-lg-2 text-neutral-700">植感精選</h2>
+            </div>
+            <img src="/assets/images/heading-decoration.svg" alt="decoration" class="d-sm-block d-none" />
+            <img src="/assets/images/heading-decoration-sm.svg" alt="decoration" class="d-sm-none d-block" />
+          </hgroup>
+          <div class="d-none d-md-block">
+            <% const btnFilledOutline = { type: 'outline', color:'neutral', shape: 'pill', size: 'lg',
+            btnText:'查看更多', rightIcon: true, leftIcon: false, iconName:'arrow_right_alt'} %>
+            <%-include('./components/buttons/btn-filled-or-outline', btnFilledOutline); -%>
+          </div>
+        </div>
+      </div>
 
+      <!-- 產品卡片 -->
+      <div class="container mb-8">
+        <div class="position-relative">
+          <div class="swiper productSwiper">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide swiper-slide-prouct">
+                <div>
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                       picAlt:"多肉植物組合盆栽",
+                       picSrc:'/assets/images/img_product_01.png', 
+                       productTag:"質感精選",
+                       productName:"泡泡森林",
+                       productPrice :"NT$ 6,200"
+                      }); -%>
+                </div>
+              </div>
+              <div class="swiper-slide swiper-slide-prouct">
+                <div>
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                       picAlt:"多肉植物組合盆栽",
+                       picSrc:'/assets/images/img_product_02.png', 
+                       productTag:"質感精選",
+                       productName:"向陽而生",
+                       productPrice :"NT$ 7,280"
+                      }); -%>
+                </div>
+              </div>
+              <div class="swiper-slide swiper-slide-prouct">
+                <div>
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                       picAlt:"多肉植物組合盆栽",
+                       picSrc:'/assets/images/img_product_03.png', 
+                       productTag:"質感精選",
+                       productName:"暮光角落",
+                       productPrice :"NT$ 7,500"
+                      }); -%>
+                </div>
+              </div>
+              <div class="swiper-slide swiper-slide-prouct">
+                <div>
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                       picAlt:"多肉植物組合盆栽",
+                       picSrc:'/assets/images/img_product_04.png', 
+                       productTag:"質感精選",
+                       productName:"雲深處靜",
+                       productPrice :"NT$ 6,600"
+                      }); -%>
+                </div>
+              </div>
+              <div class="swiper-slide swiper-slide-prouct">
+                <div>
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                       picAlt:"多肉植物組合盆栽",
+                       picSrc:'/assets/images/img_product_05.png', 
+                       productTag:"質感精選",
+                       productName:"玉露女王",
+                       productPrice :"NT$ 5,200"
+                      }); -%>
+                </div>
+              </div>
+              <div class="swiper-slide swiper-slide-prouct">
+                <div>
+                  <!-- prettier-ignore -->
+                  <%- include('./components/product-card',{ 
+                       picAlt:"多肉植物組合盆栽",
+                       picSrc:'/assets/images/img_product_06.png', 
+                       productTag:"質感精選",
+                       productName:"玉扇食生",
+                       productPrice :"NT$ 4,600"
+                      }); -%>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 導航按鈕 -->
+          <div class="swiper-button-prev">
+            <span class="material-symbols-rounded">arrow_left_alt </span>
+          </div>
+          <div class="swiper-button-next">
+            <span class="material-symbols-rounded"> arrow_right_alt </span>
+          </div>
+        </div>
+      </div>
+      <div class="d-md-none d-flex justify-content-center">
+        <%-include('./components/buttons/btn-filled-or-outline', btnFilledOutline); -%>
+      </div>
+    </section>
     <!-- recommend section end -->
 
     <!-- column section start -->
