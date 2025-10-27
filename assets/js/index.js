@@ -60,7 +60,7 @@ const productSwiper = new Swiper('.productSwiper', {
       freeMode: true,
       navigation: false, // 關閉箭頭
     },
-    1024: {
+    768: {
       slidesPerView: 4,
       spaceBetween: 24,
       freeMode: false,
