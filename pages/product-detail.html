@@ -12,30 +12,32 @@
 
     <section class="py-8 py-lg-13">
       <div class="container">
-        <!-- prettier-ignore -->
-        <%- include('./components/breadcrumb',
-            {
-              items: [
-                {
-                  name: '首頁',
-                  link: 'index.html',
-                },
-                {
-                  name: '植感精選',
-                  link: '#',
-                },
-                {
-                  name: '療癒組盆',
-                  link: '#',
-                },
-                {
-                  name: '荒原綠影',
-                  link: '#',
-                },
-              ]
-            }
-          );
-        -%>
+        <div class="mb-6 mb-lg-12">
+          <!-- prettier-ignore -->
+          <%- include('./components/breadcrumb',
+              {
+                items: [
+                  {
+                    name: '首頁',
+                    link: 'index.html',
+                  },
+                  {
+                    name: '植感精選',
+                    link: '#',
+                  },
+                  {
+                    name: '療癒組盆',
+                    link: '#',
+                  },
+                  {
+                    name: '荒原綠影',
+                    link: '#',
+                  },
+                ]
+              }
+            );
+          -%>
+        </div>
       </div>
 
       <div class="container">
@@ -329,10 +331,10 @@
       <div class="row px-6px px-lg-0">
         <!-- prettier-ignore -->
         <% const relativeCards = [
-        {picSrc: '/assets/images/img_product_07.png', picAlt: 'product_07', productTag: '質感精選', productName: '雪夜之森', productPrice: '2,400'},
-        {picSrc: '/assets/images/img_product_08.png', picAlt: 'product_08', productTag: '質感精選', productName: '植語時光', productPrice: '3,000'},
-        {picSrc: '/assets/images/img_product_13.png', picAlt: 'product_13', productTag: '質感精選', productName: '荒原綠影', productPrice: '2,400'},
-        {picSrc: '/assets/images/img_product_09.png', picAlt: 'product_09', productTag: '質感精選', productName: '森語花信', productPrice: '3,500'},
+        {picSrc: '/assets/images/img_product_07.png', picAlt: 'product_07', productTag: '質感精選', productName: '雪夜之森', productPrice: 'NT$2,400'},
+        {picSrc: '/assets/images/img_product_08.png', picAlt: 'product_08', productTag: '質感精選', productName: '植語時光', productPrice: 'NT$3,000'},
+        {picSrc: '/assets/images/img_product_13.png', picAlt: 'product_13', productTag: '質感精選', productName: '荒原綠影', productPrice: 'NT$2,400'},
+        {picSrc: '/assets/images/img_product_09.png', picAlt: 'product_09', productTag: '質感精選', productName: '森語花信', productPrice: 'NT$3,500'},
         ] %>
         <% for (const relativeCard of relativeCards){ %>
         <div class="col-6 col-lg-3 gx-3 gx-lg-6 gy-6 gy-lg-0 adjust-product-card-img-size">
