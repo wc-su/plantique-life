@@ -38,6 +38,23 @@ const newsSwiper = new Swiper('.newsSwiper', {
     el: '.swiper-pagination',
     clickable: true,
   },
+  on: {
+    touchStart() {
+      // 暫停動畫
+      this.el.classList.add('is-paused');
+    },
+    touchEnd() {
+      // 恢復動畫
+      this.el.classList.remove('is-paused');
+
+      // 因 swiper delay 重新計算，重置所有 bullets 的動畫
+      this.pagination.bullets.forEach(bullet => {
+        bullet.classList.remove('restart');
+        void bullet.offsetWidth; // 強制重繪
+        bullet.classList.add('restart');
+      });
+    },
+  },
 });
 
 const productSwiper = new Swiper('.productSwiper', {
