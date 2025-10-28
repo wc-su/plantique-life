@@ -88,18 +88,18 @@ const orderInfo = {
   },
   payment: {
     method: '信用卡一次付清',
-    creditCardInfo: { number: ['1111', '2222', '3333', '4444'], exp: ['31', '01'], cvc: '123' },
+    creditCardInfo: { number: ['1111', '2222', '3333', '4444'], exp: ['01', '28'], cvc: '123' },
   },
   purchaser: {
     name: '王小明',
-    tel: '0912345678',
+    tel: '0912-345-678',
     email: 'plantique@test.com',
   },
   recipient: {
     name: '王小明',
-    tel: '0912345678',
+    tel: '0912-345-678',
     email: 'plantique@test.com',
-    address: '台北市信義區',
+    address: '台北市信義區松仁路100號',
   },
   invoice: {
     method: '雲端載具',
@@ -819,6 +819,11 @@ function confirmCheckoutData() {
     return;
   }
 
+  // 顯示確認 Modal 資料
+  confirmModalNameEl.textContent = recipientNameEl.value;
+  confirmModalPhoneEl.textContent = recipientPhoneEl.value;
+  confirmModalAddressEl.textContent = recipientAddressEl.value;
+
   confirmModal.show();
 }
 // 前往訂單完成
@@ -1169,27 +1174,18 @@ purchaserEmailEl.addEventListener('input', e => {
     // 若同訂購人資料的 checkbox 有勾選，則收件人電子郵件同步訂購人電子郵件
     if (recipientCheckedEl.checked) {
       recipientEmailEl.value = e.target.value;
-      confirmModalAddressEl.textContent = e.target.value;
+      recipientEmailEl.textContent = e.target.value;
     }
   }
 });
 // 付款資料 → 收件人姓名
-recipientNameEl.addEventListener(
-  'input',
-  e => checkSchema(e.target, 'recipientName') && (confirmModalNameEl.textContent = e.target.value),
-);
+recipientNameEl.addEventListener('input', e => checkSchema(e.target, 'recipientName'));
 // 付款資料 → 收件人電話號碼
-recipientPhoneMask.on(
-  'accept',
-  e => checkSchema(e.target, 'recipientPhone') && (confirmModalPhoneEl.textContent = e.target.value),
-);
+recipientPhoneMask.on('accept', e => checkSchema(e.target, 'recipientPhone'));
 // 付款資料 → 收件人電子郵件
 recipientEmailEl.addEventListener('input', e => checkSchema(e.target, 'recipientEmail'));
 // 付款資料 → 收件人地址
-recipientAddressEl.addEventListener(
-  'input',
-  e => checkSchema(e.target, 'recipientAddress') && (confirmModalAddressEl.textContent = e.target.value),
-);
+recipientAddressEl.addEventListener('input', e => checkSchema(e.target, 'recipientAddress'));
 // 付款資料 → 手機條碼
 mobileBarcodeEl.addEventListener('input', e => checkSchema(e.target, 'mobileBarcode'));
 // 付款資料 → 統一編號
