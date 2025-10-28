@@ -104,7 +104,7 @@ const orderInfo = {
   invoice: {
     method: '雲端載具',
     mobileBarcode: '/ABC1234',
-    ubn: '',
+    ubn: '12345678',
   },
   notes: '',
 };
@@ -299,6 +299,13 @@ const confirmModalCheckBtnEl = document.getElementById('confirmModalCheckBtn');
 const completedBtnEl = document.getElementById('completed-btn');
 
 /****** 訂單完成畫面 結束 ******/
+
+/****** demo 開始 ******/
+
+// demo 按鈕
+const demoBtnEl = document.getElementById('demo-btn');
+
+/****** demo 結束 ******/
 
 // 滾動至頂部
 function scrollToTop() {
@@ -1198,3 +1205,94 @@ confirmModalCheckBtnEl.addEventListener('click', () => {
 
 // 訂單完成 → 繼續購物
 completedBtnEl.addEventListener('click', () => (window.location.href = './product-list.html'));
+
+// 付款資料 → demo 按鈕事件：自動填入資料
+demoBtnEl.addEventListener('click', () => {
+  // 運送方式
+  if (
+    deliveryToggleEl.classList.contains('is-invalid') ||
+    deliveryToggleEl.textContent.trim() === deliveryToggleEl.dataset.initialText
+  ) {
+    deliveryToggleEl.textContent = orderInfo.delivery.method;
+  }
+  // 付款方式
+  if (
+    paymentToggleEl.classList.contains('is-invalid') ||
+    paymentToggleEl.textContent.trim() === paymentToggleEl.dataset.initialText
+  ) {
+    paymentToggleEl.textContent = orderInfo.payment.method;
+  }
+  if (paymentToggleEl.textContent === '信用卡一次付清') {
+    creditcardFormEl.style.display = 'block';
+    creditcardInputEls.forEach(creditcardInputEl => (creditcardInputEl.disabled = false));
+    if (cardNumberEl.classList.contains('is-invalid') || cardNumberEl.value === '') {
+      cardNumberEl.value = orderInfo.payment.creditCardInfo.number.join('-');
+    }
+    if (cardExpEl.classList.contains('is-invalid') || cardExpEl.value === '') {
+      cardExpEl.value = orderInfo.payment.creditCardInfo.exp.join('/');
+    }
+    if (cardCvcEl.classList.contains('is-invalid') || cardCvcEl.value === '') {
+      cardCvcEl.value = orderInfo.payment.creditCardInfo.cvc;
+    }
+  }
+  // 訂購人資料
+  if (purchaserNameEl.classList.contains('is-invalid') || purchaserNameEl.value === '') {
+    purchaserNameEl.value = orderInfo.purchaser.name;
+  }
+  if (purchaserPhoneEl.classList.contains('is-invalid') || purchaserPhoneEl.value === '') {
+    purchaserPhoneEl.value = orderInfo.purchaser.tel;
+  }
+  if (purchaserEmailEl.classList.contains('is-invalid') || purchaserEmailEl.value === '') {
+    purchaserEmailEl.value = orderInfo.purchaser.email;
+  }
+  // 收貨人資料
+  if (recipientCheckedEl.checked) {
+    recipientNameEl.value = purchaserNameEl.value;
+    recipientPhoneEl.value = purchaserPhoneEl.value;
+    recipientEmailEl.value = purchaserEmailEl.value;
+  } else if (recipientNameEl.value === '' && recipientPhoneEl.value === '' && recipientEmailEl.value === '') {
+    recipientCheckedEl.checked = true;
+    recipientNameEl.disabled = true;
+    recipientPhoneEl.disabled = true;
+    recipientEmailEl.disabled = true;
+    recipientNameEl.value = orderInfo.recipient.name;
+    recipientPhoneEl.value = orderInfo.recipient.tel;
+    recipientEmailEl.value = orderInfo.recipient.email;
+  } else {
+    if (recipientNameEl.classList.contains('is-invalid') || recipientNameEl.value === '') {
+      recipientNameEl.value = orderInfo.recipient.name;
+    }
+    if (recipientPhoneEl.classList.contains('is-invalid') || recipientPhoneEl.value === '') {
+      recipientPhoneEl.value = orderInfo.recipient.tel;
+    }
+    if (recipientEmailEl.classList.contains('is-invalid') || recipientEmailEl.value === '') {
+      recipientEmailEl.value = orderInfo.recipient.email;
+    }
+  }
+  if (recipientAddressEl.classList.contains('is-invalid') || recipientAddressEl.value === '') {
+    recipientAddressEl.value = orderInfo.recipient.address;
+  }
+  // 發票類型
+  if (invoiceToggleEl.textContent.trim() === invoiceToggleEl.dataset.initialText) {
+    invoiceToggleEl.textContent = orderInfo.invoice.method;
+    cloudInvoiceCarrierEl.style.display = 'block';
+    cloudInvoiceCarrierEl.querySelector('input').disabled = false;
+    mobileBarcodeEl.value = orderInfo.invoice.mobileBarcode;
+  } else if (invoiceToggleEl.textContent.trim() === '雲端載具') {
+    if (mobileBarcodeEl.classList.contains('is-invalid') || mobileBarcodeEl.value === '') {
+      mobileBarcodeEl.value = orderInfo.invoice.mobileBarcode;
+    }
+  } else if (invoiceToggleEl.textContent.trim() === '統一編號') {
+    if (ubnEl.classList.contains('is-invalid') || ubnEl.value === '') {
+      ubnEl.value = orderInfo.invoice.ubn;
+    }
+  }
+
+  // 移除檢核效果
+  const zodValidatedEls = document.querySelectorAll('.zod-validated');
+  zodValidatedEls.forEach(zodValidatedEl => {
+    zodValidatedEl.classList.remove('zod-validated');
+    const element = zodValidatedEl.querySelector('.is-valid, .is-invalid');
+    if (element) element.classList.remove('is-valid', 'is-invalid');
+  });
+});
