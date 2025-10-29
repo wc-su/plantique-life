@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
     <title>植感生活 | PLANTIQUE LIFE</title>
-    <script type="module" crossorigin src="/plantique-life/assets/index-BQln-RJG.js"></script>
+    <script type="module" crossorigin src="/plantique-life/assets/index-DTUsIYlp.js"></script>
     <link rel="modulepreload" crossorigin href="/plantique-life/assets/index-D9ISY5cH.js">
     <link rel="modulepreload" crossorigin href="/plantique-life/assets/bootstrap.min-BFbKqOoq.js">
-    <link rel="stylesheet" crossorigin href="/plantique-life/assets/index-BjVsWf5s.css">
+    <link rel="modulepreload" crossorigin href="/plantique-life/assets/pagination-CmcBmPSg.js">
+    <link rel="modulepreload" crossorigin href="/plantique-life/assets/navigation-BcXbJqY3.js">
+    <link rel="modulepreload" crossorigin href="/plantique-life/assets/autoplay-kURWeiIm.js">
+    <link rel="stylesheet" crossorigin href="/plantique-life/assets/index-CQFQ9hJW.css">
   </head>
 
   <body>
@@ -31,10 +34,10 @@
           <a class="custom-nav-link" href="#">最新消息</a>
         </li>
         <li>
-          <a class="custom-nav-link" href="#">植感商品</a>
+          <a class="custom-nav-link" href="product-list.html">植感商品</a>
         </li>
         <li>
-          <a class="custom-nav-link" href="#">植藝專欄</a>
+          <a class="custom-nav-link" href="article-list.html">植藝專欄</a>
         </li>
       </ul>
     </div>
@@ -138,10 +141,10 @@
           <a class="custom-nav-link" href="#">最新消息</a>
         </li>
         <li>
-          <a class="custom-nav-link" href="#">植感商品</a>
+          <a class="custom-nav-link" href="product-list.html">植感商品</a>
         </li>
         <li>
-          <a class="custom-nav-link" href="#">植藝專欄</a>
+          <a class="custom-nav-link" href="article-list.html">植藝專欄</a>
         </li>
       </ul>
       <!-- 未登入 -->
@@ -209,12 +212,18 @@
       <div class="container">
         <div class="row">
           <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
-            <div>
+            <div class="d-flex flex-column justify-content-center" id="slogan">
               <img src="/plantique-life/assets/img_title_lg-BoqBFMle.svg" alt="title" class="mb-10" />
-              <a href="#" class="btn-1 bg-primary text-white rounded-pill"
-                ><span class="me-1">立即選購</span>
-                <span class="material-symbols-rounded"> arrow_right_alt </span>
-              </a>
+              
+              <button
+  class="btn custom-btn-filled-primary custom-btn-pill-lg custom-btn-icon-end  text-nowrap"
+  type="button"
+  data-id=""
+>
+   立即選購 
+  <span class="custom-btn-icon material-symbols-rounded"> arrow_right_alt </span>
+  
+</button>
             </div>
           </div>
           <div class="d-none d-sm-block col-md-10">
@@ -235,7 +244,9 @@
               <img src="data:image/svg+xml,%3csvg%20width='32'%20height='41'%20viewBox='0%200%2032%2041'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M31%200.709894L1.77996%2040.1191L1%2039.5284L30.22%200.119141L31%200.709894Z'%20fill='%238C9761'/%3e%3c/svg%3e" alt="decorate-sm" class="d-sm-none d-block" />
               <div class="text-center d-flex flex-column justify-content-center align-items-center">
                 <h6 class="fs-8 fs-md-7 text-primary mb-1 mb-md-4">News</h6>
-                <h2 class="fs-3 fs-md-2 m-0 text-neutral-700 news-title mb-8 mb-lg-3">最新消息</h2>
+                <h2 class="fs-3 fs-md-2 m-0 text-neutral-700 news-title mb-8 mb-lg-4">
+                  <span>最</span><span>新</span><span>消</span><span>息</span>
+                </h2>
               </div>
               <img src="data:image/svg+xml,%3csvg%20width='60'%20height='81'%20viewBox='0%200%2060%2081'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M60%200.714289L0.790235%2080.1191L0%2079.524L59.2098%200.119141L60%200.714289Z'%20fill='%238C9761'/%3e%3c/svg%3e" alt="decoration-lg" class="d-sm-block d-none" />
               <img src="data:image/svg+xml,%3csvg%20width='32'%20height='41'%20viewBox='0%200%2032%2041'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M31%200.709894L1.77996%2040.1191L1%2039.5284L30.22%200.119141L31%200.709894Z'%20fill='%238C9761'/%3e%3c/svg%3e" alt="decoration-sm" class="d-sm-none d-block" />
@@ -254,22 +265,27 @@
                       <div class="news-image">
                         <img src="/plantique-life/assets/img_news_01-uh1bPrCO.png" alt="中秋禮盒" />
                       </div>
-                      <div class="d-flex flex-column p-4 p-md-6 py-md-5 gap-4 gap-lg-6 w-100">
+                      <div class="d-flex flex-column justify-content-lg-center p-4 p-md-6 py-md-5 gap-4 gap-lg-6 w-100">
                         <div>
                           <p class="fs-md fs-lg-7 text-primary-500 mb-1">2025.08.01 ~ 2025.09.20</p>
-                          <h3 class="fs-4 fs-lg-3 text-neutral-700 lh-sm">送禮不只月餅<br />中秋綠意禮盒預購中！</h3>
+                          <h3 class="fs-4 fs-lg-3 text-neutral-700">送禮不只月餅<br />中秋綠意禮盒預購中！</h3>
                         </div>
                         <p class="fs-sm fs-lg-8 text-neutral-400">
                           結合優雅設計與療癒綠意。<br />這個秋天，送出專屬於你的植感心意！
                         </p>
 
-                        <button
-                          type="button"
-                          class="btn text-primary rounded-pill border-4 p-0 ms-auto d-flex align-items-center"
-                        >
-                          <span class="fs-sm fs-md-8 mb-0 me-2">立即選購</span>
-                          <i class="bi bi-arrow-right"></i>
-                        </button>
+                        <a href="#" class="d-flex justify-content-end">
+                          
+                          <button
+  class="btn custom-btn-link-primary custom-btn-link-sm custom-btn-icon-end"
+  type="button"
+>
+  活動詳情 
+  <span class="custom-btn-icon material-symbols-rounded"> arrow_right_alt </span>
+  
+</button>
+ 
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -283,24 +299,26 @@
                       <div class="news-image">
                         <img src="/plantique-life/assets/img_news_02-CfwQMz7J.png" alt="抽盆器好禮" />
                       </div>
-                      <div class="d-flex flex-column p-4 p-md-6 py-md-5 gap-4 gap-lg-6 w-100">
+                      <div class="d-flex flex-column justify-content-lg-center p-4 p-md-6 py-md-5 gap-4 gap-lg-6 w-100">
                         <div>
                           <p class="fs-md fs-lg-7 text-primary-500 mb-1">2025.08.01 ~ 2025.08.30</p>
-                          <h3 class="fs-4 fs-lg-3 text-neutral-700 lh-sm">
+                          <h3 class="fs-4 fs-lg-3 text-neutral-700">
                             本月打卡活動開跑！<br /># 我的療癒角落，抽盆器好禮！
                           </h3>
                         </div>
                         <p class="fs-sm fs-lg-8 text-neutral-400">
                           迷你多肉，輕鬆點綴辦公桌。<br />在忙碌與螢幕之間，留一點空間給綠意。
                         </p>
-
-                        <button
-                          type="button"
-                          class="btn text-primary rounded-pill border-4 p-0 ms-auto d-flex align-items-center"
-                        >
-                          <span class="fs-sm fs-md-8 mb-0 me-2">活動詳情</span>
-                          <i class="bi bi-arrow-right"></i>
-                        </button>
+                        <a href="#" class="d-flex justify-content-end">
+                          <button
+  class="btn custom-btn-link-primary custom-btn-link-sm custom-btn-icon-end"
+  type="button"
+>
+  活動詳情 
+  <span class="custom-btn-icon material-symbols-rounded"> arrow_right_alt </span>
+  
+</button>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -314,22 +332,25 @@
                       <div class="news-image">
                         <img src="/plantique-life/assets/img_news_03-BImOFhqe.png" alt="會員募集" />
                       </div>
-                      <div class="d-flex flex-column p-4 p-md-6 py-md-5 gap-4 gap-lg-6 w-100">
+                      <div class="d-flex flex-column justify-content-lg-center p-4 p-md-6 py-md-5 gap-4 gap-lg-6 w-100">
                         <div>
                           <p class="fs-md fs-lg-7 text-primary-500 mb-1">2025.07.01 ~ 2025.12.31</p>
-                          <h3 class="fs-4 fs-lg-3 text-neutral-700 lh-sm">新會員募集中！<br />加入即享首購金 250 元</h3>
+                          <h3 class="fs-4 fs-lg-3 text-neutral-700">新會員募集中！<br />加入即享首購金 250 元</h3>
                         </div>
                         <p class="fs-sm fs-lg-8 text-neutral-400">
                           成為我們的會員，把療癒的多肉帶進生活裡。<br />註冊加入即享首購金 250 元，無折抵門檻！
                         </p>
 
-                        <button
-                          type="button"
-                          class="btn text-primary rounded-pill border-4 p-0 ms-auto d-flex align-items-center"
-                        >
-                          <span class="fs-sm fs-md-8 mb-0 me-2">活動詳情</span>
-                          <i class="bi bi-arrow-right"></i>
-                        </button>
+                        <a href="#" class="d-flex justify-content-end">
+                          <button
+  class="btn custom-btn-link-primary custom-btn-link-sm custom-btn-icon-end"
+  type="button"
+>
+  活動詳情 
+  <span class="custom-btn-icon material-symbols-rounded"> arrow_right_alt </span>
+  
+</button>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -377,14 +398,14 @@
                       </div>
                     </div>
                     <div class="category-col-3 d-flex d-lg-none justify-content-center">
-                      <a href="#" class="stretched-link">
+                      <a href="product-list.html" class="stretched-link">
                         <h3 class="vertical-lr fs-3 text-primary mx-0">植 栽 單 品</h3>
                       </a>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-lg-3 d-none d-lg-flex justify-content-center">
-                      <a href="#" class="stretched-link">
+                      <a href="product-list.html" class="stretched-link">
                         <h3 class="vertical-lr fs-3 fs-lg-2 text-primary mx-0">植 栽 單 品</h3>
                       </a>
                     </div>
@@ -412,14 +433,14 @@
                       </div>
                     </div>
                     <div class="category-col-3 d-flex d-lg-none justify-content-center">
-                      <a href="#" class="stretched-link">
+                      <a href="product-list.html" class="stretched-link">
                         <h3 class="vertical-lr fs-3 text-primary mx-0">療 癒 組 盆</h3>
                       </a>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-lg-3 d-none d-lg-flex justify-content-center">
-                      <a href="#" class="stretched-link">
+                      <a href="product-list.html" class="stretched-link">
                         <h3 class="vertical-lr fs-3 fs-lg-2 text-primary mx-0">療 癒 組 盆</h3>
                       </a>
                     </div>
@@ -447,14 +468,14 @@
                       </div>
                     </div>
                     <div class="category-col-3 d-flex d-lg-none justify-content-center">
-                      <a href="#" class="stretched-link">
+                      <a href="product-list.html" class="stretched-link">
                         <h3 class="vertical-lr fs-3 text-primary mx-0">客 製 禮 盒</h3>
                       </a>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-lg-3 d-none d-lg-flex justify-content-center">
-                      <a href="#" class="stretched-link">
+                      <a href="product-list.html" class="stretched-link">
                         <h3 class="vertical-lr fs-3 fs-lg-2 text-primary mx-0">客 製 禮 盒</h3>
                       </a>
                     </div>
@@ -482,14 +503,14 @@
                       </div>
                     </div>
                     <div class="category-col-3 d-flex d-lg-none justify-content-center">
-                      <a href="#" class="stretched-link">
+                      <a href="product-list.html" class="stretched-link">
                         <h3 class="vertical-lr fs-3 text-primary mx-0">配 件 商 品</h3>
                       </a>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-lg-3 d-none d-lg-flex justify-content-center">
-                      <a href="#" class="stretched-link">
+                      <a href="product-list.html" class="stretched-link">
                         <h3 class="vertical-lr fs-3 fs-lg-2 text-primary mx-0">配 件 商 品</h3>
                       </a>
                     </div>
@@ -516,30 +537,36 @@
       <div class="container mb-12">
         <div class="d-flex justify-content-center justify-content-md-between align-items-center align-items-md-end">
           <hgroup class="d-flex justify-content-start align-items-end align-items-lg-center gap-6 gap-lg-10">
-            <img src="data:image/svg+xml,%3csvg%20width='60'%20height='81'%20viewBox='0%200%2060%2081'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M60%200.714289L0.790235%2080.1191L0%2079.524L59.2098%200.119141L60%200.714289Z'%20fill='%238C9761'/%3e%3c/svg%3e" alt="" class="d-sm-block d-none" />
-            <img src="data:image/svg+xml,%3csvg%20width='32'%20height='41'%20viewBox='0%200%2032%2041'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M31%200.709894L1.77996%2040.1191L1%2039.5284L30.22%200.119141L31%200.709894Z'%20fill='%238C9761'/%3e%3c/svg%3e" alt="" class="d-sm-none d-block" />
+            <img src="data:image/svg+xml,%3csvg%20width='60'%20height='81'%20viewBox='0%200%2060%2081'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M60%200.714289L0.790235%2080.1191L0%2079.524L59.2098%200.119141L60%200.714289Z'%20fill='%238C9761'/%3e%3c/svg%3e" alt="decoration" class="d-sm-block d-none" />
+            <img src="data:image/svg+xml,%3csvg%20width='32'%20height='41'%20viewBox='0%200%2032%2041'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M31%200.709894L1.77996%2040.1191L1%2039.5284L30.22%200.119141L31%200.709894Z'%20fill='%238C9761'/%3e%3c/svg%3e" alt="decoration" class="d-sm-none d-block" />
             <div class="text-center">
               <small class="d-block fw-bold lh-sm fs-8 fs-lg-7 align-middle text-primary noto-serif-tc mb-1">
                 Recommend
               </small>
               <h2 class="fs-3 fs-lg-2 text-neutral-700">植感精選</h2>
             </div>
-            <img src="data:image/svg+xml,%3csvg%20width='60'%20height='81'%20viewBox='0%200%2060%2081'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M60%200.714289L0.790235%2080.1191L0%2079.524L59.2098%200.119141L60%200.714289Z'%20fill='%238C9761'/%3e%3c/svg%3e" alt="" class="d-sm-block d-none" />
-            <img src="data:image/svg+xml,%3csvg%20width='32'%20height='41'%20viewBox='0%200%2032%2041'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M31%200.709894L1.77996%2040.1191L1%2039.5284L30.22%200.119141L31%200.709894Z'%20fill='%238C9761'/%3e%3c/svg%3e" alt="" class="d-sm-none d-block" />
+            <img src="data:image/svg+xml,%3csvg%20width='60'%20height='81'%20viewBox='0%200%2060%2081'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M60%200.714289L0.790235%2080.1191L0%2079.524L59.2098%200.119141L60%200.714289Z'%20fill='%238C9761'/%3e%3c/svg%3e" alt="decoration" class="d-sm-block d-none" />
+            <img src="data:image/svg+xml,%3csvg%20width='32'%20height='41'%20viewBox='0%200%2032%2041'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M31%200.709894L1.77996%2040.1191L1%2039.5284L30.22%200.119141L31%200.709894Z'%20fill='%238C9761'/%3e%3c/svg%3e" alt="decoration" class="d-sm-none d-block" />
           </hgroup>
-          <button class="btn border-neutral-200 rounded-pill d-none d-md-block">
-            <a href="#" class="text-center text-neutral-700 rounded-pill"
-              ><span class="fs-7 me-1">查看更多</span>
-              <span class="material-symbols-rounded align-text-bottom"> arrow_right_alt </span>
-            </a>
-          </button>
+          <div class="d-none d-md-block">
+            
+            <button
+  class="btn custom-btn-outline-neutral custom-btn-pill-lg custom-btn-icon-end  "
+  type="button"
+  data-id=""
+>
+   查看更多 
+  <span class="custom-btn-icon material-symbols-rounded"> arrow_right_alt </span>
+  
+</button>
+          </div>
         </div>
       </div>
 
       <!-- 產品卡片 -->
       <div class="container mb-8">
         <div class="position-relative">
-          <div class="swiper swiperProduct">
+          <div class="swiper productSwiper">
             <div class="swiper-wrapper">
               <div class="swiper-slide swiper-slide-prouct">
                 <div>
@@ -562,6 +589,7 @@
     >
       質感精選
     </span>
+
     <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
       <div class="d-flex flex-column justify-content-between">
         <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
@@ -572,10 +600,8 @@
             泡泡森林
           </a>
         </h5>
-        <div class="d-md-flex align-items-baseline">
-          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
-            NT$ 6,200
-          </p>
+        <div class="d-flex flex-column flex-xl-row align-items-baseline">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">NT$ 6,200</p>
           
         </div>
       </div>
@@ -608,6 +634,7 @@
     >
       質感精選
     </span>
+
     <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
       <div class="d-flex flex-column justify-content-between">
         <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
@@ -618,10 +645,8 @@
             向陽而生
           </a>
         </h5>
-        <div class="d-md-flex align-items-baseline">
-          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
-            NT$ 7,280
-          </p>
+        <div class="d-flex flex-column flex-xl-row align-items-baseline">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">NT$ 7,280</p>
           
         </div>
       </div>
@@ -654,6 +679,7 @@
     >
       質感精選
     </span>
+
     <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
       <div class="d-flex flex-column justify-content-between">
         <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
@@ -664,10 +690,8 @@
             暮光角落
           </a>
         </h5>
-        <div class="d-md-flex align-items-baseline">
-          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
-            NT$ 7,500
-          </p>
+        <div class="d-flex flex-column flex-xl-row align-items-baseline">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">NT$ 7,500</p>
           
         </div>
       </div>
@@ -700,6 +724,7 @@
     >
       質感精選
     </span>
+
     <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
       <div class="d-flex flex-column justify-content-between">
         <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
@@ -710,10 +735,8 @@
             雲深處靜
           </a>
         </h5>
-        <div class="d-md-flex align-items-baseline">
-          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
-            NT$ 6,600
-          </p>
+        <div class="d-flex flex-column flex-xl-row align-items-baseline">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">NT$ 6,600</p>
           
         </div>
       </div>
@@ -731,7 +754,7 @@
                   <div class="card rounded-0 border-0 product-card">
   <div class="position-relative overflow-hidden product-card-img-height">
     <img
-      src="/plantique-life/assets/img_product_01-Dlj0DR4q.png"
+      src="/plantique-life/assets/img_product_05-DZHYjIlo.png"
       class="card-img-top rounded-0 h-100 w-100 object-fit-cover product-card-img"
       alt="多肉植物組合盆栽"
     />
@@ -746,6 +769,7 @@
     >
       質感精選
     </span>
+
     <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
       <div class="d-flex flex-column justify-content-between">
         <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
@@ -753,13 +777,56 @@
             href="#"
             class="stretched-link text-decoration-none text-neutral-700"
           >
-            泡泡森林
+            玉露女王
           </a>
         </h5>
-        <div class="d-md-flex align-items-baseline">
-          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm mb-2 mb-lg-0">
-            NT$ 6,200
-          </p>
+        <div class="d-flex flex-column flex-xl-row align-items-baseline">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">NT$ 5,200</p>
+          
+        </div>
+      </div>
+      <button type="button" class="btn bg-transparent border-0 p-0">
+        <span class="material-symbols-rounded text-neutral-700 p-2 p-lg-3"> shopping_cart </span>
+      </button>
+    </div>
+  </div>
+</div>
+                </div>
+              </div>
+              <div class="swiper-slide swiper-slide-prouct">
+                <div>
+                  <!-- prettier-ignore -->
+                  <div class="card rounded-0 border-0 product-card">
+  <div class="position-relative overflow-hidden product-card-img-height">
+    <img
+      src="/plantique-life/assets/img_product_06-D2l61KBD.png"
+      class="card-img-top rounded-0 h-100 w-100 object-fit-cover product-card-img"
+      alt="多肉植物組合盆栽"
+    />
+    <div class="position-absolute favorite-btn"><button class="btn custom-btn-fav" data-bs-toggle="button" type="button">
+  <span class="custom-btn-icon material-symbols-rounded"> favorite </span>
+</button>
+</div>
+  </div>
+  <div class="card-body p-0 pt-3 pt-lg-5">
+    <span
+      class="fs-xs fs-lg-sm px-2 px-lg-3 py-1 text-primary bg-primary-100"
+    >
+      質感精選
+    </span>
+
+    <div class="d-flex justify-content-between align-items-center mt-1 mt-lg-2">
+      <div class="d-flex flex-column justify-content-between">
+        <h5 class="card-title fs-6 fs-lg-5 fw-bold mb-1 mb-lg-2">
+          <a
+            href="#"
+            class="stretched-link text-decoration-none text-neutral-700"
+          >
+            玉扇食生
+          </a>
+        </h5>
+        <div class="d-flex flex-column flex-xl-row align-items-baseline">
+          <p class="card-text fs-7 fs-lg-6 text-primary-700 fw-bold noto-serif-tc lh-sm">NT$ 4,600</p>
           
         </div>
       </div>
@@ -783,12 +850,15 @@
         </div>
       </div>
       <div class="d-md-none d-flex justify-content-center">
-        <button class="btn border-neutral-200 rounded-pill">
-          <a href="#" class="text-center text-neutral-700 rounded-pill d-block d-md-none"
-            ><span class="fs-7 me-1">查看更多</span>
-            <span class="material-symbols-rounded align-text-bottom"> arrow_right_alt </span>
-          </a>
-        </button>
+        <button
+  class="btn custom-btn-outline-neutral custom-btn-pill-lg custom-btn-icon-end  "
+  type="button"
+  data-id=""
+>
+   查看更多 
+  <span class="custom-btn-icon material-symbols-rounded"> arrow_right_alt </span>
+  
+</button>
       </div>
     </section>
     <!-- recommend section end -->
@@ -948,7 +1018,7 @@
         <div class="d-flex justify-content-center mt-8 mt-lg-12 mx-auto">
           <!-- prettier-ignore -->
           <button
-  class="btn custom-btn-outline-neutral custom-btn-pill-sm custom-btn-icon-end  "
+  class="btn custom-btn-outline-neutral custom-btn-pill-sm custom-btn-icon-end  more-btn"
   type="button"
   data-id=""
 >
@@ -985,6 +1055,11 @@
       </div>
     </section>
     <!-- about section end -->
+
+    <!-- prettier-ignore -->
+    <button id="custom-btn-backtotop" class="btn custom-btn-backtotop" type="button">
+  <span class="custom-btn-icon material-symbols-rounded"> north </span>
+</button>
 
     <footer class="footer bg-primary-500 py-12 py-lg-15">
   <div class="container">
@@ -1036,14 +1111,14 @@
             <p class="text-primary-200 mb-4 mb-lg-6">About Us</p>
             <ul class="list-unstyled">
               <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="#">關於植感</a></li>
-              <li><a class="link-white site-map-link" href="#">植藝生活</a></li>
+              <li><a class="link-white site-map-link" href="article-list.html">植藝生活</a></li>
             </ul>
           </div>
           <div>
             <p class="text-primary-200 mb-4 mb-lg-6">Product</p>
             <ul class="list-unstyled">
               <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="#">植感精選</a></li>
-              <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="#">所有商品</a></li>
+              <li class="mb-1 mb-lg-2"><a class="link-white site-map-link" href="product-list.html">所有商品</a></li>
               <li><a class="link-white site-map-link" href="#">配件商品</a></li>
             </ul>
           </div>
@@ -1070,51 +1145,5 @@
   </div>
 </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
-    <script>
-      const swiperSingle = new Swiper('.newsSwiper', {
-        direction: 'horizontal',
-        loop: true,
-        slidesPerView: 1, // 預設單張
-        spaceBetween: 12,
-        autoHeight: true,
-        autoplay: {
-          delay: 2500,
-          disableOnInteraction: false,
-        },
-
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-      });
-
-      const swiper = new Swiper('.swiperProduct', {
-        direction: 'horizontal',
-        loop: false,
-
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-
-        watchOverflow: false, // 當滑塊不足以滾動時自動隱藏導航
-
-        breakpoints: {
-          // RWD 響應式
-          0: {
-            slidesPerView: 'auto',
-            spaceBetween: 12,
-            freeMode: true,
-            navigation: false, // 關閉箭頭
-          },
-          1024: {
-            slidesPerView: 4,
-            spaceBetween: 24,
-            freeMode: false,
-          },
-        },
-      });
-    </script>
   </body>
 </html>
