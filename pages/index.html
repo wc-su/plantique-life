@@ -15,7 +15,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-2 d-flex flex-column justify-content-center align-items-center">
-            <div class="d-flex flex-column justify-content-center">
+            <div class="d-flex flex-column justify-content-center" id="slogan">
               <img src="/assets/images/img_title_lg.svg" alt="title" class="mb-10" />
               <% const btnFilledPill = { type: 'filled', color:'primary', shape: 'pill', size: 'lg', btnText:'立即選購',
               rightIcon: true, leftIcon: false, iconName:'arrow_right_alt', btnClass: 'text-nowrap'} %>
@@ -173,14 +173,14 @@
                       </div>
                     </div>
                     <div class="category-col-3 d-flex d-lg-none justify-content-center">
-                      <a href="#" class="stretched-link">
+                      <a href="product-list.html" class="stretched-link">
                         <h3 class="vertical-lr fs-3 text-primary mx-0">植 栽 單 品</h3>
                       </a>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-lg-3 d-none d-lg-flex justify-content-center">
-                      <a href="#" class="stretched-link">
+                      <a href="product-list.html" class="stretched-link">
                         <h3 class="vertical-lr fs-3 fs-lg-2 text-primary mx-0">植 栽 單 品</h3>
                       </a>
                     </div>
@@ -208,14 +208,14 @@
                       </div>
                     </div>
                     <div class="category-col-3 d-flex d-lg-none justify-content-center">
-                      <a href="#" class="stretched-link">
+                      <a href="product-list.html" class="stretched-link">
                         <h3 class="vertical-lr fs-3 text-primary mx-0">療 癒 組 盆</h3>
                       </a>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-lg-3 d-none d-lg-flex justify-content-center">
-                      <a href="#" class="stretched-link">
+                      <a href="product-list.html" class="stretched-link">
                         <h3 class="vertical-lr fs-3 fs-lg-2 text-primary mx-0">療 癒 組 盆</h3>
                       </a>
                     </div>
@@ -243,14 +243,14 @@
                       </div>
                     </div>
                     <div class="category-col-3 d-flex d-lg-none justify-content-center">
-                      <a href="#" class="stretched-link">
+                      <a href="product-list.html" class="stretched-link">
                         <h3 class="vertical-lr fs-3 text-primary mx-0">客 製 禮 盒</h3>
                       </a>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-lg-3 d-none d-lg-flex justify-content-center">
-                      <a href="#" class="stretched-link">
+                      <a href="product-list.html" class="stretched-link">
                         <h3 class="vertical-lr fs-3 fs-lg-2 text-primary mx-0">客 製 禮 盒</h3>
                       </a>
                     </div>
@@ -278,14 +278,14 @@
                       </div>
                     </div>
                     <div class="category-col-3 d-flex d-lg-none justify-content-center">
-                      <a href="#" class="stretched-link">
+                      <a href="product-list.html" class="stretched-link">
                         <h3 class="vertical-lr fs-3 text-primary mx-0">配 件 商 品</h3>
                       </a>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-lg-3 d-none d-lg-flex justify-content-center">
-                      <a href="#" class="stretched-link">
+                      <a href="product-list.html" class="stretched-link">
                         <h3 class="vertical-lr fs-3 fs-lg-2 text-primary mx-0">配 件 商 品</h3>
                       </a>
                     </div>
@@ -554,7 +554,7 @@
           <%- include('./components/buttons/btn-filled-or-outline', {
             type: 'outline', color: 'neutral', shape: 'pill', size: 'sm',
             rightIcon: true, leftIcon: false, iconName: 'arrow_right_alt',
-            btnText: '查看更多'
+            btnText: '查看更多', btnClass: 'more-btn'
           }); -%>
         </div>
       </div>
