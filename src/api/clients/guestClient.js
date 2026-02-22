@@ -7,4 +7,12 @@ const guestClient = axios.create({
   },
 });
 
+const guestAuthClient = axios.create({
+  baseURL: import.meta.env.VITE_JSON_SERVER_URL,
+  headers: {
+    Accept: 'application/json',
+  },
+});
+
 export default guestClient;
+export { guestAuthClient };
