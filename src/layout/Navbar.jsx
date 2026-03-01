@@ -1,11 +1,12 @@
+import { usePendingAuthAction } from '@/hook/usePendingAuthAction';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { Collapse, Offcanvas } from 'react-bootstrap';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
-import { deleteAndRefetchCarts, fetchCarts, selectHasItemLoading, updateAndRefetchCarts } from '@/slice/cartSlice';
+import { resetCart, selectHasItemLoading, smartDeleteCart, smartInitCarts, smartUpdateCart } from '@/slice/cartSlice';
 import { guestAuthCheck, guestLogout } from '@/slice/guestAuthSlice';
 import { closeModal, openModal } from '@/slice/uiSlice';
 import Button from '../components/Button';
@@ -15,6 +16,7 @@ import logoLg from 'assets/images/logo-primary-en-zh-lg.svg';
 
 export default function Navbar() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [showMemberMenu, setShowMemberMenu] = useState(false);
   const [showCartDrawer, setShowCartDrawer] = useState(false);
@@ -27,7 +29,8 @@ export default function Navbar() {
   // 購物車是否正在處理中
   const isCartProcessing = cartLoading || hasItemLoading;
 
-  const { isAuth } = useSelector(state => state.guestAuth);
+  const { isAuth, isAuthChecked } = useSelector(state => state.guestAuth);
+  const { requireAuth } = usePendingAuthAction();
 
   const handleCloseMemberMenu = () => setShowMemberMenu(false);
   const handleToggleMemberMenu = () => setShowMemberMenu(!showMemberMenu);
@@ -39,33 +42,35 @@ export default function Navbar() {
   const closeDesktopMemberMenu = () => setShowDesktopMemberMemu(false);
 
   useEffect(() => {
-    async function initFetch() {
+    async function init() {
       try {
-        await dispatch(fetchCarts(true)).unwrap();
+        // 驗證登入狀態，不用 unwrap，未登入不算 exception
+        const result = await dispatch(guestAuthCheck(true));
+        if (guestAuthCheck.rejected.match(result)) {
+          toast.error(result.payload);
+        }
+        // 初始化購物車資料
+        dispatch(smartInitCarts(true));
       } catch (error) {
         toast.error(error);
       }
     }
-    // 初始化購物車資料
-    initFetch();
-    // 驗證使用者是否登入
-    dispatch(guestAuthCheck(true));
+    init();
   }, [dispatch]);
 
   // 更新購物車數量
-  async function handleUpdateCart(id, product_id, qty) {
+  async function handleUpdateCart(cartItemId, productId, qty) {
     try {
-      const data = { product_id: product_id, qty: qty };
-      await dispatch(updateAndRefetchCarts({ id, data, preventGlobalLoading: true })).unwrap();
+      dispatch(smartUpdateCart({ cartItemId, productId, qty, preventGlobalLoading: true }));
     } catch (error) {
       toast.error(error);
     }
   }
 
   // 刪除購物車項目
-  async function handleDeleteCart(id) {
+  async function handleDeleteCart(cartItemId) {
     try {
-      await dispatch(deleteAndRefetchCarts({ id, preventGlobalLoading: true })).unwrap();
+      dispatch(smartDeleteCart({ cartItemId, preventGlobalLoading: true }));
       toast.success('刪除成功');
     } catch (error) {
       toast.error(error);
@@ -74,10 +79,24 @@ export default function Navbar() {
 
   function handleLogout() {
     dispatch(guestLogout());
+    dispatch(resetCart());
     toast.success('登出成功');
     dispatch(closeModal());
     handleCloseMemberMenu();
     closeDesktopMemberMenu();
+  }
+
+  async function handleGoCart() {
+    const callback = async () => {
+      // 關閉所有展開內容
+      handleCloseMemberMenu();
+      closeDesktopMemberMenu();
+      handleCloseCartDrawer();
+
+      // 跳轉至購物車頁面
+      navigate('/shopping-cart');
+    };
+    requireAuth(callback);
   }
 
   return (
@@ -137,7 +156,7 @@ export default function Navbar() {
                   </div>
                 </button>
               </li>
-              {!isAuth && (
+              {isAuthChecked && !isAuth && (
                 <>
                   <li className="d-none d-lg-block guest me-4">
                     <Button
@@ -167,7 +186,7 @@ export default function Navbar() {
               )}
               {/* <!-- 登入後 --> */}
               {/* <!-- 會員選單 --> */}
-              {isAuth && (
+              {isAuthChecked && isAuth && (
                 <li className="d-none d-lg-block position-relative member">
                   {/* <!-- 會員選單按鈕 --> */}
 
@@ -250,7 +269,7 @@ export default function Navbar() {
                 </li>
               </ul>
               {/* <!-- 未登入 --> */}
-              {!isAuth && (
+              {isAuthChecked && !isAuth && (
                 <ul className="navbar-nav px-6 pb-6 guest">
                   <li className="pt-6 separator-line-top">
                     {/* <Link className="custom-nav-link" href="#">
@@ -270,7 +289,7 @@ export default function Navbar() {
                 </ul>
               )}
               {/* <!-- 登入後 --> */}
-              {isAuth && (
+              {isAuthChecked && isAuth && (
                 <ul className="navbar-nav px-6 pb-6 member">
                   <li className="pt-6 separator-line-top">
                     <Link className="custom-nav-link mb-3" to="/member" onClick={handleCloseMemberMenu}>
@@ -406,8 +425,8 @@ export default function Navbar() {
           </ul>
           <div className="mt-auto">
             <Button
-              as={Link}
-              to="/shopping-cart"
+              // as={Link}
+              // to="/shopping-cart"
               type="button"
               variant="filled-primary"
               shape="pill"
@@ -415,7 +434,7 @@ export default function Navbar() {
               rightIcon={true}
               iconName="arrow_right_alt"
               className={clsx('justify-content-center w-100', (carts.length === 0 || isCartProcessing) && 'disabled')}
-              onClick={handleCloseCartDrawer}
+              onClick={handleGoCart}
             >
               去結帳
             </Button>

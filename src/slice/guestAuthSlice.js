@@ -50,7 +50,7 @@ export const guestAuthCheck = createAsyncThunk(
     const guestUserId = Cookie.get('guest_user_id');
     if (!guestUserId || !guestAuthToken) {
       removeCookies();
-      return rejectWithValue('缺少驗證資料');
+      return null;
     }
 
     try {
@@ -87,7 +87,7 @@ export const guestAuthSlice = createSlice({
         state.isAuthChecked = false;
       })
       .addCase(guestAuthCheck.fulfilled, (state, action) => {
-        state.isAuth = true;
+        state.isAuth = !!action.payload; // null: false，有資料: true
         state.user = action.payload;
         state.isAuthChecked = true;
       })

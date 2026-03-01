@@ -13,10 +13,10 @@ export const fetchCarts = createAsyncThunk('cart/fetchCarts', async (preventGlob
 // 新增產品到購物車並重新取得購物車列表
 export const addAndRefetchCarts = createAsyncThunk(
   'cart/addAndRefetchCarts',
-  async ({ data, preventGlobalLoading }, { dispatch, getState, rejectWithValue }) => {
+  async ({ data, preventGlobalLoading, needRefetch = true }, { dispatch, getState, rejectWithValue }) => {
     try {
       // 新增產品到購物車
-      await cartApi.addToCart(data, preventGlobalLoading);
+      const resAddToCart = await cartApi.addToCart(data, preventGlobalLoading);
 
       // 新增產品的 ID
       const productId = data.product_id;
@@ -30,9 +30,13 @@ export const addAndRefetchCarts = createAsyncThunk(
         }
       }
 
-      // 重新取得購物車資料
-      const response = await dispatch(fetchCarts(preventGlobalLoading)).unwrap();
-      return response;
+      if (needRefetch) {
+        // 重新取得購物車資料
+        const resFetchCarts = await dispatch(fetchCarts(preventGlobalLoading)).unwrap();
+        return resFetchCarts;
+      } else {
+        return resAddToCart;
+      }
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -100,6 +104,38 @@ const cartSlice = createSlice({
   reducers: {
     setcouponCode: (state, action) => {
       state.couponCode = action.payload;
+    },
+    setLocalCarts: (state, action) => {
+      state.carts = action.payload;
+    },
+    addLocalCartItem: (state, action) => {
+      const { product, productId, qty } = action.payload;
+      const filterCart = state.carts.find(cart => cart.product_id === productId);
+      const hasProduct = !!filterCart;
+      if (hasProduct) {
+        filterCart.qty += qty;
+      } else {
+        // id 用產品 id 替代
+        state.carts.push({ id: productId, product, product_id: productId, qty });
+      }
+    },
+    updateLocalCartItem: (state, action) => {
+      const { productId, qty } = action.payload;
+      const filterCart = state.carts.find(cart => cart.product_id === productId);
+      filterCart.qty = qty;
+    },
+    deleteLocalCartItem: (state, action) => {
+      const { cartItemId } = action.payload;
+      state.carts = state.carts.filter(cart => cart.id !== cartItemId);
+    },
+    resetCart: state => {
+      state.carts = [];
+      state.total = 0;
+      state.finalTotal = 0;
+      state.couponCode = '';
+      state.isLoading = false;
+      state.loadingItems = {};
+      state.error = null;
     },
   },
   // Handle async thunks here
@@ -172,8 +208,79 @@ const cartSlice = createSlice({
   },
 });
 
+export const smartInitCarts = () => async (dispatch, getState) => {
+  const state = getState();
+  // 取得登入狀態
+  const isAuth = state.guestAuth.isAuth;
+
+  if (isAuth) {
+    // 已登入：呼叫後端 API 取得購物車資料
+    await dispatch(fetchCarts(true)).unwrap();
+  } else {
+    // 未登入：從 localStorage 讀取購物車資料
+    const localCartData = JSON.parse(localStorage.getItem('guestCarts')) || [];
+
+    // 將讀取到的資料寫入 Redux state
+    dispatch(setLocalCarts(localCartData));
+  }
+};
+
+export const smartAddToCart = data => async (dispatch, getState) => {
+  // 從 Redux store 中取得整體的 state
+  const state = getState();
+
+  // 取得登入狀態
+  const isAuth = state.guestAuth.isAuth;
+
+  const { product, qty } = data;
+  if (isAuth) {
+    // 已登入
+    await dispatch(addAndRefetchCarts({ data: { product_id: product.id, qty } })).unwrap();
+  } else {
+    // 未登入
+    dispatch(addLocalCartItem({ product, productId: product.id, qty }));
+  }
+};
+
+export const smartUpdateCart = data => async (dispatch, getState) => {
+  // 從 Redux store 中取得整體的 state
+  const state = getState();
+
+  // 取得登入狀態
+  const isAuth = state.guestAuth.isAuth;
+
+  const { cartItemId, productId, qty, preventGlobalLoading } = data;
+  if (isAuth) {
+    // 已登入
+    const updateData = { product_id: productId, qty: qty };
+    await dispatch(updateAndRefetchCarts({ id: cartItemId, data: updateData, preventGlobalLoading })).unwrap();
+  } else {
+    // 未登入
+    dispatch(updateLocalCartItem({ productId: productId, qty }));
+    // 之後看為什麼六角 api 要看 cartItemId
+  }
+};
+
+export const smartDeleteCart = data => async (dispatch, getState) => {
+  // 從 Redux store 中取得整體的 state
+  const state = getState();
+
+  // 取得登入狀態
+  const isAuth = state.guestAuth.isAuth;
+
+  const { cartItemId, preventGlobalLoading } = data;
+  if (isAuth) {
+    // 已登入
+    await dispatch(deleteAndRefetchCarts({ id: cartItemId, preventGlobalLoading })).unwrap();
+  } else {
+    // 未登入
+    dispatch(deleteLocalCartItem({ cartItemId }));
+  }
+};
+
 // Export actions
-export const { setcouponCode } = cartSlice.actions;
+export const { setcouponCode, setLocalCarts, addLocalCartItem, updateLocalCartItem, deleteLocalCartItem, resetCart } =
+  cartSlice.actions;
 
 // Selectors
 export const selectHasItemLoading = state => Object.values(state.cart.loadingItems).some(status => status);

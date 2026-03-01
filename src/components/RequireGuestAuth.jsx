@@ -1,4 +1,3 @@
-// components/ProtectedRoute.jsx
 import { useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,13 +6,14 @@ import { Outlet, useNavigate } from 'react-router';
 import { resetManualLogout } from '@/slice/guestAuthSlice';
 import { openModal } from '@/slice/uiSlice';
 
-const ProtectedRoute = () => {
+const RequireGuestAuth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { isAuth, isAuthChecked, isManualLogout } = useSelector(state => state.guestAuth);
 
   const isManualLogoutRef = useRef(isManualLogout);
+  const prevIsAuthRef = useRef(undefined);
 
   // 監聽 isManualLogout 的變化
   // 須放在下一個 useEffect 之前，讓 isManualLogoutRef 的值先被更新
@@ -27,12 +27,18 @@ const ProtectedRoute = () => {
 
     if (!isAuth) {
       navigate('/');
-      if (!isManualLogoutRef.current) {
+      // 只有「已登入狀態下手動登出」才不顯示登入 Modal
+      // 若元件重新掛載（例如手動輸入路由），prevIsAuthRef.current 為 undefined，
+      // 不符合 wasLoggedIn，仍會顯示 Modal
+      const wasLoggedIn = prevIsAuthRef.current === true;
+      if (!wasLoggedIn || !isManualLogoutRef.current) {
         toast.error('請先登入');
         dispatch(openModal('login'));
       }
       dispatch(resetManualLogout());
     }
+
+    prevIsAuthRef.current = isAuth;
   }, [isAuth, isAuthChecked, dispatch, navigate]);
 
   // 避免非同步的時間差，導致非預期的渲染結果
@@ -45,4 +51,4 @@ const ProtectedRoute = () => {
   return <Outlet />;
 };
 
-export default ProtectedRoute;
+export default RequireGuestAuth;

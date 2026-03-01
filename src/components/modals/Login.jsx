@@ -3,16 +3,15 @@ import Modal from 'react-bootstrap/Modal';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
 
 import Button from '@/components/Button';
+import { addAndRefetchCarts, fetchCarts } from '@/slice/cartSlice';
 import { guestLogin } from '@/slice/guestAuthSlice';
 import { closeModal } from '@/slice/uiSlice';
 import { useState } from 'react';
 
 function Login({ onSwitchToRegister }) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -27,12 +26,44 @@ function Login({ onSwitchToRegister }) {
     const { email, password } = data;
     try {
       await dispatch(guestLogin({ email, password })).unwrap();
+
+      // 如果 localstorage 有資料，要將其寫入後端資料庫
+      const localCartData = JSON.parse(localStorage.getItem('guestCarts')) || [];
+      if (localCartData.length > 0) {
+        // 新增多筆產品到購物車
+        const results = [];
+        for (const product of localCartData) {
+          try {
+            const response = await dispatch(
+              addAndRefetchCarts({
+                data: { product_id: product.id, qty: product.qty, needRefetch: false },
+                preventGlobalLoading: true,
+              }),
+            ).unwrap();
+            results.push({ status: 'fulfilled', value: response });
+          } catch (error) {
+            results.push({ status: 'rejected', reason: error });
+          }
+        }
+        // 檢查結果
+        const failedItems = results.filter(r => r.status === 'rejected');
+        if (failedItems.length > 0) {
+          toast.error(`有 ${failedItems.length} 個產品加入購物車失敗`);
+        } else {
+          toast.success('產品加入購物車成功！');
+        }
+      }
+      // 移除 localstorage
+      localStorage.removeItem('guestCarts');
+
+      // 取得購物車資訊
+      await dispatch(fetchCarts(true)).unwrap();
+
       // 處理畫面顯示
       setIsError(false);
       setErrorMessage('');
       dispatch(closeModal());
       toast.success('登入成功');
-      navigate('/'); // 會員中心未完成，先跳至首頁
     } catch (error) {
       setIsError(true);
       setErrorMessage(error);

@@ -5,7 +5,8 @@ import Button from '@/components/Button';
 import Counter from '@/components/Counter';
 import { MAX_RECOMMEND_PRODUCTS_DISPLAY_COUNT, MIN_PRODUCT_PURCHASE_QTY, paymentOptions } from '@/const/guestConst';
 import { care, notice } from '@/const/productDetailContents';
-import { addAndRefetchCarts } from '@/slice/cartSlice';
+import { usePendingAuthAction } from '@/hook/usePendingAuthAction';
+import { smartAddToCart } from '@/slice/cartSlice';
 import { selectAllProducts } from '@/slice/product/guestProductSlice';
 import { tryParseJson } from '@/utils/utils';
 import { useMemo, useState } from 'react';
@@ -43,9 +44,11 @@ export default function ProductDetail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { requireAuth } = usePendingAuthAction();
+
   const processAddToCart = async () => {
     try {
-      await dispatch(addAndRefetchCarts({ data: { product_id: product.id, qty: purchaseQty } })).unwrap();
+      dispatch(smartAddToCart({ product, qty: purchaseQty }));
       toast.success('已加入購物車');
       return { success: true };
     } catch (error) {
@@ -59,11 +62,14 @@ export default function ProductDetail() {
   };
 
   const buyNow = async () => {
-    const { success } = await processAddToCart();
+    const callback = async () => {
+      const { success } = await processAddToCart();
 
-    if (success) {
-      navigate('/shopping-cart');
-    }
+      if (success) {
+        navigate('/shopping-cart');
+      }
+    };
+    requireAuth(callback);
   };
 
   return (
