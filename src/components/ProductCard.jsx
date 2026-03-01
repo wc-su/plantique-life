@@ -1,11 +1,38 @@
+import { smartAddToCart } from '@/slice/cartSlice';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router';
 import Button from './Button';
 
-export default function ProductCard({ id, title, imageUrl, alt, tag, originPrice, price, onAddToCart, ...props }) {
+export default function ProductCard({ id, title, imageUrl, alt, tag, originPrice, price, ...props }) {
+  const dispatch = useDispatch();
+
   const [isFav, setIsFav] = useState(false);
 
   const isOnSale = price < originPrice;
+
+  const onAddToCart = async () => {
+    try {
+      dispatch(
+        smartAddToCart({
+          product: {
+            id,
+            title,
+            imageUrl,
+            originPrice,
+            price,
+          },
+          qty: 1, // 固定帶 1
+        }),
+      );
+      toast.success('已加入購物車');
+      return { success: true };
+    } catch (error) {
+      toast.error(error);
+      return { success: false };
+    }
+  };
 
   return (
     <div className={`card rounded-0 border-0 product-card ${props.className || ''}`} {...props}>
