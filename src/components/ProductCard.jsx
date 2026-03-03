@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router';
 
 import { MIN_PRODUCT_PURCHASE_QTY } from '@/const/guestConst';
-import { addAndRefetchCarts } from '@/slice/cartSlice';
+import { authAwareAddToCart } from '@/slice/cartSlice';
 
 import Button from './Button';
 
@@ -19,8 +19,11 @@ export default function ProductCard({ id, title, imageUrl, alt, tag, originPrice
       return;
     }
 
+    // 未登入時 guest cart 顯示所需的最小產品快照，欄位名稱對齊後端 product 結構
+    const product = { id, title, imageUrl, price, origin_price: originPrice };
+
     try {
-      await dispatch(addAndRefetchCarts({ data: { product_id: id, qty: MIN_PRODUCT_PURCHASE_QTY } })).unwrap();
+      await dispatch(authAwareAddToCart({ product, qty: MIN_PRODUCT_PURCHASE_QTY }));
       toast.success('已加入購物車');
     } catch {
       toast.error('加入購物車失敗');

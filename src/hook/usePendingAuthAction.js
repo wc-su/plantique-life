@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { clearPendingBuyNowItem } from '@/slice/cartSlice';
 import { openModal } from '@/slice/uiSlice';
 
 export function usePendingAuthAction() {
@@ -20,8 +21,9 @@ export function usePendingAuthAction() {
       // Modal 關閉但未登入（使用者主動關閉 Modal），清除待辦的 callback
     } else if (!activeModal && !isAuth) {
       pendingCallback.current = null;
+      dispatch(clearPendingBuyNowItem());
     }
-  }, [isAuth, activeModal]);
+  }, [isAuth, activeModal, dispatch]);
 
   const requireAuth = callback => {
     if (isAuth) {

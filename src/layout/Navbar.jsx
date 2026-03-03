@@ -6,10 +6,17 @@ import { useEffect, useRef, useState } from 'react';
 import { Collapse, Offcanvas } from 'react-bootstrap';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 
-import { deleteAndRefetchCarts, fetchCarts, selectHasItemLoading, updateAndRefetchCarts } from '@/slice/cartSlice';
-import { guestAuthCheck, guestLogout } from '@/slice/guestAuthSlice';
+import { usePendingAuthAction } from '@/hook/usePendingAuthAction';
+import {
+  authAwareDeleteCart,
+  authAwareInitCarts,
+  authAwareUpdateCart,
+  resetCart,
+  selectHasItemLoading,
+} from '@/slice/cartSlice';
+import { authCleared, guestAuthCheck, guestAuthLogout } from '@/slice/guestAuthSlice';
 import { closeModal, openModal } from '@/slice/uiSlice';
 import useMediaQuery from '@/utils/useMediaQuery';
 import Button from '../components/Button';
@@ -17,7 +24,7 @@ import Button from '../components/Button';
 export default function Navbar() {
   const dispatch = useDispatch();
   const location = useLocation();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [showMemberMenu, setShowMemberMenu] = useState(false);
   const [showCartDrawer, setShowCartDrawer] = useState(false);
@@ -27,13 +34,14 @@ export default function Navbar() {
   const isDesktopSize = useMediaQuery('(min-width: 992px)');
 
   // 從 Redux 取得購物車資料
-  const { carts, loadingItems, isLoading: cartLoading } = useSelector(state => state.cart);
+  const { carts, loadingItems, isLoading: cartLoading, isMigrating: cartMigrating } = useSelector(state => state.cart);
   // 購物車中是否有任何品項正在載入
   const hasItemLoading = useSelector(selectHasItemLoading);
   // 購物車是否正在處理中
-  const isCartProcessing = cartLoading || hasItemLoading;
+  const isCartProcessing = cartLoading || hasItemLoading || cartMigrating;
 
   const { isAuth, isAuthChecked } = useSelector(state => state.guestAuth);
+  const { requireAuth } = usePendingAuthAction();
 
   const handleCloseMemberMenu = () => setShowMemberMenu(false);
   const handleToggleMemberMenu = () => setShowMemberMenu(prev => !prev);
@@ -80,43 +88,65 @@ export default function Navbar() {
   useEffect(() => {
     async function initFetch() {
       try {
-        await dispatch(fetchCarts(true)).unwrap();
+        // 驗證登入狀態，不使用 unwrap()，改用 match() 處理 rejected 結果
+        // 避免未登入的情況被當作 exception 拋到 catch
+        const result = await dispatch(guestAuthCheck());
+        if (guestAuthCheck.rejected.match(result)) {
+          toast.error(result.payload.message);
+        }
+        // 初始化購物車資料
+        await dispatch(authAwareInitCarts(true));
       } catch (error) {
         toast.error(error);
       }
     }
-    // 驗證使用者是否登入
-    dispatch(guestAuthCheck());
-    // 初始化購物車資料
     initFetch();
   }, [dispatch]);
 
   // 更新購物車數量
-  async function handleUpdateCart(id, product_id, qty) {
+  async function handleUpdateCart(cartItemId, productId, qty) {
     try {
-      const data = { product_id: product_id, qty: qty };
-      await dispatch(updateAndRefetchCarts({ id, data, preventGlobalLoading: true })).unwrap();
+      await dispatch(authAwareUpdateCart({ cartItemId, productId, qty, preventGlobalLoading: true }));
     } catch (error) {
       toast.error(error);
     }
   }
 
   // 刪除購物車項目
-  async function handleDeleteCart(id) {
+  async function handleDeleteCart(cartItemId) {
     try {
-      await dispatch(deleteAndRefetchCarts({ id, preventGlobalLoading: true })).unwrap();
+      await dispatch(authAwareDeleteCart({ cartItemId, preventGlobalLoading: true }));
       toast.success('刪除成功');
     } catch (error) {
       toast.error(error);
     }
   }
 
-  function handleLogout() {
-    dispatch(guestLogout());
-    toast.success('登出成功');
-    dispatch(closeModal());
-    handleCloseMemberMenu();
-    closeDesktopMemberMenu();
+  async function handleLogout() {
+    try {
+      await dispatch(guestAuthLogout()).unwrap();
+      dispatch(authCleared());
+      dispatch(resetCart());
+      toast.success('登出成功');
+      dispatch(closeModal());
+      handleCloseMemberMenu();
+      closeDesktopMemberMenu();
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
+
+  async function handleGoCart() {
+    const callback = async () => {
+      // 關閉所有展開內容
+      handleCloseMemberMenu();
+      closeDesktopMemberMenu();
+      handleCloseCartDrawer();
+
+      // 跳轉至購物車頁面
+      navigate('/shopping-cart');
+    };
+    requireAuth(callback);
   }
 
   return (
@@ -339,87 +369,91 @@ export default function Navbar() {
         </Offcanvas.Header>
         <Offcanvas.Body className="d-flex flex-column">
           <ul className="header-offcanvas-cart list-unstyled d-flex flex-column gap-4 mb-8">
-            {carts.map(cartItem => {
-              const itemStatus = loadingItems[cartItem.id] || null;
-              return (
-                <li key={cartItem.id} className="position-relative">
-                  <div className="card border-0 flex-row">
-                    <img
-                      src={cartItem.product.imageUrl}
-                      className="card-img-top w-25 rounded-0 object-fit-cover"
-                      alt={cartItem.product.title}
-                    />
-                    <div className="card-body d-flex flex-column p-0 ms-3">
-                      <p className="card-title fs-6 noto-serif-tc fw-bold text-neutral-700 mb-1">
-                        {cartItem.product.title}
-                      </p>
-                      <div className="d-flex align-items-center mb-1">
-                        <p className="card-text text-neutral-700 noto-serif-tc fw-bold me-1">{`NT$${cartItem.product.price.toLocaleString()}`}</p>
-                      </div>
-                      <div className="d-flex align-items-center mt-auto">
-                        <Button
-                          type="button"
-                          variant="outline-neutral"
-                          shape="circle"
-                          size="sm"
-                          className="p-1"
-                          disabled={cartItem.qty <= 1 || itemStatus}
-                          onClick={() => handleUpdateCart(cartItem.id, cartItem.product_id, cartItem.qty - 1)}
-                        >
-                          <span className="custom-btn-icon material-symbols-rounded">remove</span>
-                        </Button>
-                        <div className="text-center">
-                          <span className="px-2 me-1" data-action="quantity">
-                            {cartItem.qty}
-                          </span>
+            {!cartMigrating &&
+              carts.map(cartItem => {
+                const itemStatus = loadingItems[cartItem.id] || null;
+                return (
+                  <li key={cartItem.id} className="position-relative">
+                    <div className="card border-0 flex-row">
+                      <img
+                        src={cartItem.product.imageUrl}
+                        className="card-img-top w-25 rounded-0 object-fit-cover"
+                        alt={cartItem.product.title}
+                      />
+                      <div className="card-body d-flex flex-column p-0 ms-3">
+                        <p className="card-title fs-6 noto-serif-tc fw-bold text-neutral-700 mb-1">
+                          {cartItem.product.title}
+                        </p>
+                        <div className="d-flex align-items-center mb-1">
+                          <p className="card-text text-neutral-700 noto-serif-tc fw-bold me-1">{`NT$${cartItem.product.price.toLocaleString()}`}</p>
                         </div>
-                        <Button
-                          type="button"
-                          variant="outline-neutral"
-                          shape="circle"
-                          size="sm"
-                          className="p-1"
-                          disabled={itemStatus}
-                          onClick={() => handleUpdateCart(cartItem.id, cartItem.product_id, cartItem.qty + 1)}
-                        >
-                          <span className="custom-btn-icon material-symbols-rounded">add</span>
-                        </Button>
-                        {itemStatus === 'updating' && (
-                          <div className="ms-3">
-                            <span className="spinner-border spinner-border-sm text-primary" role="status">
-                              <span className="visually-hidden">Loading...</span>
+                        <div className="d-flex align-items-center mt-auto">
+                          <Button
+                            type="button"
+                            variant="outline-neutral"
+                            shape="circle"
+                            size="sm"
+                            className="p-1"
+                            disabled={cartItem.qty <= 1 || itemStatus}
+                            onClick={() => handleUpdateCart(cartItem.id, cartItem.product_id, cartItem.qty - 1)}
+                          >
+                            <span className="custom-btn-icon material-symbols-rounded">remove</span>
+                          </Button>
+                          <div className="text-center">
+                            <span className="px-2 me-1" data-action="quantity">
+                              {cartItem.qty}
                             </span>
                           </div>
-                        )}
-                        <Button
-                          type="button"
-                          variant="outline-danger"
-                          shape="circle"
-                          size="sm"
-                          className={clsx('p-1 ms-auto', itemStatus === 'deleting' && 'deleting-button px-2 z-1')}
-                          disabled={itemStatus}
-                          onClick={() => handleDeleteCart(cartItem.id)}
-                        >
-                          {itemStatus === 'deleting' ? (
-                            <span className="spinner-border spinner-border-sm text-danger" role="status">
-                              <span className="visually-hidden">Loading...</span>
-                            </span>
-                          ) : (
-                            <span className="custom-btn-icon material-symbols-rounded">delete</span>
+                          <Button
+                            type="button"
+                            variant="outline-neutral"
+                            shape="circle"
+                            size="sm"
+                            className="p-1"
+                            disabled={itemStatus}
+                            onClick={() => handleUpdateCart(cartItem.id, cartItem.product_id, cartItem.qty + 1)}
+                          >
+                            <span className="custom-btn-icon material-symbols-rounded">add</span>
+                          </Button>
+                          {itemStatus === 'updating' && (
+                            <div className="ms-3">
+                              <span className="spinner-border spinner-border-sm text-primary" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                              </span>
+                            </div>
                           )}
-                        </Button>
+                          <Button
+                            type="button"
+                            variant="outline-danger"
+                            shape="circle"
+                            size="sm"
+                            className={clsx('p-1 ms-auto', itemStatus === 'deleting' && 'deleting-button px-2 z-1')}
+                            disabled={itemStatus}
+                            onClick={() => handleDeleteCart(cartItem.id)}
+                          >
+                            {itemStatus === 'deleting' ? (
+                              <span className="spinner-border spinner-border-sm text-danger" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                              </span>
+                            ) : (
+                              <span className="custom-btn-icon material-symbols-rounded">delete</span>
+                            )}
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  {/* item 刪除時遮罩 */}
-                  {itemStatus === 'deleting' && (
-                    <div className="position-absolute top-0 start-0 w-100 h-100 bg-neutral-50 opacity-50"></div>
-                  )}
-                </li>
-              );
-            })}
-            {/* 購物車空狀態：載入中顯示 spinner，否則顯示提示文字 */}
+                    {/* item 刪除時遮罩 */}
+                    {itemStatus === 'deleting' && (
+                      <div className="position-absolute top-0 start-0 w-100 h-100 bg-neutral-50 opacity-50"></div>
+                    )}
+                  </li>
+                );
+              })}
+            {/* Migration spinner */}
+            {cartMigrating && <li className="text-center text-neutral-500 py-12">正在同步您的購物車...</li>}
+            {/* 購物車空狀態：非 migration 時，依 cartLoading 顯示 spinner，否則顯示提示文字 */}
             {carts.length === 0 &&
+              !cartMigrating &&
               (cartLoading ? (
                 <li className="text-center py-12">
                   <span className="spinner-border text-primary" role="status">
@@ -432,8 +466,6 @@ export default function Navbar() {
           </ul>
           <div className="mt-auto">
             <Button
-              as={Link}
-              to="/shopping-cart"
               type="button"
               variant="filled-primary"
               shape="pill"
@@ -441,7 +473,7 @@ export default function Navbar() {
               rightIcon={true}
               iconName="arrow_right_alt"
               className={clsx('justify-content-center w-100', (carts.length === 0 || isCartProcessing) && 'disabled')}
-              onClick={handleCloseCartDrawer}
+              onClick={handleGoCart}
             >
               去結帳
             </Button>

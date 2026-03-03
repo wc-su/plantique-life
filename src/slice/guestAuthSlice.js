@@ -52,6 +52,20 @@ export const guestAuthCheck = createAsyncThunk('guestAuth/guestAuthCheck', async
   }
 });
 
+export const guestAuthLogout = createAsyncThunk(
+  'guestAuth/guestAuthLogout',
+  async (_, { dispatch, rejectWithValue }) => {
+    dispatch(showLoading());
+    try {
+      await guestAuthApi.logout();
+    } catch (error) {
+      return rejectWithValue({ code: error.code, message: error.message });
+    } finally {
+      dispatch(hideLoading());
+    }
+  },
+);
+
 export const guestAuthSlice = createSlice({
   name: 'guestAuth',
   initialState: {
@@ -61,13 +75,12 @@ export const guestAuthSlice = createSlice({
     isManualLogout: false, // 是否手動登出
   },
   reducers: {
-    guestLogout: state => {
-      state.isAuth = false;
-      state.user = null;
-      state.isManualLogout = true; // 標記為手動登出
-    },
     resetManualLogout: state => {
       state.isManualLogout = false;
+    },
+    authCleared: state => {
+      state.isAuth = false;
+      state.user = null;
     },
   },
   extraReducers: builder => {
@@ -86,12 +99,22 @@ export const guestAuthSlice = createSlice({
         state.user = null;
         state.isAuthChecked = true;
       })
+      // 手動登出：在 pending 就標記，不等 fulfilled
+      .addCase(guestAuthLogout.pending, state => {
+        state.isManualLogout = true;
+      })
+      // 登出失敗：取消手動登出的標記
+      .addCase(guestAuthLogout.rejected, state => {
+        state.isManualLogout = false;
+      })
       .addMatcher(isAnyOf(guestRegister.pending, guestLogin.pending), state => {
         state.isAuth = false;
       })
       .addMatcher(isAnyOf(guestRegister.fulfilled, guestLogin.fulfilled), (state, action) => {
         state.isAuth = true;
         state.user = action.payload;
+        // 清掉上次手動登出的標記
+        state.isManualLogout = false;
       })
       .addMatcher(isAnyOf(guestRegister.rejected, guestLogin.rejected), state => {
         state.isAuth = false;
@@ -102,4 +125,4 @@ export const guestAuthSlice = createSlice({
 
 export default guestAuthSlice.reducer;
 
-export const { guestLogout, resetManualLogout } = guestAuthSlice.actions;
+export const { resetManualLogout, authCleared } = guestAuthSlice.actions;
