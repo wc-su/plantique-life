@@ -9,6 +9,7 @@ import adminProductReducer from '@/slice/product/adminProductSlice';
 import guestProductReducer from '@/slice/product/guestProductSlice';
 import uiReducer from '@/slice/uiSlice';
 import { configureStore } from '@reduxjs/toolkit';
+import { cartLocalStorageMiddleware } from '../middleware/cartLocalStorageMiddleware';
 
 const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ const store = configureStore({
     guestNews: guestNewsReducer,
     ui: uiReducer,
   },
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(cartLocalStorageMiddleware),
 });
 
 export default store;
