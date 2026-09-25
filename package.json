@@ -32,6 +32,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@reduxjs/toolkit": "^2.11.2",
+    "@supabase/supabase-js": "^2.116.0",
     "axios": "^1.13.2",
     "bootstrap": "^5.3.8",
     "clsx": "^2.1.1",
