@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { guestAuthApi } from '@/api';
+import { getAuthErrorMessage } from '@/utils/errorMessage';
 import { hideLoading, showLoading } from './loadingSlice';
 
 export const guestRegister = createAsyncThunk(
@@ -11,14 +12,15 @@ export const guestRegister = createAsyncThunk(
       const { user, session } = await guestAuthApi.register(submitData);
       if (!session) {
         // 沒有 session = 需要驗證信箱，不能當成已登入
-        return rejectWithValue({ code: 'email_not_confirmed', message: '請先到信箱完成驗證' });
+        const errCode = 'email_not_confirmed';
+        return rejectWithValue({ code: errCode, message: getAuthErrorMessage(errCode) });
       }
       return {
         id: user.id,
         email: user.email,
       };
     } catch (error) {
-      return rejectWithValue({ code: error.code, message: error.message });
+      return rejectWithValue({ code: error.code, message: getAuthErrorMessage(error.code) });
     } finally {
       dispatch(hideLoading());
     }
@@ -36,7 +38,7 @@ export const guestLogin = createAsyncThunk(
         email: user.email,
       };
     } catch (error) {
-      return rejectWithValue({ code: error.code, message: error.message });
+      return rejectWithValue({ code: error.code, message: getAuthErrorMessage(error.code) });
     } finally {
       dispatch(hideLoading());
     }
@@ -48,7 +50,7 @@ export const guestAuthCheck = createAsyncThunk('guestAuth/guestAuthCheck', async
     const { session } = await guestAuthApi.check();
     return session ? { id: session.user.id, email: session.user.email } : null;
   } catch (error) {
-    return rejectWithValue({ code: error.code, message: error.message });
+    return rejectWithValue({ code: error.code, message: getAuthErrorMessage(error.code) });
   }
 });
 
@@ -59,7 +61,7 @@ export const guestAuthLogout = createAsyncThunk(
     try {
       await guestAuthApi.logout();
     } catch (error) {
-      return rejectWithValue({ code: error.code, message: error.message });
+      return rejectWithValue({ code: error.code, message: getAuthErrorMessage(error.code) });
     } finally {
       dispatch(hideLoading());
     }
@@ -100,6 +102,8 @@ export const guestAuthSlice = createSlice({
         state.isAuthChecked = true;
       })
       // 手動登出：在 pending 就標記，不等 fulfilled
+      // signOut() 會先觸發 SIGNED_OUT（main.jsx 清掉 isAuth）才回傳結果
+      // 標記太晚的話，RequireGuestAuth 會誤判成 session 過期，顯示「請先登入」
       .addCase(guestAuthLogout.pending, state => {
         state.isManualLogout = true;
       })
