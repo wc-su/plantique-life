@@ -9,14 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router';
 
 import { usePendingAuthAction } from '@/hook/usePendingAuthAction';
-import {
-  authAwareDeleteCart,
-  authAwareInitCarts,
-  authAwareUpdateCart,
-  resetCart,
-  selectHasItemLoading,
-} from '@/slice/cartSlice';
-import { authCleared, guestAuthCheck, guestAuthLogout } from '@/slice/guestAuthSlice';
+import { authAwareDeleteCart, authAwareInitCarts, authAwareUpdateCart, selectHasItemLoading } from '@/slice/cartSlice';
+import { guestAuthCheck, guestAuthLogout } from '@/slice/guestAuthSlice';
 import { closeModal, openModal } from '@/slice/uiSlice';
 import useMediaQuery from '@/utils/useMediaQuery';
 import Button from '../components/Button';
@@ -124,9 +118,9 @@ export default function Navbar() {
 
   async function handleLogout() {
     try {
+      // 登入狀態（authCleared）和購物車（resetCart）不在這裡清除，交給 main.jsx 的 SIGNED_OUT 監聽處理：
+      // 其他分頁登出、session 過期也會登出，放在監聽才能涵蓋所有情況，也不會在兩個地方重複清除
       await dispatch(guestAuthLogout()).unwrap();
-      dispatch(authCleared());
-      dispatch(resetCart());
       toast.success('登出成功');
       dispatch(closeModal());
       handleCloseMemberMenu();
