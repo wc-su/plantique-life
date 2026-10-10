@@ -16,6 +16,11 @@ create table public.profiles (
 -- 替 profiles 開啟 RLS
 alter table public.profiles enable row level security;
 
+-- 授權 authenticated 角色讀取 profiles，只能更新這三個欄位（id、created_at 前端改不了）
+-- 哪幾列由下面的 RLS policy 決定；role 的修改另外由 prevent_role_escalation 擋
+grant select on public.profiles to authenticated;
+grant update (name, receive_news, role) on public.profiles to authenticated;
+
 -- 當 auth.users 有新資料時自動建立 profiles 資料
 -- (包含使用 email/password 註冊以及 OAuth 註冊)
 -- name / receive_news 從註冊時的 options.data (raw_user_meta_data) 取得
