@@ -5,6 +5,7 @@ import { guestProductApi } from '@/api/index.js';
 import { getAllProducts } from '@/slice/product/guestProductSlice.js';
 import store from '@/store/index.js';
 import App from '../App';
+import RequireGuestAuth from '../components/RequireGuestAuth.jsx';
 import About from '../views/About';
 import ArticleDetail from '../views/ArticleDetail';
 import Articles from '../views/Articles';
@@ -73,33 +74,38 @@ const routes = [
       },
       { path: 'articles/:articleId', Component: ArticleDetail },
       { path: 'articles', Component: Articles },
+      { path: 'about', Component: About },
       { path: 'privacy-policy', Component: PrivacyPolicy },
       { path: 'terms', Component: Terms },
-      { path: 'shopping-cart', Component: ShoppingCart },
-      { path: 'about', Component: About },
       {
-        path: 'member',
-        Component: Member,
-        handle: { breadcrumb: () => '會員中心' },
+        Component: RequireGuestAuth,
         children: [
-          { index: true, Component: () => <h2>基本資訊</h2> },
+          { path: 'shopping-cart', Component: ShoppingCart },
           {
-            path: 'orders',
-            Component: () => <Outlet />,
-            handle: { breadcrumb: () => '訂單查詢' },
+            path: 'member',
+            Component: Member,
+            handle: { breadcrumb: () => '會員中心' },
             children: [
+              { index: true, Component: () => <h2>基本資訊</h2> },
               {
-                index: true,
-                Component: OrderList,
+                path: 'orders',
+                Component: () => <Outlet />,
+                handle: { breadcrumb: () => '訂單查詢' },
+                children: [
+                  {
+                    index: true,
+                    Component: OrderList,
+                  },
+                  {
+                    path: ':orderId',
+                    Component: OrderDetail,
+                    handle: { breadcrumb: match => `${match.params.orderId}` },
+                  },
+                ],
               },
-              {
-                path: ':orderId',
-                Component: OrderDetail,
-                handle: { breadcrumb: match => `${match.params.orderId}` },
-              },
+              { path: 'wishlist', Component: () => <h2>願望清單</h2>, handle: { breadcrumb: () => '願望清單' } },
             ],
           },
-          { path: 'wishlist', Component: () => <h2>願望清單</h2>, handle: { breadcrumb: () => '願望清單' } },
         ],
       },
     ],
