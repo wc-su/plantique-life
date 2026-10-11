@@ -12,9 +12,11 @@ import Home from '../views/Home';
 import Member from '../views/Member.jsx';
 import OrderDetail from '../views/member/OrderDetail.jsx';
 import OrderList from '../views/member/OrderList.jsx';
+import PrivacyPolicy from '../views/PrivacyPolicy';
 import ProductDetail from '../views/ProductDetail';
 import ProductList from '../views/ProductList';
 import ShoppingCart from '../views/ShoppingCart';
+import Terms from '../views/Terms';
 
 // 後台管理頁面
 import RequireAuth from '../components/RequireAuth.jsx';
@@ -71,6 +73,8 @@ const routes = [
       },
       { path: 'articles/:articleId', Component: ArticleDetail },
       { path: 'articles', Component: Articles },
+      { path: 'privacy-policy', Component: PrivacyPolicy },
+      { path: 'terms', Component: Terms },
       { path: 'shopping-cart', Component: ShoppingCart },
       { path: 'about', Component: About },
       {
