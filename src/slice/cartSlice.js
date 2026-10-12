@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
+import toast from 'react-hot-toast';
 import { cartApi, guestCouponApi } from '../api';
 
 // 取得購物車列表
@@ -369,6 +370,27 @@ export const flushPendingBuyNowItem = () => (dispatch, getState) => {
     dispatch(addLocalCartItem({ product, productId: product.id, qty }));
     dispatch(clearPendingBuyNowItem());
   }
+};
+/**
+ * 其他分頁登入後：把這個分頁暫存的「立即購買」商品加入遠端購物車，再重新取得購物車。
+ */
+export const syncCartsAfterOtherTabSignIn = () => async (dispatch, getState) => {
+  const { pendingBuyNowItem } = getState().cart;
+  if (pendingBuyNowItem) {
+    const { product, qty } = pendingBuyNowItem;
+    // 加入失敗顯示錯誤訊息但繼續往下，購物車照常重新取得
+    const result = await dispatch(
+      addToCarts({
+        data: { product_id: product.id, qty },
+        preventGlobalLoading: true,
+      }),
+    );
+    if (addToCarts.rejected.match(result)) {
+      toast.error('立即購買的商品加入購物車失敗');
+    }
+    dispatch(clearPendingBuyNowItem());
+  }
+  await dispatch(fetchCarts(true));
 };
 
 // Export actions
