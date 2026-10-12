@@ -74,6 +74,7 @@ export const guestAuthSlice = createSlice({
     isAuth: false,
     user: null,
     isAuthChecked: false,
+    isSigningIn: false, // 是否正在登入中
     isManualLogout: false, // 是否手動登出
   },
   reducers: {
@@ -83,6 +84,11 @@ export const guestAuthSlice = createSlice({
     authCleared: state => {
       state.isAuth = false;
       state.user = null;
+    },
+    authSynced: (state, action) => {
+      state.isAuth = true;
+      state.user = action.payload;
+      state.isAuthChecked = true;
     },
   },
   extraReducers: builder => {
@@ -113,20 +119,24 @@ export const guestAuthSlice = createSlice({
       })
       .addMatcher(isAnyOf(guestRegister.pending, guestLogin.pending), state => {
         state.isAuth = false;
+        state.isSigningIn = true;
       })
       .addMatcher(isAnyOf(guestRegister.fulfilled, guestLogin.fulfilled), (state, action) => {
         state.isAuth = true;
         state.user = action.payload;
         // 清掉上次手動登出的標記
         state.isManualLogout = false;
+        // 已登入完成，清除註記
+        state.isSigningIn = false;
       })
       .addMatcher(isAnyOf(guestRegister.rejected, guestLogin.rejected), state => {
         state.isAuth = false;
         state.user = null;
+        state.isSigningIn = false;
       });
   },
 });
 
 export default guestAuthSlice.reducer;
 
-export const { resetManualLogout, authCleared } = guestAuthSlice.actions;
+export const { resetManualLogout, authCleared, authSynced } = guestAuthSlice.actions;
