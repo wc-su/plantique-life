@@ -2,6 +2,8 @@ name: deploy to GitHub Pages
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
 
 # GitHub Pages 需要的權限
 permissions:
