@@ -54,6 +54,9 @@ export const guestAuthCheck = createAsyncThunk('guestAuth/guestAuthCheck', async
   }
 });
 
+// 登出：只負責呼叫 guestAuthApi.logout()、顯示 loading、回傳錯誤，所以沒有 extraReducers
+// 登入狀態由 main.jsx 的 SIGNED_OUT 監聽清除（logout 成功時 Supabase 會發出）
+// 因為其他分頁登出、session 過期也會觸發 SIGNED_OUT，統一在監聽處理才能涵蓋所有情況
 export const guestAuthLogout = createAsyncThunk(
   'guestAuth/guestAuthLogout',
   async (_, { dispatch, rejectWithValue }) => {
@@ -75,12 +78,8 @@ export const guestAuthSlice = createSlice({
     user: null,
     isAuthChecked: false,
     isSigningIn: false, // 是否正在登入中
-    isManualLogout: false, // 是否手動登出
   },
   reducers: {
-    resetManualLogout: state => {
-      state.isManualLogout = false;
-    },
     authCleared: state => {
       state.isAuth = false;
       state.user = null;
@@ -107,16 +106,6 @@ export const guestAuthSlice = createSlice({
         state.user = null;
         state.isAuthChecked = true;
       })
-      // 手動登出：在 pending 就標記，不等 fulfilled
-      // signOut() 會先觸發 SIGNED_OUT（main.jsx 清掉 isAuth）才回傳結果
-      // 標記太晚的話，RequireGuestAuth 會誤判成 session 過期，顯示「請先登入」
-      .addCase(guestAuthLogout.pending, state => {
-        state.isManualLogout = true;
-      })
-      // 登出失敗：取消手動登出的標記
-      .addCase(guestAuthLogout.rejected, state => {
-        state.isManualLogout = false;
-      })
       .addMatcher(isAnyOf(guestRegister.pending, guestLogin.pending), state => {
         state.isAuth = false;
         state.isSigningIn = true;
@@ -124,8 +113,6 @@ export const guestAuthSlice = createSlice({
       .addMatcher(isAnyOf(guestRegister.fulfilled, guestLogin.fulfilled), (state, action) => {
         state.isAuth = true;
         state.user = action.payload;
-        // 清掉上次手動登出的標記
-        state.isManualLogout = false;
         // 已登入完成，清除註記
         state.isSigningIn = false;
       })
@@ -139,4 +126,4 @@ export const guestAuthSlice = createSlice({
 
 export default guestAuthSlice.reducer;
 
-export const { resetManualLogout, authCleared, authSynced } = guestAuthSlice.actions;
+export const { authCleared, authSynced } = guestAuthSlice.actions;
