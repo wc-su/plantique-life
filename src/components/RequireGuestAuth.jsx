@@ -3,24 +3,15 @@ import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useNavigate } from 'react-router';
 
-import { resetManualLogout } from '@/slice/guestAuthSlice';
 import { openModal } from '@/slice/uiSlice';
 
 const RequireGuestAuth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isAuth, isAuthChecked, isManualLogout } = useSelector(state => state.guestAuth);
+  const { isAuth, isAuthChecked } = useSelector(state => state.guestAuth);
 
-  const isManualLogoutRef = useRef(isManualLogout);
   const prevIsAuthRef = useRef(undefined);
-
-  // 監聽 isManualLogout 的變化
-  // 須放在下一個 useEffect 之前，讓 isManualLogoutRef 的值先被更新
-  // 手動登出時，isManualLogoutRef 的值需先被更新為 true，讓 login modal 不會被開啟
-  useEffect(() => {
-    isManualLogoutRef.current = isManualLogout;
-  }, [isManualLogout]);
 
   // Navbar 會做驗證，這裡只等待驗證結果
   useEffect(() => {
@@ -28,15 +19,12 @@ const RequireGuestAuth = () => {
 
     if (!isAuth) {
       navigate('/');
-      // 只有「已登入狀態下手動登出」才不顯示登入 Modal
-      // 若元件重新掛載（例如手動輸入路由），prevIsAuthRef.current 為 undefined，
-      // 不符合 wasLoggedIn，仍會顯示 Modal
-      const wasLoggedIn = prevIsAuthRef.current === true;
-      if (!wasLoggedIn || !isManualLogoutRef.current) {
+      // 只有「剛進入頁面時沒登入」才提示（例如未登入直接輸入網址，prevIsAuthRef.current 是 undefined）
+      // 登入後登出（自己按登出、其他分頁登出、session 過期）都只導回首頁，不提示
+      if (!prevIsAuthRef.current) {
         toast.error('請先登入');
         dispatch(openModal('login'));
       }
-      dispatch(resetManualLogout());
     }
 
     prevIsAuthRef.current = isAuth;
