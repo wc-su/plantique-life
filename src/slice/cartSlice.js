@@ -1,16 +1,54 @@
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
+
 import { cartApi, guestCouponApi } from '../api';
+import { hideLoading, showLoading } from './loadingSlice';
+import { getAllProducts, selectAllProducts } from './product/guestProductSlice';
 
 // 取得購物車列表
-export const fetchCarts = createAsyncThunk('cart/fetchCarts', async (preventGlobalLoading, { rejectWithValue }) => {
-  try {
-    const response = await cartApi.fetchCarts(preventGlobalLoading);
-    return response;
-  } catch (error) {
-    return rejectWithValue(error);
-  }
-});
+export const fetchCarts = createAsyncThunk(
+  'cart/fetchCarts',
+  async (preventGlobalLoading, { dispatch, getState, rejectWithValue }) => {
+    // 取得 user 資訊
+    const userId = getState().guestAuth.user?.id;
+    if (!userId) return rejectWithValue({ code: 'NO_USER', message: '請先登入' });
+
+    if (!preventGlobalLoading) dispatch(showLoading());
+    try {
+      let allProducts = selectAllProducts(getState());
+      if (allProducts.length === 0) {
+        await dispatch(getAllProducts()).unwrap();
+        allProducts = selectAllProducts(getState());
+      }
+      // 合併函式：用 Map 依 id 查商品，之後不用每個品項都跑一次 find
+      const productMap = new Map(allProducts.map(p => [p.id, p]));
+
+      // 取得購物車資訊
+      const data = await cartApi.fetchCarts(userId);
+
+      // 合併購物車資訊
+      const carts = data
+        .filter(item => productMap.has(item.product_id)) // 略過比對不到的品項（已下架）
+        .map(item => {
+          const product = productMap.get(item.product_id);
+          return { ...item, product, total: item.qty * product.price };
+        });
+
+      const total = carts.reduce((sum, item) => sum + item.total, 0);
+      const response = { data: { carts, total, final_total: total } };
+
+      return response;
+    } catch (error) {
+      return rejectWithValue(
+        typeof error === 'string'
+          ? { code: 'API_ERROR', message: error }
+          : { code: error.code, message: error.message },
+      );
+    } finally {
+      if (!preventGlobalLoading) dispatch(hideLoading());
+    }
+  },
+);
 // 新增產品到購物車
 export const addToCarts = createAsyncThunk(
   'cart/addToCarts',

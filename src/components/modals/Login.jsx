@@ -40,7 +40,7 @@ function Login({ onSwitchToRegister }) {
       // localStorage 資訊加入購物車
       const result = await dispatch(migrateGuestCart());
       if (migrateGuestCart.rejected.match(result)) {
-        toast.error(result.payload);
+        toast.error(result.payload.message);
       }
       if (migrateGuestCart.fulfilled.match(result)) {
         const failedItemCount = result.payload;

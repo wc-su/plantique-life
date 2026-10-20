@@ -91,7 +91,7 @@ export default function Navbar() {
         // 初始化購物車資料
         await dispatch(authAwareInitCarts(true));
       } catch (error) {
-        toast.error(error);
+        toast.error(error.message);
       }
     }
     initFetch();

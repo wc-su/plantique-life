@@ -72,7 +72,7 @@ function OrderDetail() {
     try {
       await dispatch(fetchCarts(true)).unwrap();
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     } finally {
       setAddToCartLoading(false);
     }
