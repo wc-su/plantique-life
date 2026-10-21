@@ -165,11 +165,11 @@ export const migrateGuestCart = createAsyncThunk('cart/migrateGuestCart', async 
   // 新增多筆產品到購物車
   const results = [];
   if (localCartData.length > 0) {
-    for (const product of localCartData) {
+    for (const item of localCartData) {
       try {
         const response = await dispatch(
           addToCarts({
-            data: { product_id: product.id, qty: product.qty },
+            data: { product_id: item.product_id, qty: item.qty },
             preventGlobalLoading: true,
           }),
         ).unwrap();
