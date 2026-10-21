@@ -356,9 +356,17 @@ export const authAwareInitCarts = preventGlobalLoading => async (dispatch, getSt
   } else {
     // 未登入：從 localStorage 讀取購物車資料
     const localCartData = JSON.parse(localStorage.getItem('guestCarts')) || [];
+    // 訪客品項沒有資料庫的 id，用 product_id 代替（deleteLocalCartItem 依 id 刪除）
+    const items = localCartData.map(({ product_id, qty }) => ({ id: product_id, product_id, qty }));
+    try {
+      const allProducts = await loadAllProducts(dispatch, getState);
+      const { carts } = mergeCartItems(items, allProducts);
 
-    // 將讀取到的資料寫入 Redux state
-    dispatch(setLocalCarts(localCartData));
+      // 將讀取到的資料寫入 Redux state
+      dispatch(setLocalCarts(carts));
+    } catch (error) {
+      throw toCartError(error);
+    }
   }
 };
 export const authAwareAddToCart = data => async (dispatch, getState) => {

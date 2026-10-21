@@ -2,7 +2,7 @@ import 'assets/scss/main.scss';
 
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router';
 
@@ -10,7 +10,7 @@ import { supabaseGuest } from './api/clients/guestClient.js';
 import setupAxiosInterceptors from './api/setup';
 import Loading from './components/Loading.jsx';
 import createAppHashRouter from './router/index';
-import { resetCart, setLocalCarts, syncCartsAfterOtherTabSignIn } from './slice/cartSlice.js';
+import { authAwareInitCarts, resetCart, syncCartsAfterOtherTabSignIn } from './slice/cartSlice.js';
 import { authCleared, authSynced } from './slice/guestAuthSlice.js';
 import { closeModal } from './slice/uiSlice.js';
 import store from './store';
@@ -46,8 +46,8 @@ window.addEventListener('storage', event => {
   // 已登入：購物車在遠端，不用 localStorage 的資料
   if (store.getState().guestAuth.isAuth) return;
 
-  // 用其他分頁的購物車取代這個分頁的；guestCarts 被刪除時 newValue 是 null，改用空陣列
-  store.dispatch(setLocalCarts(JSON.parse(event.newValue) || []));
+  // 重新讀取 localStorage，和商品資料合併後取代這個分頁的購物車
+  store.dispatch(authAwareInitCarts()).catch(error => toast.error(error.message));
 });
 
 createRoot(document.getElementById('root')).render(
