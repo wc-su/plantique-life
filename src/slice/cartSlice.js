@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 
+import { getCartErrorMessage } from '@/utils/errorMessage';
 import { cartApi, guestCouponApi } from '../api';
 import { hideLoading, showLoading } from './loadingSlice';
 import { getAllProducts, selectAllProducts } from './product/guestProductSlice';
@@ -31,9 +32,12 @@ function mergeCartItems(items, allProducts) {
 
 // 統一購物車的錯誤格式：axios 攔截器回傳字串，Supabase 回傳物件
 function toCartError(error) {
-  return typeof error === 'string'
-    ? { code: 'API_ERROR', message: error }
-    : { code: error.code, message: error.message };
+  if (typeof error === 'string') {
+    return { code: 'API_ERROR', message: getCartErrorMessage('API_ERROR'), detail: error };
+  }
+  // supabase-js 網路失敗時 code 是空字串
+  const code = error.code === '' ? 'NETWORK_ERROR' : error.code;
+  return { code, message: getCartErrorMessage(code), detail: error.message };
 }
 
 // 取得購物車列表
@@ -42,7 +46,7 @@ export const fetchCarts = createAsyncThunk(
   async (preventGlobalLoading, { dispatch, getState, rejectWithValue }) => {
     // 取得 user 資訊
     const userId = getState().guestAuth.user?.id;
-    if (!userId) return rejectWithValue({ code: 'NO_USER', message: '請先登入' });
+    if (!userId) return rejectWithValue({ code: 'NO_USER', message: getCartErrorMessage('NO_USER') });
 
     if (!preventGlobalLoading) dispatch(showLoading());
     try {
