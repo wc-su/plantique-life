@@ -1,5 +1,4 @@
-import guestClient, { supabaseGuest } from '../clients/guestClient';
-import { GUEST_API_PATH } from '../core/constants';
+import { supabaseGuest } from '../clients/guestClient';
 
 const CART_ITEMS = 'cart_items';
 
@@ -21,11 +20,26 @@ export const cartApi = {
     return data;
   },
   // 更新購物車產品資訊
-  updateCart: (id, data, preventGlobalLoading) =>
-    guestClient.put(`${GUEST_API_PATH}/cart/${id}`, { data }, { preventGlobalLoading }),
+  updateCart: async ({ userId, id, qty }) => {
+    const { data, error } = await supabaseGuest
+      .from(CART_ITEMS)
+      .update({ qty })
+      .eq('user_id', userId)
+      .eq('id', id)
+      .select();
+    if (error) throw error;
+    return data;
+  },
   // 刪除購物車產品
-  deleteCart: (id, preventGlobalLoading) =>
-    guestClient.delete(`${GUEST_API_PATH}/cart/${id}`, { preventGlobalLoading }),
+  deleteCart: async ({ userId, id }) => {
+    const { data, error } = await supabaseGuest.from(CART_ITEMS).delete().eq('user_id', userId).eq('id', id).select();
+    if (error) throw error;
+    return data;
+  },
   // 刪除購物車全部產品
-  deleteCarts: preventGlobalLoading => guestClient.delete(`${GUEST_API_PATH}/carts`, { preventGlobalLoading }),
+  deleteCarts: async ({ userId }) => {
+    const { data, error } = await supabaseGuest.from(CART_ITEMS).delete().eq('user_id', userId).select();
+    if (error) throw error;
+    return data;
+  },
 };

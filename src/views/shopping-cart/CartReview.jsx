@@ -42,16 +42,15 @@ function CartReview({ productImages, handleSwitchStep }) {
   // 整體載入狀態
   const isCartProcessing = cartLoading || couponStatus.isLoading || hasItemLoading;
 
-  async function handleUpdateCart(id, product_id, qty) {
+  async function handleUpdateCart(id, qty) {
     // 清除優惠券訊息
     setCouponStatus({ isLoading: false, message: '', type: null });
 
     // 更新購物車數量
     try {
-      const data = { product_id: product_id, qty: qty };
-      await dispatch(updateAndRefetchCarts({ id, data, preventGlobalLoading: true })).unwrap();
+      await dispatch(updateAndRefetchCarts({ id, qty, preventGlobalLoading: true })).unwrap();
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
   }
 
@@ -64,7 +63,7 @@ function CartReview({ productImages, handleSwitchStep }) {
       await dispatch(deleteAndRefetchCarts({ id, preventGlobalLoading: true })).unwrap();
       toast.success('刪除成功');
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
   }
 
@@ -167,7 +166,7 @@ function CartReview({ productImages, handleSwitchStep }) {
                               size="sm"
                               className="me-1"
                               disabled={cartItem.qty <= 1 || itemStatus}
-                              onClick={() => handleUpdateCart(cartItem.id, cartItem.product_id, cartItem.qty - 1)}
+                              onClick={() => handleUpdateCart(cartItem.id, cartItem.qty - 1)}
                             >
                               <span className="custom-btn-icon material-symbols-rounded">remove</span>
                             </Button>
@@ -181,7 +180,7 @@ function CartReview({ productImages, handleSwitchStep }) {
                               size="sm"
                               className="me-1"
                               disabled={itemStatus}
-                              onClick={() => handleUpdateCart(cartItem.id, cartItem.product_id, cartItem.qty + 1)}
+                              onClick={() => handleUpdateCart(cartItem.id, cartItem.qty + 1)}
                             >
                               <span className="custom-btn-icon material-symbols-rounded">add</span>
                             </Button>

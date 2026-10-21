@@ -102,7 +102,7 @@ export default function Navbar() {
     try {
       await dispatch(authAwareUpdateCart({ cartItemId, productId, qty, preventGlobalLoading: true }));
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
   }
 
@@ -112,7 +112,7 @@ export default function Navbar() {
       await dispatch(authAwareDeleteCart({ cartItemId, preventGlobalLoading: true }));
       toast.success('刪除成功');
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
   }
 

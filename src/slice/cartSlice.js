@@ -114,25 +114,37 @@ export const addAndRefetchCarts = createAsyncThunk(
 // 更新購物車產品資訊並重新取得購物車列表
 export const updateAndRefetchCarts = createAsyncThunk(
   'cart/updateAndRefetchCarts',
-  async ({ id, data, preventGlobalLoading }, { dispatch, rejectWithValue }) => {
+  async ({ id, qty, preventGlobalLoading }, { dispatch, getState, rejectWithValue }) => {
+    // 取得 user 資訊
+    const userId = getState().guestAuth.user?.id;
+    if (!userId) return rejectWithValue({ code: 'NO_USER', message: getCartErrorMessage('NO_USER') });
+
+    if (!preventGlobalLoading) dispatch(showLoading());
     try {
       // 先更新指定品項
-      await cartApi.updateCart(id, data, preventGlobalLoading);
+      await cartApi.updateCart({ userId, id, qty });
       // 再重新取得購物車資料
       const response = await dispatch(fetchCarts(preventGlobalLoading)).unwrap();
       return response;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(toCartError(error));
+    } finally {
+      if (!preventGlobalLoading) dispatch(hideLoading());
     }
   },
 );
 // 刪除購物車產品並重新取得購物車列表
 export const deleteAndRefetchCarts = createAsyncThunk(
   'cart/deleteAndRefetchCarts',
-  async ({ id, preventGlobalLoading }, { dispatch, rejectWithValue }) => {
+  async ({ id, preventGlobalLoading }, { dispatch, getState, rejectWithValue }) => {
+    // 取得 user 資訊
+    const userId = getState().guestAuth.user?.id;
+    if (!userId) return rejectWithValue({ code: 'NO_USER', message: getCartErrorMessage('NO_USER') });
+
+    if (!preventGlobalLoading) dispatch(showLoading());
     try {
       // 先刪除指定品項
-      await cartApi.deleteCart(id, preventGlobalLoading);
+      await cartApi.deleteCart({ userId, id });
       // 再重新取得購物車資料
       const response = await dispatch(fetchCarts(preventGlobalLoading)).unwrap();
 
@@ -144,19 +156,31 @@ export const deleteAndRefetchCarts = createAsyncThunk(
 
       return response;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(toCartError(error));
+    } finally {
+      if (!preventGlobalLoading) dispatch(hideLoading());
     }
   },
 );
 // 刪除購物車全部產品
-export const deleteCarts = createAsyncThunk('cart/deleteCarts', async (preventGlobalLoading, { rejectWithValue }) => {
-  try {
-    const response = await cartApi.deleteCarts(preventGlobalLoading);
-    return response;
-  } catch (error) {
-    return rejectWithValue(error);
-  }
-});
+export const deleteCarts = createAsyncThunk(
+  'cart/deleteCarts',
+  async (preventGlobalLoading, { dispatch, getState, rejectWithValue }) => {
+    // 取得 user 資訊
+    const userId = getState().guestAuth.user?.id;
+    if (!userId) return rejectWithValue({ code: 'NO_USER', message: getCartErrorMessage('NO_USER') });
+
+    if (!preventGlobalLoading) dispatch(showLoading());
+    try {
+      const response = await cartApi.deleteCarts({ userId });
+      return response;
+    } catch (error) {
+      return rejectWithValue(toCartError(error));
+    } finally {
+      if (!preventGlobalLoading) dispatch(hideLoading());
+    }
+  },
+);
 
 /**
  * 登入/註冊後，購物車資料從 localStorage 改到後端儲存
@@ -401,11 +425,10 @@ export const authAwareUpdateCart = data => async (dispatch, getState) => {
   const { cartItemId, productId, qty, preventGlobalLoading } = data;
   if (isAuth) {
     // 已登入
-    const updateData = { product_id: productId, qty };
-    return await dispatch(updateAndRefetchCarts({ id: cartItemId, data: updateData, preventGlobalLoading })).unwrap();
+    return await dispatch(updateAndRefetchCarts({ id: cartItemId, qty, preventGlobalLoading })).unwrap();
   } else {
     // 未登入
-    dispatch(updateLocalCartItem({ productId: productId, qty }));
+    dispatch(updateLocalCartItem({ productId, qty }));
   }
 };
 export const authAwareDeleteCart = data => async (dispatch, getState) => {
