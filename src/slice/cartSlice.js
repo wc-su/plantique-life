@@ -5,6 +5,38 @@ import { cartApi, guestCouponApi } from '../api';
 import { hideLoading, showLoading } from './loadingSlice';
 import { getAllProducts, selectAllProducts } from './product/guestProductSlice';
 
+// 取得商品列表：Redux 裡還沒有就先打 API
+async function loadAllProducts(dispatch, getState) {
+  let allProducts = selectAllProducts(getState());
+  if (allProducts.length === 0) {
+    await dispatch(getAllProducts()).unwrap();
+    allProducts = selectAllProducts(getState());
+  }
+  return allProducts;
+}
+
+// 合併購物車品項和商品資料，回傳 { carts, total }
+function mergeCartItems(items, allProducts) {
+  // 用 Map 依 id 查商品，之後不用每個品項都跑一次 find
+  const productMap = new Map(allProducts.map(p => [p.id, p]));
+
+  const carts = items
+    .filter(item => productMap.has(item.product_id)) // 略過比對不到的品項（已下架）
+    .map(item => {
+      const product = productMap.get(item.product_id);
+      return { ...item, product, total: item.qty * product.price };
+    });
+  const total = carts.reduce((sum, item) => sum + item.total, 0);
+  return { carts, total };
+}
+
+// 統一購物車的錯誤格式：axios 攔截器回傳字串，Supabase 回傳物件
+function toCartError(error) {
+  return typeof error === 'string'
+    ? { code: 'API_ERROR', message: error }
+    : { code: error.code, message: error.message };
+}
+
 // 取得購物車列表
 export const fetchCarts = createAsyncThunk(
   'cart/fetchCarts',
@@ -15,35 +47,17 @@ export const fetchCarts = createAsyncThunk(
 
     if (!preventGlobalLoading) dispatch(showLoading());
     try {
-      let allProducts = selectAllProducts(getState());
-      if (allProducts.length === 0) {
-        await dispatch(getAllProducts()).unwrap();
-        allProducts = selectAllProducts(getState());
-      }
-      // 合併函式：用 Map 依 id 查商品，之後不用每個品項都跑一次 find
-      const productMap = new Map(allProducts.map(p => [p.id, p]));
+      const allProducts = await loadAllProducts(dispatch, getState);
 
       // 取得購物車資訊
       const data = await cartApi.fetchCarts(userId);
 
       // 合併購物車資訊
-      const carts = data
-        .filter(item => productMap.has(item.product_id)) // 略過比對不到的品項（已下架）
-        .map(item => {
-          const product = productMap.get(item.product_id);
-          return { ...item, product, total: item.qty * product.price };
-        });
+      const { carts, total } = mergeCartItems(data, allProducts);
 
-      const total = carts.reduce((sum, item) => sum + item.total, 0);
-      const response = { data: { carts, total, final_total: total } };
-
-      return response;
+      return { data: { carts, total, final_total: total } };
     } catch (error) {
-      return rejectWithValue(
-        typeof error === 'string'
-          ? { code: 'API_ERROR', message: error }
-          : { code: error.code, message: error.message },
-      );
+      return rejectWithValue(toCartError(error));
     } finally {
       if (!preventGlobalLoading) dispatch(hideLoading());
     }
