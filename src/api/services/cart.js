@@ -15,8 +15,11 @@ export const cartApi = {
     return data;
   },
   // 新增產品到購物車
-  addToCart: (data, preventGlobalLoading) =>
-    guestClient.post(`${GUEST_API_PATH}/cart`, { data }, { preventGlobalLoading }),
+  addToCart: async ({ product_id, qty }) => {
+    const { data, error } = await supabaseGuest.rpc('add_to_cart', { p_product_id: product_id, p_qty: qty });
+    if (error) throw error;
+    return data;
+  },
   // 更新購物車產品資訊
   updateCart: (id, data, preventGlobalLoading) =>
     guestClient.put(`${GUEST_API_PATH}/cart/${id}`, { data }, { preventGlobalLoading }),

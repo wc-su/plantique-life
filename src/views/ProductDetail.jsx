@@ -67,7 +67,7 @@ export default function ProductDetail() {
       toast.success('已加入購物車');
       return { success: true };
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
       return { success: false };
     }
   };

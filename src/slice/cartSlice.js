@@ -65,10 +65,11 @@ export const fetchCarts = createAsyncThunk(
 // 新增產品到購物車
 export const addToCarts = createAsyncThunk(
   'cart/addToCarts',
-  async ({ data, preventGlobalLoading }, { getState, rejectWithValue }) => {
+  async ({ data, preventGlobalLoading }, { dispatch, getState, rejectWithValue }) => {
+    if (!preventGlobalLoading) dispatch(showLoading());
     try {
       // 新增產品到購物車
-      const response = await cartApi.addToCart(data, preventGlobalLoading);
+      const response = await cartApi.addToCart(data);
 
       // 新增產品的 ID
       const productId = data.product_id;
@@ -84,7 +85,9 @@ export const addToCarts = createAsyncThunk(
 
       return response;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(toCartError(error));
+    } finally {
+      if (!preventGlobalLoading) dispatch(hideLoading());
     }
   },
 );
@@ -100,7 +103,7 @@ export const addAndRefetchCarts = createAsyncThunk(
       const response = await dispatch(fetchCarts(preventGlobalLoading)).unwrap();
       return response;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(toCartError(error));
     }
   },
 );
