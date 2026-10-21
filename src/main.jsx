@@ -34,7 +34,13 @@ supabaseGuest.auth.onAuthStateChange((event, session) => {
     // 其他分頁登入 → 同步 auth、購物車資訊
     store.dispatch(authSynced({ id: session.user.id, email: session.user.email }));
     // 購物車抓完再關視窗：從「去結帳」、「立即購買」打開的視窗，關閉後會跳到購物車頁，要先有購物車資料
-    store.dispatch(syncCartsAfterOtherTabSignIn()).finally(() => store.dispatch(closeModal()));
+    store
+      .dispatch(syncCartsAfterOtherTabSignIn())
+      .then(({ buyNowFailed }) => {
+        if (buyNowFailed) toast.error('立即購買的商品加入購物車失敗');
+      })
+      .catch(error => toast.error(error.message))
+      .finally(() => store.dispatch(closeModal()));
   }
 });
 
