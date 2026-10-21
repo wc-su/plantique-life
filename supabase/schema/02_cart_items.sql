@@ -17,10 +17,10 @@ create table public.cart_items (
 alter table public.cart_items enable row level security;
 
 -- 授權 authenticated 角色增刪改查購物車，哪幾列由下面的 RLS policy 決定
--- UPDATE 只開放 product_id、qty：upsert 撞到時會更新送出的所有欄位，所以 product_id 也要開放
+-- UPDATE 只開放 qty：加入購物車用 add_to_cart（只更新 qty），修改數量也只改 qty；不能把品項改成別的商品
 -- 不給 anon：訪客購物車存在 localStorage，不會直接讀寫這張表
 grant select, insert, delete on public.cart_items to authenticated;
-grant update (product_id, qty) on public.cart_items to authenticated;
+grant update (qty) on public.cart_items to authenticated;
 
 -- SELECT: 只能看到自己的購物車
 create policy "cart_items_select_own"
