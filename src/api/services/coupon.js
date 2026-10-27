@@ -1,10 +1,18 @@
-import guestClient from '../clients/guestClient';
 import adminClient from '../clients/adminClient';
-import { GUEST_API_PATH, ADMIN_API_PATH } from '../core/constants';
+import { supabaseGuest } from '../clients/guestClient';
+import { ADMIN_API_PATH } from '../core/constants';
 
 export const guestCouponApi = {
-  applyCoupon: (data, preventGlobalLoading) =>
-    guestClient.post(`${GUEST_API_PATH}/coupon`, { data }, { preventGlobalLoading }),
+  applyCoupon: async ({ code }) => {
+    const { data, error } = await supabaseGuest.rpc('apply_coupon', { p_code: code });
+    if (error) throw error;
+    return data;
+  },
+  deleteCartCoupon: async userId => {
+    const { error } = await supabaseGuest.from('cart_coupons').delete().eq('user_id', userId);
+    if (error) throw error;
+    return true;
+  },
 };
 
 export const adminCouponApi = {

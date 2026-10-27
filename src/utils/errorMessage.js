@@ -27,3 +27,15 @@ export function getCartErrorMessage(code) {
   const message = cartErrorMessages[code];
   return message ?? '購物車操作失敗，請稍後再試';
 }
+
+const couponErrorMessages = Object.freeze({
+  NETWORK_ERROR: '網路連線異常，請稍後再試',
+  22023: '請輸入優惠券代碼', // apply_coupon：沒傳優惠碼
+  P0002: '優惠券無效或已過期', // apply_coupon：查不到、停用、過期
+  42501: '請先登入才能使用優惠券', // 訪客沒有執行權限
+});
+
+export function getCouponErrorMessage(code) {
+  const message = couponErrorMessages[code];
+  return message ?? '優惠券操作失敗，請稍後再試';
+}

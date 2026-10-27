@@ -4,12 +4,8 @@ const CART_ITEMS = 'cart_items';
 
 export const cartApi = {
   // 取得購物車列表
-  fetchCarts: async userId => {
-    const { data, error } = await supabaseGuest
-      .from(CART_ITEMS)
-      .select('id, product_id, qty')
-      .eq('user_id', userId)
-      .order('created_at');
+  fetchCarts: async () => {
+    const { data, error } = await supabaseGuest.rpc('get_cart');
     if (error) throw error;
     return data;
   },

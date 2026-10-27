@@ -53,12 +53,14 @@ export const fetchCarts = createAsyncThunk(
       const allProducts = await loadAllProducts(dispatch, getState);
 
       // 取得購物車資訊
-      const data = await cartApi.fetchCarts(userId);
+      const { items, coupon, coupon_expired } = await cartApi.fetchCarts();
 
       // 合併購物車資訊
-      const { carts, total } = mergeCartItems(data, allProducts);
+      const { carts, total } = mergeCartItems(items, allProducts);
 
-      return { data: { carts, total, final_total: total } };
+      return {
+        data: { carts, total, coupon, isCouponExpired: coupon_expired },
+      };
     } catch (error) {
       return rejectWithValue(toCartError(error));
     } finally {
@@ -69,23 +71,11 @@ export const fetchCarts = createAsyncThunk(
 // 新增產品到購物車
 export const addToCarts = createAsyncThunk(
   'cart/addToCarts',
-  async ({ data, preventGlobalLoading }, { dispatch, getState, rejectWithValue }) => {
+  async ({ data, preventGlobalLoading }, { dispatch, rejectWithValue }) => {
     if (!preventGlobalLoading) dispatch(showLoading());
     try {
       // 新增產品到購物車
       const response = await cartApi.addToCart(data);
-
-      // 新增產品的 ID
-      const productId = data.product_id;
-      // 取得目前 cart state 中的 couponCode
-      const { carts, couponCode } = getState().cart;
-      // 如有 couponCode，且本次新增的是購物車內原本沒有的商品，則需重新套用優惠券
-      if (couponCode) {
-        const isProductInCart = carts.some(cartItem => cartItem.product?.id === productId);
-        if (!isProductInCart) {
-          await guestCouponApi.applyCoupon({ code: couponCode }, preventGlobalLoading);
-        }
-      }
 
       return response;
     } catch (error) {
@@ -151,7 +141,12 @@ export const deleteAndRefetchCarts = createAsyncThunk(
       // 如果購物車內沒有商品，則清除優惠券代碼
       const carts = response.data.carts;
       if (carts.length === 0) {
-        dispatch(setCouponCode(''));
+        try {
+          await guestCouponApi.deleteCartCoupon(userId);
+        } catch {
+          // 失敗仍繼續往下執行，不讓外部 catch 接到
+        }
+        dispatch(deleteCartCoupon());
       }
 
       return response;
@@ -230,8 +225,7 @@ const cartSlice = createSlice({
   initialState: {
     carts: [],
     total: 0,
-    finalTotal: 0,
-    couponCode: '',
+    coupon: null,
     isLoading: false, // 這是「整台購物車」的讀取狀態
     isMigrating: false,
     loadingItems: {}, // 追蹤每個產品的 loading 狀態，格式：{ cartId: null | 'updating' | 'deleting' }
@@ -239,8 +233,8 @@ const cartSlice = createSlice({
     error: null,
   },
   reducers: {
-    setCouponCode: (state, action) => {
-      state.couponCode = action.payload;
+    deleteCartCoupon: state => {
+      state.coupon = null;
     },
     setLocalCarts: (state, action) => {
       state.carts = action.payload;
@@ -275,8 +269,7 @@ const cartSlice = createSlice({
     resetCart: state => {
       state.carts = [];
       state.total = 0;
-      state.finalTotal = 0;
-      state.couponCode = '';
+      state.coupon = null;
       state.isLoading = false;
       state.isMigrating = false;
       state.loadingItems = {};
@@ -293,17 +286,7 @@ const cartSlice = createSlice({
         const data = action.payload.data;
         state.carts = data.carts || [];
         state.total = data.total || 0;
-        state.finalTotal = data.final_total || 0;
-        // 取得購物車中的優惠券代碼
-        // 注意：API 回傳時，coupon 會存在每個 cart item 中，但所有 item 的 coupon 是相同的
-        if (data.carts && data.carts.length > 0) {
-          const hasCoupon = data.carts.some(cartItem => cartItem.coupon);
-          if (hasCoupon) {
-            state.couponCode = data.carts[0].coupon.code; // 取第一筆的 coupon code 即可
-          } else {
-            state.couponCode = '';
-          }
-        }
+        state.coupon = data.coupon || null;
       })
       // migrateGuestCart
       .addCase(migrateGuestCart.pending, state => {
@@ -332,8 +315,7 @@ const cartSlice = createSlice({
         state.isLoading = false;
         state.carts = [];
         state.total = 0;
-        state.finalTotal = 0;
-        state.couponCode = '';
+        state.coupon = null;
         state.loadingItems = {};
       })
       .addMatcher(isAnyOf(addToCarts.fulfilled, addAndRefetchCarts.fulfilled), state => {
@@ -487,7 +469,7 @@ export const syncCartsAfterOtherTabSignIn = () => async (dispatch, getState) => 
 
 // Export actions
 export const {
-  setCouponCode,
+  deleteCartCoupon,
   setLocalCarts,
   addLocalCartItem,
   updateLocalCartItem,
@@ -499,5 +481,10 @@ export const {
 
 // Selectors
 export const selectHasItemLoading = state => Object.values(state.cart.loadingItems).some(status => status);
+
+export const selectFinalTotal = state => {
+  const { total, coupon } = state.cart;
+  return coupon ? Math.round((total * coupon.percent) / 100) : total;
+};
 
 export default cartSlice.reducer;

@@ -1,7 +1,14 @@
 import { guestCouponApi } from '@/api';
 import Button from '@/components/Button';
 import ProductCard from '@/components/ProductCard';
-import { deleteAndRefetchCarts, fetchCarts, selectHasItemLoading, updateAndRefetchCarts } from '@/slice/cartSlice';
+import {
+  deleteAndRefetchCarts,
+  fetchCarts,
+  selectFinalTotal,
+  selectHasItemLoading,
+  updateAndRefetchCarts,
+} from '@/slice/cartSlice';
+import { getCouponErrorMessage } from '@/utils/errorMessage';
 import clsx from 'clsx';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -22,11 +29,11 @@ function CartReview({ productImages, handleSwitchStep }) {
   const {
     carts,
     total,
-    finalTotal,
     isLoading: cartLoading,
     loadingItems,
     isMigrating: cartMigrating,
   } = useSelector(state => state.cart);
+  const finalTotal = useSelector(selectFinalTotal);
 
   // 優惠券輸入框
   const [coupon, setCoupon] = useState('');
@@ -85,15 +92,15 @@ function CartReview({ productImages, handleSwitchStep }) {
       // pending 狀態
       setCouponStatus({ isLoading: true, message: '驗證中...', type: null });
       // 呼叫 API
-      const couponRes = await guestCouponApi.applyCoupon({ code }, true);
-      const cartsRes = await dispatch(fetchCarts(true)).unwrap();
+      const couponRes = await guestCouponApi.applyCoupon({ code });
+      await dispatch(fetchCarts(true)).unwrap();
       // 組合優惠券訊息
-      const couponMsg = `${couponRes.message} (${cartsRes.data.carts[0].coupon.title})`;
+      const couponMsg = `已套用優惠券：${couponRes.code}`;
       // 等待購物車更新完成後再顯示成功訊息
       setCouponStatus({ isLoading: false, message: couponMsg, type: 'success' });
       setCoupon('');
     } catch (error) {
-      setCouponStatus({ isLoading: false, message: error, type: 'error' });
+      setCouponStatus({ isLoading: false, message: getCouponErrorMessage(error.code), type: 'error' });
     }
   }
 
