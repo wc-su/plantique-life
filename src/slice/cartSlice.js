@@ -226,6 +226,7 @@ const cartSlice = createSlice({
     carts: [],
     total: 0,
     coupon: null,
+    isCouponExpired: false,
     isLoading: false, // 這是「整台購物車」的讀取狀態
     isMigrating: false,
     loadingItems: {}, // 追蹤每個產品的 loading 狀態，格式：{ cartId: null | 'updating' | 'deleting' }
@@ -235,6 +236,9 @@ const cartSlice = createSlice({
   reducers: {
     deleteCartCoupon: state => {
       state.coupon = null;
+    },
+    clearCouponExpired: state => {
+      state.isCouponExpired = false;
     },
     setLocalCarts: (state, action) => {
       state.carts = action.payload;
@@ -270,6 +274,7 @@ const cartSlice = createSlice({
       state.carts = [];
       state.total = 0;
       state.coupon = null;
+      state.isCouponExpired = false;
       state.isLoading = false;
       state.isMigrating = false;
       state.loadingItems = {};
@@ -287,6 +292,7 @@ const cartSlice = createSlice({
         state.carts = data.carts || [];
         state.total = data.total || 0;
         state.coupon = data.coupon || null;
+        if (data.isCouponExpired) state.isCouponExpired = true;
       })
       // migrateGuestCart
       .addCase(migrateGuestCart.pending, state => {
@@ -316,6 +322,7 @@ const cartSlice = createSlice({
         state.carts = [];
         state.total = 0;
         state.coupon = null;
+        state.isCouponExpired = false;
         state.loadingItems = {};
       })
       .addMatcher(isAnyOf(addToCarts.fulfilled, addAndRefetchCarts.fulfilled), state => {
@@ -470,6 +477,7 @@ export const syncCartsAfterOtherTabSignIn = () => async (dispatch, getState) => 
 // Export actions
 export const {
   deleteCartCoupon,
+  clearCouponExpired,
   setLocalCarts,
   addLocalCartItem,
   updateLocalCartItem,

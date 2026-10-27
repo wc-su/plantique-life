@@ -9,7 +9,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router';
 
 import { usePendingAuthAction } from '@/hook/usePendingAuthAction';
-import { authAwareDeleteCart, authAwareInitCarts, authAwareUpdateCart, selectHasItemLoading } from '@/slice/cartSlice';
+import {
+  authAwareDeleteCart,
+  authAwareInitCarts,
+  authAwareUpdateCart,
+  clearCouponExpired,
+  selectHasItemLoading,
+} from '@/slice/cartSlice';
 import { guestAuthCheck, guestAuthLogout } from '@/slice/guestAuthSlice';
 import { closeModal, openModal } from '@/slice/uiSlice';
 import useMediaQuery from '@/utils/useMediaQuery';
@@ -28,7 +34,13 @@ export default function Navbar() {
   const isDesktopSize = useMediaQuery('(min-width: 992px)');
 
   // 從 Redux 取得購物車資料
-  const { carts, loadingItems, isLoading: cartLoading, isMigrating: cartMigrating } = useSelector(state => state.cart);
+  const {
+    carts,
+    loadingItems,
+    isLoading: cartLoading,
+    isMigrating: cartMigrating,
+    isCouponExpired,
+  } = useSelector(state => state.cart);
   // 購物車中是否有任何品項正在載入
   const hasItemLoading = useSelector(selectHasItemLoading);
   // 購物車是否正在處理中
@@ -96,6 +108,18 @@ export default function Navbar() {
     }
     initFetch();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!isCouponExpired) return;
+    toast('優惠券已失效！', {
+      icon: '⚠️',
+      style: {
+        background: '#FEF3C7', // 淺黃色背景
+        color: '#92400E', // 深黃褐色文字
+      },
+    });
+    dispatch(clearCouponExpired()); // 提示過就清掉，避免重複跳出
+  }, [isCouponExpired, dispatch]);
 
   // 更新購物車數量
   async function handleUpdateCart(cartItemId, productId, qty) {
