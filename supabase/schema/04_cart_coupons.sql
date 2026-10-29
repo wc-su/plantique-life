@@ -27,14 +27,14 @@ create policy "cart_coupons_delete_own"
 on public.cart_coupons for delete
 using (auth.uid() = user_id);
 
--- get_cart: 一次取得自己的購物車資料和套用中的優惠券（已失效的優惠券會刪除）
--- 前端用 supabase.rpc('get_cart') 呼叫，回傳 { items: [...], coupon: {...} | null, coupon_expired: boolean }
+-- get_cart: 一次取得自己的購物車資料和套用中的優惠券；套用中的優惠券已失效時會刪除
+-- 前端用 supabase.rpc('get_cart') 呼叫
 -- 一般會員讀不到 coupons，所以用 security definer；cart_items 也會一起略過 RLS，查詢都要自己加上 user_id = auth.uid()
 create or replace function public.get_cart()
-returns jsonb
+returns jsonb                     -- { items: [...], coupon: {...} | null, coupon_expired: boolean }
 language plpgsql
-security definer
-set search_path = ''
+security definer                  -- 用建立者（postgres）的身分執行，會略過 RLS
+set search_path = ''              -- 固定 schema，下面的表都寫完整名稱 public.xxx
 as $$
 declare
   v_coupon_expired boolean;

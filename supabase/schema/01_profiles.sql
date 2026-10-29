@@ -21,7 +21,7 @@ alter table public.profiles enable row level security;
 grant select on public.profiles to authenticated;
 grant update (name, receive_news, role) on public.profiles to authenticated;
 
--- 當 auth.users 有新資料時自動建立 profiles 資料
+-- handle_new_user: 當 auth.users 有新資料時自動建立 profiles 資料
 -- (包含使用 email/password 註冊以及 OAuth 註冊)
 -- name / receive_news 從註冊時的 options.data (raw_user_meta_data) 取得
 create function public.handle_new_user()
@@ -46,7 +46,7 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
 
--- Helper: 確認使用者是否有管理員身分
+-- is_admin: 確認使用者是否有管理員身分
 -- 使用 security definer 略過 RLS 避免讀取 profiles 產生無限迴圈
 create function public.is_admin()
 returns boolean
@@ -73,7 +73,7 @@ on public.profiles for update
 using (auth.uid() = id or public.is_admin())
 with check (auth.uid() = id or public.is_admin());
 
--- 一般會員不能修改 role（不能把自己升級成 admin）
+-- prevent_role_escalation: 限制一般會員不能修改 role（不能把自己升級成 admin）
 -- 上面的 UPDATE policy 只能限制「改哪一筆」，不能限制「改哪個欄位」，所以另外用 trigger 擋
 create function public.prevent_role_escalation()
 returns trigger

@@ -35,6 +35,7 @@ with check (public.is_admin());
 -- 只回傳查到的那一張，不會拿到全部優惠碼
 
 -- apply_coupon: 前台套用優惠券；驗證代碼，有效就存成這個會員目前的優惠券，回傳名稱和付款比例
+-- 前端用 supabase.rpc('apply_coupon', { p_code }) 呼叫
 -- 一般會員沒有 coupons 的 policy，也沒有 cart_coupons 的寫入權限，所以用 security definer；
 -- 安全改靠函式內容：只用傳進來的 code 查詢、只回傳需要的欄位、停用或過期就報錯、只寫入自己的那一列
 create or replace function public.apply_coupon(p_code text)
