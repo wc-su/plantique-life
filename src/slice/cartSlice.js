@@ -179,41 +179,37 @@ export const deleteCarts = createAsyncThunk(
 
 /**
  * 登入/註冊後，購物車資料從 localStorage 改到後端儲存
- * - fulfilled：payload 為加入失敗的商品數量（number）
+ * - fulfilled：payload 為合併是否失敗（boolean）
  * - rejected：重新取得購物車失敗，payload 為錯誤物件
  */
 export const migrateGuestCart = createAsyncThunk('cart/migrateGuestCart', async (_, { dispatch, rejectWithValue }) => {
   // 取得 localStorage 購物車資料
   const localCartData = JSON.parse(localStorage.getItem('guestCarts')) || [];
-  let failedCount = 0;
 
   // 新增多筆產品到購物車
-  const results = [];
+  let isMigrateError = false;
   if (localCartData.length > 0) {
-    for (const item of localCartData) {
-      try {
-        const response = await dispatch(
+    const validItems = localCartData.filter(item => item.product_id && Number.isInteger(item.qty) && item.qty > 0);
+    try {
+      if (validItems.length > 0) {
+        await dispatch(
           addToCarts({
-            data: { product_id: item.product_id, qty: item.qty },
+            data: validItems,
             preventGlobalLoading: true,
           }),
         ).unwrap();
-        results.push({ status: 'fulfilled', value: response });
-      } catch (error) {
-        results.push({ status: 'rejected', reason: error });
       }
+      // 移除 localStorage
+      localStorage.removeItem('guestCarts');
+    } catch {
+      isMigrateError = true;
     }
-    // 記錄失敗筆數
-    const failedItems = results.filter(r => r.status === 'rejected');
-    failedCount = failedItems.length;
-    // 移除 localStorage
-    localStorage.removeItem('guestCarts');
   }
 
   // 重新取得購物車資訊
   try {
     await dispatch(fetchCarts(true)).unwrap();
-    return failedCount;
+    return isMigrateError;
   } catch (error) {
     return rejectWithValue(error);
   }
@@ -398,7 +394,7 @@ export const authAwareAddToCart = data => async (dispatch, getState) => {
   const { product, qty } = data;
   if (isAuth) {
     // 已登入
-    return await dispatch(addAndRefetchCarts({ data: { product_id: product.id, qty } })).unwrap();
+    return await dispatch(addAndRefetchCarts({ data: [{ product_id: product.id, qty }] })).unwrap();
   } else {
     // 未登入
     dispatch(addLocalCartItem({ product, productId: product.id, qty }));
@@ -463,7 +459,7 @@ export const syncCartsAfterOtherTabSignIn = () => async (dispatch, getState) => 
     // 加入失敗只記下來、繼續往下，購物車照常重新取得；要不要顯示提示交給呼叫的地方
     const result = await dispatch(
       addToCarts({
-        data: { product_id: product.id, qty },
+        data: [{ product_id: product.id, qty }],
         preventGlobalLoading: true,
       }),
     );

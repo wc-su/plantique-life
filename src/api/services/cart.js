@@ -9,9 +9,9 @@ export const cartApi = {
     if (error) throw error;
     return data;
   },
-  // 新增產品到購物車
-  addToCart: async ({ product_id, qty }) => {
-    const { data, error } = await supabaseGuest.rpc('add_to_cart', { p_product_id: product_id, p_qty: qty });
+  // 新增多筆產品到購物車
+  addToCart: async items => {
+    const { data, error } = await supabaseGuest.rpc('add_to_cart', { p_items: items });
     if (error) throw error;
     return data;
   },

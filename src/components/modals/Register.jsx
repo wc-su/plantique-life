@@ -61,11 +61,8 @@ function Register({ onSwitchToLogin }) {
       if (migrateGuestCart.rejected.match(result)) {
         toast.error(result.payload.message);
       }
-      if (migrateGuestCart.fulfilled.match(result)) {
-        const failedItemCount = result.payload;
-        if (failedItemCount) {
-          toast.error(`有 ${failedItemCount} 個產品加入購物車失敗`);
-        }
+      if (migrateGuestCart.fulfilled.match(result) && result.payload) {
+        toast.error('登入前加入的商品還沒放進購物車');
       }
     } catch (error) {
       setIsError(true);
