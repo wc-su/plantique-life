@@ -24,6 +24,7 @@ supabaseGuest.auth.onAuthStateChange(event => {
   if (event === 'SIGNED_OUT') {
     store.dispatch(authCleared());
     store.dispatch(resetCart());
+    store.dispatch(authAwareInitCarts()).catch(error => toast.error(error.message));
   }
 });
 
