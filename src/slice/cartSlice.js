@@ -54,6 +54,9 @@ function readGuestCarts() {
   return [];
 }
 
+// 訪客購物車的品項是否合法：有商品編號，而且數量是正整數
+const isValidCartItem = item => item.product_id && Number.isInteger(item.qty) && item.qty > 0;
+
 // 取得購物車列表
 export const fetchCarts = createAsyncThunk(
   'cart/fetchCarts',
@@ -214,7 +217,7 @@ export const migrateGuestCart = createAsyncThunk(
     // 新增多筆產品到購物車
     let isMigrateError = false;
     if (localCartData.length > 0) {
-      const validItems = localCartData.filter(item => item.product_id && Number.isInteger(item.qty) && item.qty > 0);
+      const validItems = localCartData.filter(isValidCartItem);
       try {
         if (validItems.length > 0) {
           await dispatch(
@@ -412,14 +415,19 @@ export const authAwareInitCarts = preventGlobalLoading => async (dispatch, getSt
     // 未登入：從 localStorage 讀取購物車資料
     const localCartData = readGuestCarts();
     // 訪客品項沒有資料庫的 id，用 product_id 代替（deleteLocalCartItem 依 id 刪除）
-    const items = localCartData.map(({ product_id, qty }) => ({ id: product_id, product_id, qty }));
+    const validItems = localCartData
+      .filter(isValidCartItem)
+      .map(({ product_id, qty }) => ({ id: product_id, product_id, qty }));
     try {
       const allProducts = await loadAllProducts(dispatch, getState);
-      const { carts, missingItems } = mergeCartItems(items, allProducts);
+      const { carts, missingItems } = mergeCartItems(validItems, allProducts);
 
       // 比對不到產品的數量
       if (missingItems.length > 0) {
         dispatch(setRemovedItemCount(missingItems.length));
+      }
+      const hasInvalidItems = localCartData.length !== validItems.length;
+      if (allProducts.length > 0 && (hasInvalidItems || missingItems.length > 0)) {
         localStorage.setItem('guestCarts', JSON.stringify(carts.map(({ product_id, qty }) => ({ product_id, qty }))));
       }
 
