@@ -1,20 +1,23 @@
 import clsx from 'clsx';
+import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 
 import Button from '@/components/Button';
-import { flushPendingBuyNowItem, migrateGuestCart } from '@/slice/cartSlice';
+import { useMigrateGuestCart } from '@/hook/useMigrateGuestCart';
+import { flushPendingBuyNowItem } from '@/slice/cartSlice';
 import { guestLogin } from '@/slice/guestAuthSlice';
 import { closeModal } from '@/slice/uiSlice';
-import { useState } from 'react';
 
 function Login({ onSwitchToRegister }) {
   const dispatch = useDispatch();
 
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const migrateCart = useMigrateGuestCart();
 
   const {
     register,
@@ -37,14 +40,7 @@ function Login({ onSwitchToRegister }) {
       // 將「立即購買」暫存商品加入 localStorage
       dispatch(flushPendingBuyNowItem());
 
-      // localStorage 資訊加入購物車
-      const result = await dispatch(migrateGuestCart());
-      if (migrateGuestCart.rejected.match(result)) {
-        toast.error(result.payload.message);
-      }
-      if (migrateGuestCart.fulfilled.match(result) && result.payload) {
-        toast.error('登入前加入的商品還沒放進購物車');
-      }
+      await migrateCart();
     } catch (error) {
       setIsError(true);
       setErrorMessage(error.message);

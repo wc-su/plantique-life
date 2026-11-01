@@ -192,7 +192,7 @@ export const deleteCarts = createAsyncThunk(
 /**
  * 登入/註冊後，購物車資料從 localStorage 改到後端儲存
  * - fulfilled：payload 為合併是否失敗（boolean）
- * - rejected：重新取得購物車失敗，payload 為錯誤物件
+ * - rejected：重新取得購物車失敗，payload 為錯誤物件；isMigrateError 表示合併是否失敗
  */
 export const migrateGuestCart = createAsyncThunk('cart/migrateGuestCart', async (_, { dispatch, rejectWithValue }) => {
   // 取得 localStorage 購物車資料
@@ -223,7 +223,7 @@ export const migrateGuestCart = createAsyncThunk('cart/migrateGuestCart', async 
     await dispatch(fetchCarts(true)).unwrap();
     return isMigrateError;
   } catch (error) {
-    return rejectWithValue(error);
+    return rejectWithValue({ ...error, isMigrateError });
   }
 });
 

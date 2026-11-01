@@ -24,6 +24,8 @@ supabaseGuest.auth.onAuthStateChange(event => {
   if (event === 'SIGNED_OUT') {
     store.dispatch(authCleared());
     store.dispatch(resetCart());
+    toast.dismiss('migrate-cart-failed');
+    toast.dismiss('migrate-cart-retry-failed');
     store.dispatch(authAwareInitCarts()).catch(error => toast.error(error.message));
   }
 });
@@ -68,7 +70,7 @@ window.addEventListener('storage', async event => {
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
-      <Toaster />
+      <Toaster reverseOrder={true} />
       <RouterProvider router={router} />
       <Loading />
     </Provider>
