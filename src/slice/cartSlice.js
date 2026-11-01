@@ -40,6 +40,18 @@ function toCartError(error) {
   return { code, message: getCartErrorMessage(code), detail: error.message };
 }
 
+// 讀取訪客購物車，內容不是合法的陣列就清除
+function readGuestCarts() {
+  try {
+    const data = JSON.parse(localStorage.getItem('guestCarts'));
+    if (Array.isArray(data)) return data;
+  } catch {
+    // 解析失敗和不是陣列的處理相同，下方統一清除
+  }
+  localStorage.removeItem('guestCarts');
+  return [];
+}
+
 // 取得購物車列表
 export const fetchCarts = createAsyncThunk(
   'cart/fetchCarts',
@@ -184,7 +196,7 @@ export const deleteCarts = createAsyncThunk(
  */
 export const migrateGuestCart = createAsyncThunk('cart/migrateGuestCart', async (_, { dispatch, rejectWithValue }) => {
   // 取得 localStorage 購物車資料
-  const localCartData = JSON.parse(localStorage.getItem('guestCarts')) || [];
+  const localCartData = readGuestCarts();
 
   // 新增多筆產品到購物車
   let isMigrateError = false;
@@ -370,7 +382,7 @@ export const authAwareInitCarts = preventGlobalLoading => async (dispatch, getSt
     return await dispatch(fetchCarts(preventGlobalLoading)).unwrap();
   } else {
     // 未登入：從 localStorage 讀取購物車資料
-    const localCartData = JSON.parse(localStorage.getItem('guestCarts')) || [];
+    const localCartData = readGuestCarts();
     // 訪客品項沒有資料庫的 id，用 product_id 代替（deleteLocalCartItem 依 id 刪除）
     const items = localCartData.map(({ product_id, qty }) => ({ id: product_id, product_id, qty }));
     try {
