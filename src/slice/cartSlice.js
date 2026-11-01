@@ -194,38 +194,45 @@ export const deleteCarts = createAsyncThunk(
  * - fulfilled：payload 為合併是否失敗（boolean）
  * - rejected：重新取得購物車失敗，payload 為錯誤物件；isMigrateError 表示合併是否失敗
  */
-export const migrateGuestCart = createAsyncThunk('cart/migrateGuestCart', async (_, { dispatch, rejectWithValue }) => {
-  // 取得 localStorage 購物車資料
-  const localCartData = readGuestCarts();
+export const migrateGuestCart = createAsyncThunk(
+  'cart/migrateGuestCart',
+  async (_, { dispatch, rejectWithValue }) => {
+    // 取得 localStorage 購物車資料
+    const localCartData = readGuestCarts();
 
-  // 新增多筆產品到購物車
-  let isMigrateError = false;
-  if (localCartData.length > 0) {
-    const validItems = localCartData.filter(item => item.product_id && Number.isInteger(item.qty) && item.qty > 0);
-    try {
-      if (validItems.length > 0) {
-        await dispatch(
-          addToCarts({
-            data: validItems,
-            preventGlobalLoading: true,
-          }),
-        ).unwrap();
+    // 新增多筆產品到購物車
+    let isMigrateError = false;
+    if (localCartData.length > 0) {
+      const validItems = localCartData.filter(item => item.product_id && Number.isInteger(item.qty) && item.qty > 0);
+      try {
+        if (validItems.length > 0) {
+          await dispatch(
+            addToCarts({
+              data: validItems,
+              preventGlobalLoading: true,
+            }),
+          ).unwrap();
+        }
+        // 移除 localStorage
+        localStorage.removeItem('guestCarts');
+      } catch {
+        isMigrateError = true;
       }
-      // 移除 localStorage
-      localStorage.removeItem('guestCarts');
-    } catch {
-      isMigrateError = true;
     }
-  }
 
-  // 重新取得購物車資訊
-  try {
-    await dispatch(fetchCarts(true)).unwrap();
-    return isMigrateError;
-  } catch (error) {
-    return rejectWithValue({ ...error, isMigrateError });
-  }
-});
+    // 重新取得購物車資訊
+    try {
+      await dispatch(fetchCarts(true)).unwrap();
+      return isMigrateError;
+    } catch (error) {
+      return rejectWithValue({ ...error, isMigrateError });
+    }
+  },
+  {
+    // 於 thunk 開始前執行。回傳 false，thunk 就不會執行
+    condition: (_, { getState }) => !getState().cart.isMigrating,
+  },
+);
 
 // slice
 const cartSlice = createSlice({
@@ -379,6 +386,11 @@ export const authAwareInitCarts = preventGlobalLoading => async (dispatch, getSt
 
   if (isAuth) {
     // 已登入：呼叫後端 API 取得購物車資料
+    // guestCarts 還有商品，代表上次合併失敗，先自動重試
+    if (readGuestCarts().length > 0) {
+      const migrateResult = await dispatch(migrateGuestCart());
+      return { migrateResult };
+    }
     return await dispatch(fetchCarts(preventGlobalLoading)).unwrap();
   } else {
     // 未登入：從 localStorage 讀取購物車資料

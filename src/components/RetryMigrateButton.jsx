@@ -12,6 +12,7 @@ const RetryMigrateButton = ({ retryToastId }) => {
 
   const handleClick = async () => {
     const response = await dispatch(migrateGuestCart());
+    if (response.meta.condition) return;
     if (migrateGuestCart.rejected.match(response)) {
       toast.error(response.payload.message, { id: retryFailedToastId });
     }

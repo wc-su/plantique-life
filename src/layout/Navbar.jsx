@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router';
 
+import { handleMigrateResult } from '@/hook/useMigrateGuestCart';
 import { usePendingAuthAction } from '@/hook/usePendingAuthAction';
 import {
   authAwareDeleteCart,
@@ -101,7 +102,8 @@ export default function Navbar() {
           toast.error(result.payload.message);
         }
         // 初始化購物車資料
-        await dispatch(authAwareInitCarts(true));
+        const initResult = await dispatch(authAwareInitCarts(true));
+        if (initResult?.migrateResult) handleMigrateResult(initResult.migrateResult);
       } catch (error) {
         toast.error(error.message);
       }
