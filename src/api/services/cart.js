@@ -32,6 +32,12 @@ export const cartApi = {
     if (error) throw error;
     return data;
   },
+  // 刪除多筆購物車產品
+  deleteCartItems: async ({ userId, ids }) => {
+    const { data, error } = await supabaseGuest.from(CART_ITEMS).delete().eq('user_id', userId).in('id', ids).select();
+    if (error) throw error;
+    return data;
+  },
   // 刪除購物車全部產品
   deleteCarts: async ({ userId }) => {
     const { data, error } = await supabaseGuest.from(CART_ITEMS).delete().eq('user_id', userId).select();

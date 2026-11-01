@@ -16,6 +16,7 @@ import {
   authAwareUpdateCart,
   clearCouponExpired,
   selectHasItemLoading,
+  setRemovedItemCount,
 } from '@/slice/cartSlice';
 import { guestAuthCheck, guestAuthLogout } from '@/slice/guestAuthSlice';
 import { closeModal, openModal } from '@/slice/uiSlice';
@@ -40,6 +41,7 @@ export default function Navbar() {
     loadingItems,
     isLoading: cartLoading,
     isMigrating: cartMigrating,
+    removedItemCount,
     isCouponExpired,
   } = useSelector(state => state.cart);
   // 購物車中是否有任何品項正在載入
@@ -122,6 +124,12 @@ export default function Navbar() {
     });
     dispatch(clearCouponExpired()); // 提示過就清掉，避免重複跳出
   }, [isCouponExpired, dispatch]);
+
+  useEffect(() => {
+    if (!removedItemCount) return;
+    toast(`有 ${removedItemCount} 項商品下架，已從購物車移除`, { id: 'cart-items-removed', icon: '⚠️' });
+    dispatch(setRemovedItemCount(0));
+  }, [removedItemCount, dispatch]);
 
   // 更新購物車數量
   async function handleUpdateCart(cartItemId, productId, qty) {

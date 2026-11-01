@@ -27,7 +27,9 @@ function mergeCartItems(items, allProducts) {
       return { ...item, product, total: item.qty * product.price };
     });
   const total = carts.reduce((sum, item) => sum + item.total, 0);
-  return { carts, total };
+  // 商品列表是空的，無法判斷有沒有下架
+  const missingItems = allProducts.length > 0 ? items.filter(item => !productMap.has(item.product_id)) : [];
+  return { carts, total, missingItems };
 }
 
 // 統一購物車的錯誤格式：axios 攔截器回傳字串，Supabase 回傳物件
@@ -68,7 +70,16 @@ export const fetchCarts = createAsyncThunk(
       const { items, coupon, coupon_expired } = await cartApi.fetchCarts();
 
       // 合併購物車資訊
-      const { carts, total } = mergeCartItems(items, allProducts);
+      const { carts, total, missingItems } = mergeCartItems(items, allProducts);
+
+      if (missingItems.length > 0) {
+        try {
+          await cartApi.deleteCartItems({ userId, ids: missingItems.map(item => item.id) });
+          dispatch(setRemovedItemCount(missingItems.length));
+        } catch {
+          // 畫面已經濾掉了，不讓整個購物車載入失敗，跳過刪除失敗
+        }
+      }
 
       return {
         data: { carts, total, coupon, isCouponExpired: coupon_expired },
@@ -246,6 +257,7 @@ const cartSlice = createSlice({
     isMigrating: false,
     loadingItems: {}, // 追蹤每個產品的 loading 狀態，格式：{ cartId: null | 'updating' | 'deleting' }
     pendingBuyNowItem: null, // 未登入時，「立即購買」暫存商品，登入後由 Login/Register 在 migration 前加入 localStorage
+    removedItemCount: 0,
     error: null,
   },
   reducers: {
@@ -285,6 +297,9 @@ const cartSlice = createSlice({
     clearPendingBuyNowItem: state => {
       state.pendingBuyNowItem = null;
     },
+    setRemovedItemCount: (state, action) => {
+      state.removedItemCount = action.payload;
+    },
     resetCart: state => {
       state.carts = [];
       state.total = 0;
@@ -294,6 +309,7 @@ const cartSlice = createSlice({
       state.isMigrating = false;
       state.loadingItems = {};
       state.pendingBuyNowItem = null;
+      state.removedItemCount = 0;
       state.error = null;
     },
   },
@@ -399,7 +415,13 @@ export const authAwareInitCarts = preventGlobalLoading => async (dispatch, getSt
     const items = localCartData.map(({ product_id, qty }) => ({ id: product_id, product_id, qty }));
     try {
       const allProducts = await loadAllProducts(dispatch, getState);
-      const { carts } = mergeCartItems(items, allProducts);
+      const { carts, missingItems } = mergeCartItems(items, allProducts);
+
+      // 比對不到產品的數量
+      if (missingItems.length > 0) {
+        dispatch(setRemovedItemCount(missingItems.length));
+        localStorage.setItem('guestCarts', JSON.stringify(carts.map(({ product_id, qty }) => ({ product_id, qty }))));
+      }
 
       // 將讀取到的資料寫入 Redux state
       dispatch(setLocalCarts(carts));
@@ -504,6 +526,7 @@ export const {
   deleteLocalCartItem,
   setPendingBuyNowItem,
   clearPendingBuyNowItem,
+  setRemovedItemCount,
   resetCart,
 } = cartSlice.actions;
 
