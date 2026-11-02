@@ -9,7 +9,8 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router';
 
 import Button from '@/components/Button';
-import { flushPendingBuyNowItem, migrateGuestCart } from '@/slice/cartSlice';
+import { useMigrateGuestCart } from '@/hook/useMigrateGuestCart';
+import { flushPendingBuyNowItem } from '@/slice/cartSlice';
 import { guestRegister } from '@/slice/guestAuthSlice';
 import { closeModal } from '@/slice/uiSlice';
 
@@ -18,6 +19,8 @@ function Register({ onSwitchToLogin }) {
 
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const migrateCart = useMigrateGuestCart();
 
   const {
     register,
@@ -56,17 +59,7 @@ function Register({ onSwitchToLogin }) {
       // 將「立即購買」暫存商品加入 localStorage
       dispatch(flushPendingBuyNowItem());
 
-      // localStorage 資訊加入購物車
-      const result = await dispatch(migrateGuestCart());
-      if (migrateGuestCart.rejected.match(result)) {
-        toast.error(result.payload);
-      }
-      if (migrateGuestCart.fulfilled.match(result)) {
-        const failedItemCount = result.payload;
-        if (failedItemCount) {
-          toast.error(`有 ${failedItemCount} 個產品加入購物車失敗`);
-        }
-      }
+      await migrateCart();
     } catch (error) {
       setIsError(true);
       setErrorMessage(error.message);

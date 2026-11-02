@@ -1,39 +1,113 @@
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
-import toast from 'react-hot-toast';
+
+import { getCartErrorMessage } from '@/utils/errorMessage';
 import { cartApi, guestCouponApi } from '../api';
+import { hideLoading, showLoading } from './loadingSlice';
+import { getAllProducts, selectAllProducts } from './product/guestProductSlice';
+
+// 取得商品列表：Redux 裡還沒有就先打 API
+async function loadAllProducts(dispatch, getState) {
+  let allProducts = selectAllProducts(getState());
+  if (allProducts.length === 0) {
+    await dispatch(getAllProducts()).unwrap();
+    allProducts = selectAllProducts(getState());
+  }
+  return allProducts;
+}
+
+// 合併購物車品項和商品資料，回傳 { carts, total }
+function mergeCartItems(items, allProducts) {
+  // 用 Map 依 id 查商品，之後不用每個品項都跑一次 find
+  const productMap = new Map(allProducts.map(p => [p.id, p]));
+
+  const carts = items
+    .filter(item => productMap.has(item.product_id)) // 略過比對不到的品項（已下架）
+    .map(item => {
+      const product = productMap.get(item.product_id);
+      return { ...item, product, total: item.qty * product.price };
+    });
+  const total = carts.reduce((sum, item) => sum + item.total, 0);
+  // 商品列表是空的，無法判斷有沒有下架
+  const missingItems = allProducts.length > 0 ? items.filter(item => !productMap.has(item.product_id)) : [];
+  return { carts, total, missingItems };
+}
+
+// 統一購物車的錯誤格式：axios 攔截器回傳字串，Supabase 回傳物件
+function toCartError(error) {
+  if (typeof error === 'string') {
+    return { code: 'API_ERROR', message: getCartErrorMessage('API_ERROR'), detail: error };
+  }
+  // supabase-js 網路失敗時 code 是空字串
+  const code = error.code === '' ? 'NETWORK_ERROR' : error.code;
+  return { code, message: getCartErrorMessage(code), detail: error.message };
+}
+
+// 讀取訪客購物車，內容不是合法的陣列就清除
+function readGuestCarts() {
+  try {
+    const data = JSON.parse(localStorage.getItem('guestCarts'));
+    if (Array.isArray(data)) return data;
+  } catch {
+    // 解析失敗和不是陣列的處理相同，下方統一清除
+  }
+  localStorage.removeItem('guestCarts');
+  return [];
+}
+
+// 訪客購物車的品項是否合法：有商品編號，而且數量是正整數
+const isValidCartItem = item => item.product_id && Number.isInteger(item.qty) && item.qty > 0;
 
 // 取得購物車列表
-export const fetchCarts = createAsyncThunk('cart/fetchCarts', async (preventGlobalLoading, { rejectWithValue }) => {
-  try {
-    const response = await cartApi.fetchCarts(preventGlobalLoading);
-    return response;
-  } catch (error) {
-    return rejectWithValue(error);
-  }
-});
-// 新增產品到購物車
-export const addToCarts = createAsyncThunk(
-  'cart/addToCarts',
-  async ({ data, preventGlobalLoading }, { getState, rejectWithValue }) => {
-    try {
-      // 新增產品到購物車
-      const response = await cartApi.addToCart(data, preventGlobalLoading);
+export const fetchCarts = createAsyncThunk(
+  'cart/fetchCarts',
+  async (preventGlobalLoading, { dispatch, getState, rejectWithValue }) => {
+    // 取得 user 資訊
+    const userId = getState().guestAuth.user?.id;
+    if (!userId) return rejectWithValue({ code: 'NO_USER', message: getCartErrorMessage('NO_USER') });
 
-      // 新增產品的 ID
-      const productId = data.product_id;
-      // 取得目前 cart state 中的 couponCode
-      const { carts, couponCode } = getState().cart;
-      // 如有 couponCode，且本次新增的是購物車內原本沒有的商品，則需重新套用優惠券
-      if (couponCode) {
-        const isProductInCart = carts.some(cartItem => cartItem.product?.id === productId);
-        if (!isProductInCart) {
-          await guestCouponApi.applyCoupon({ code: couponCode }, preventGlobalLoading);
+    if (!preventGlobalLoading) dispatch(showLoading());
+    try {
+      const allProducts = await loadAllProducts(dispatch, getState);
+
+      // 取得購物車資訊
+      const { items, coupon, coupon_expired } = await cartApi.fetchCarts();
+
+      // 合併購物車資訊
+      const { carts, total, missingItems } = mergeCartItems(items, allProducts);
+
+      if (missingItems.length > 0) {
+        try {
+          await cartApi.deleteCartItems({ userId, ids: missingItems.map(item => item.id) });
+          dispatch(setRemovedItemCount(missingItems.length));
+        } catch {
+          // 畫面已經濾掉了，不讓整個購物車載入失敗，跳過刪除失敗
         }
       }
 
+      return {
+        data: { carts, total, coupon, isCouponExpired: coupon_expired },
+      };
+    } catch (error) {
+      return rejectWithValue(toCartError(error));
+    } finally {
+      if (!preventGlobalLoading) dispatch(hideLoading());
+    }
+  },
+);
+// 新增產品到購物車
+export const addToCarts = createAsyncThunk(
+  'cart/addToCarts',
+  async ({ data, preventGlobalLoading }, { dispatch, rejectWithValue }) => {
+    if (!preventGlobalLoading) dispatch(showLoading());
+    try {
+      // 新增產品到購物車
+      const response = await cartApi.addToCart(data);
+
       return response;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(toCartError(error));
+    } finally {
+      if (!preventGlobalLoading) dispatch(hideLoading());
     }
   },
 );
@@ -49,98 +123,130 @@ export const addAndRefetchCarts = createAsyncThunk(
       const response = await dispatch(fetchCarts(preventGlobalLoading)).unwrap();
       return response;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(toCartError(error));
     }
   },
 );
 // 更新購物車產品資訊並重新取得購物車列表
 export const updateAndRefetchCarts = createAsyncThunk(
   'cart/updateAndRefetchCarts',
-  async ({ id, data, preventGlobalLoading }, { dispatch, rejectWithValue }) => {
+  async ({ id, qty, preventGlobalLoading }, { dispatch, getState, rejectWithValue }) => {
+    // 取得 user 資訊
+    const userId = getState().guestAuth.user?.id;
+    if (!userId) return rejectWithValue({ code: 'NO_USER', message: getCartErrorMessage('NO_USER') });
+
+    if (!preventGlobalLoading) dispatch(showLoading());
     try {
       // 先更新指定品項
-      await cartApi.updateCart(id, data, preventGlobalLoading);
+      await cartApi.updateCart({ userId, id, qty });
       // 再重新取得購物車資料
       const response = await dispatch(fetchCarts(preventGlobalLoading)).unwrap();
       return response;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(toCartError(error));
+    } finally {
+      if (!preventGlobalLoading) dispatch(hideLoading());
     }
   },
 );
 // 刪除購物車產品並重新取得購物車列表
 export const deleteAndRefetchCarts = createAsyncThunk(
   'cart/deleteAndRefetchCarts',
-  async ({ id, preventGlobalLoading }, { dispatch, rejectWithValue }) => {
+  async ({ id, preventGlobalLoading }, { dispatch, getState, rejectWithValue }) => {
+    // 取得 user 資訊
+    const userId = getState().guestAuth.user?.id;
+    if (!userId) return rejectWithValue({ code: 'NO_USER', message: getCartErrorMessage('NO_USER') });
+
+    if (!preventGlobalLoading) dispatch(showLoading());
     try {
       // 先刪除指定品項
-      await cartApi.deleteCart(id, preventGlobalLoading);
+      await cartApi.deleteCart({ userId, id });
       // 再重新取得購物車資料
       const response = await dispatch(fetchCarts(preventGlobalLoading)).unwrap();
 
       // 如果購物車內沒有商品，則清除優惠券代碼
       const carts = response.data.carts;
       if (carts.length === 0) {
-        dispatch(setCouponCode(''));
+        try {
+          await guestCouponApi.deleteCartCoupon(userId);
+        } catch {
+          // 失敗仍繼續往下執行，不讓外部 catch 接到
+        }
+        dispatch(deleteCartCoupon());
       }
 
       return response;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(toCartError(error));
+    } finally {
+      if (!preventGlobalLoading) dispatch(hideLoading());
     }
   },
 );
 // 刪除購物車全部產品
-export const deleteCarts = createAsyncThunk('cart/deleteCarts', async (preventGlobalLoading, { rejectWithValue }) => {
-  try {
-    const response = await cartApi.deleteCarts(preventGlobalLoading);
-    return response;
-  } catch (error) {
-    return rejectWithValue(error);
-  }
-});
+export const deleteCarts = createAsyncThunk(
+  'cart/deleteCarts',
+  async (preventGlobalLoading, { dispatch, getState, rejectWithValue }) => {
+    // 取得 user 資訊
+    const userId = getState().guestAuth.user?.id;
+    if (!userId) return rejectWithValue({ code: 'NO_USER', message: getCartErrorMessage('NO_USER') });
+
+    if (!preventGlobalLoading) dispatch(showLoading());
+    try {
+      const response = await cartApi.deleteCarts({ userId });
+      return response;
+    } catch (error) {
+      return rejectWithValue(toCartError(error));
+    } finally {
+      if (!preventGlobalLoading) dispatch(hideLoading());
+    }
+  },
+);
 
 /**
  * 登入/註冊後，購物車資料從 localStorage 改到後端儲存
- * - fulfilled：payload 為加入失敗的商品數量（number）
- * - rejected：重新取得購物車失敗，payload 為錯誤物件
+ * - fulfilled：payload 為合併是否失敗（boolean）
+ * - rejected：重新取得購物車失敗，payload 為錯誤物件；isMigrateError 表示合併是否失敗
  */
-export const migrateGuestCart = createAsyncThunk('cart/migrateGuestCart', async (_, { dispatch, rejectWithValue }) => {
-  // 取得 localStorage 購物車資料
-  const localCartData = JSON.parse(localStorage.getItem('guestCarts')) || [];
-  let failedCount = 0;
+export const migrateGuestCart = createAsyncThunk(
+  'cart/migrateGuestCart',
+  async (_, { dispatch, rejectWithValue }) => {
+    // 取得 localStorage 購物車資料
+    const localCartData = readGuestCarts();
 
-  // 新增多筆產品到購物車
-  const results = [];
-  if (localCartData.length > 0) {
-    for (const product of localCartData) {
+    // 新增多筆產品到購物車
+    let isMigrateError = false;
+    if (localCartData.length > 0) {
+      const validItems = localCartData.filter(isValidCartItem);
       try {
-        const response = await dispatch(
-          addToCarts({
-            data: { product_id: product.id, qty: product.qty },
-            preventGlobalLoading: true,
-          }),
-        ).unwrap();
-        results.push({ status: 'fulfilled', value: response });
-      } catch (error) {
-        results.push({ status: 'rejected', reason: error });
+        if (validItems.length > 0) {
+          await dispatch(
+            addToCarts({
+              data: validItems,
+              preventGlobalLoading: true,
+            }),
+          ).unwrap();
+        }
+        // 移除 localStorage
+        localStorage.removeItem('guestCarts');
+      } catch {
+        isMigrateError = true;
       }
     }
-    // 記錄失敗筆數
-    const failedItems = results.filter(r => r.status === 'rejected');
-    failedCount = failedItems.length;
-    // 移除 localStorage
-    localStorage.removeItem('guestCarts');
-  }
 
-  // 重新取得購物車資訊
-  try {
-    await dispatch(fetchCarts(true)).unwrap();
-    return failedCount;
-  } catch (error) {
-    return rejectWithValue(error);
-  }
-});
+    // 重新取得購物車資訊
+    try {
+      await dispatch(fetchCarts(true)).unwrap();
+      return isMigrateError;
+    } catch (error) {
+      return rejectWithValue({ ...error, isMigrateError });
+    }
+  },
+  {
+    // 於 thunk 開始前執行。回傳 false，thunk 就不會執行
+    condition: (_, { getState }) => !getState().cart.isMigrating,
+  },
+);
 
 // slice
 const cartSlice = createSlice({
@@ -148,17 +254,21 @@ const cartSlice = createSlice({
   initialState: {
     carts: [],
     total: 0,
-    finalTotal: 0,
-    couponCode: '',
+    coupon: null,
+    isCouponExpired: false,
     isLoading: false, // 這是「整台購物車」的讀取狀態
     isMigrating: false,
     loadingItems: {}, // 追蹤每個產品的 loading 狀態，格式：{ cartId: null | 'updating' | 'deleting' }
     pendingBuyNowItem: null, // 未登入時，「立即購買」暫存商品，登入後由 Login/Register 在 migration 前加入 localStorage
+    removedItemCount: 0,
     error: null,
   },
   reducers: {
-    setCouponCode: (state, action) => {
-      state.couponCode = action.payload;
+    deleteCartCoupon: state => {
+      state.coupon = null;
+    },
+    clearCouponExpired: state => {
+      state.isCouponExpired = false;
     },
     setLocalCarts: (state, action) => {
       state.carts = action.payload;
@@ -190,15 +300,19 @@ const cartSlice = createSlice({
     clearPendingBuyNowItem: state => {
       state.pendingBuyNowItem = null;
     },
+    setRemovedItemCount: (state, action) => {
+      state.removedItemCount = action.payload;
+    },
     resetCart: state => {
       state.carts = [];
       state.total = 0;
-      state.finalTotal = 0;
-      state.couponCode = '';
+      state.coupon = null;
+      state.isCouponExpired = false;
       state.isLoading = false;
       state.isMigrating = false;
       state.loadingItems = {};
       state.pendingBuyNowItem = null;
+      state.removedItemCount = 0;
       state.error = null;
     },
   },
@@ -211,17 +325,8 @@ const cartSlice = createSlice({
         const data = action.payload.data;
         state.carts = data.carts || [];
         state.total = data.total || 0;
-        state.finalTotal = data.final_total || 0;
-        // 取得購物車中的優惠券代碼
-        // 注意：API 回傳時，coupon 會存在每個 cart item 中，但所有 item 的 coupon 是相同的
-        if (data.carts && data.carts.length > 0) {
-          const hasCoupon = data.carts.some(cartItem => cartItem.coupon);
-          if (hasCoupon) {
-            state.couponCode = data.carts[0].coupon.code; // 取第一筆的 coupon code 即可
-          } else {
-            state.couponCode = '';
-          }
-        }
+        state.coupon = data.coupon || null;
+        if (data.isCouponExpired) state.isCouponExpired = true;
       })
       // migrateGuestCart
       .addCase(migrateGuestCart.pending, state => {
@@ -250,8 +355,8 @@ const cartSlice = createSlice({
         state.isLoading = false;
         state.carts = [];
         state.total = 0;
-        state.finalTotal = 0;
-        state.couponCode = '';
+        state.coupon = null;
+        state.isCouponExpired = false;
         state.loadingItems = {};
       })
       .addMatcher(isAnyOf(addToCarts.fulfilled, addAndRefetchCarts.fulfilled), state => {
@@ -300,13 +405,37 @@ export const authAwareInitCarts = preventGlobalLoading => async (dispatch, getSt
 
   if (isAuth) {
     // 已登入：呼叫後端 API 取得購物車資料
+    // guestCarts 還有商品，代表上次合併失敗，先自動重試
+    if (readGuestCarts().length > 0) {
+      const migrateResult = await dispatch(migrateGuestCart());
+      return { migrateResult };
+    }
     return await dispatch(fetchCarts(preventGlobalLoading)).unwrap();
   } else {
     // 未登入：從 localStorage 讀取購物車資料
-    const localCartData = JSON.parse(localStorage.getItem('guestCarts')) || [];
+    const localCartData = readGuestCarts();
+    // 訪客品項沒有資料庫的 id，用 product_id 代替（deleteLocalCartItem 依 id 刪除）
+    const validItems = localCartData
+      .filter(isValidCartItem)
+      .map(({ product_id, qty }) => ({ id: product_id, product_id, qty }));
+    try {
+      const allProducts = await loadAllProducts(dispatch, getState);
+      const { carts, missingItems } = mergeCartItems(validItems, allProducts);
 
-    // 將讀取到的資料寫入 Redux state
-    dispatch(setLocalCarts(localCartData));
+      // 比對不到產品的數量
+      if (missingItems.length > 0) {
+        dispatch(setRemovedItemCount(missingItems.length));
+      }
+      const hasInvalidItems = localCartData.length !== validItems.length;
+      if (allProducts.length > 0 && (hasInvalidItems || missingItems.length > 0)) {
+        localStorage.setItem('guestCarts', JSON.stringify(carts.map(({ product_id, qty }) => ({ product_id, qty }))));
+      }
+
+      // 將讀取到的資料寫入 Redux state
+      dispatch(setLocalCarts(carts));
+    } catch (error) {
+      throw toCartError(error);
+    }
   }
 };
 export const authAwareAddToCart = data => async (dispatch, getState) => {
@@ -319,7 +448,7 @@ export const authAwareAddToCart = data => async (dispatch, getState) => {
   const { product, qty } = data;
   if (isAuth) {
     // 已登入
-    return await dispatch(addAndRefetchCarts({ data: { product_id: product.id, qty } })).unwrap();
+    return await dispatch(addAndRefetchCarts({ data: [{ product_id: product.id, qty }] })).unwrap();
   } else {
     // 未登入
     dispatch(addLocalCartItem({ product, productId: product.id, qty }));
@@ -335,11 +464,10 @@ export const authAwareUpdateCart = data => async (dispatch, getState) => {
   const { cartItemId, productId, qty, preventGlobalLoading } = data;
   if (isAuth) {
     // 已登入
-    const updateData = { product_id: productId, qty };
-    return await dispatch(updateAndRefetchCarts({ id: cartItemId, data: updateData, preventGlobalLoading })).unwrap();
+    return await dispatch(updateAndRefetchCarts({ id: cartItemId, qty, preventGlobalLoading })).unwrap();
   } else {
     // 未登入
-    dispatch(updateLocalCartItem({ productId: productId, qty }));
+    dispatch(updateLocalCartItem({ productId, qty }));
   }
 };
 export const authAwareDeleteCart = data => async (dispatch, getState) => {
@@ -373,39 +501,49 @@ export const flushPendingBuyNowItem = () => (dispatch, getState) => {
 };
 /**
  * 其他分頁登入後：把這個分頁暫存的「立即購買」商品加入遠端購物車，再重新取得購物車。
+ * - 加入失敗不會中斷，購物車照常重新取得
+ * - 成功：回傳 { buyNowFailed }，立即購買的商品是否加入失敗
+ * - 失敗：重新取得購物車失敗時丟出 { code, message }
  */
 export const syncCartsAfterOtherTabSignIn = () => async (dispatch, getState) => {
   const { pendingBuyNowItem } = getState().cart;
+  let buyNowFailed = false;
   if (pendingBuyNowItem) {
     const { product, qty } = pendingBuyNowItem;
-    // 加入失敗顯示錯誤訊息但繼續往下，購物車照常重新取得
+    // 加入失敗只記下來、繼續往下，購物車照常重新取得；要不要顯示提示交給呼叫的地方
     const result = await dispatch(
       addToCarts({
-        data: { product_id: product.id, qty },
+        data: [{ product_id: product.id, qty }],
         preventGlobalLoading: true,
       }),
     );
-    if (addToCarts.rejected.match(result)) {
-      toast.error('立即購買的商品加入購物車失敗');
-    }
+    buyNowFailed = addToCarts.rejected.match(result);
     dispatch(clearPendingBuyNowItem());
   }
-  await dispatch(fetchCarts(true));
+  await dispatch(fetchCarts(true)).unwrap();
+  return { buyNowFailed };
 };
 
 // Export actions
 export const {
-  setCouponCode,
+  deleteCartCoupon,
+  clearCouponExpired,
   setLocalCarts,
   addLocalCartItem,
   updateLocalCartItem,
   deleteLocalCartItem,
   setPendingBuyNowItem,
   clearPendingBuyNowItem,
+  setRemovedItemCount,
   resetCart,
 } = cartSlice.actions;
 
 // Selectors
 export const selectHasItemLoading = state => Object.values(state.cart.loadingItems).some(status => status);
+
+export const selectFinalTotal = state => {
+  const { total, coupon } = state.cart;
+  return coupon ? Math.round((total * coupon.percent) / 100) : total;
+};
 
 export default cartSlice.reducer;

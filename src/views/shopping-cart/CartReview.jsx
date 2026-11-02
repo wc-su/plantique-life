@@ -1,7 +1,15 @@
 import { guestCouponApi } from '@/api';
 import Button from '@/components/Button';
 import ProductCard from '@/components/ProductCard';
-import { deleteAndRefetchCarts, fetchCarts, selectHasItemLoading, updateAndRefetchCarts } from '@/slice/cartSlice';
+import {
+  deleteAndRefetchCarts,
+  deleteCartCoupon,
+  fetchCarts,
+  selectFinalTotal,
+  selectHasItemLoading,
+  updateAndRefetchCarts,
+} from '@/slice/cartSlice';
+import { getCouponErrorMessage } from '@/utils/errorMessage';
 import clsx from 'clsx';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -22,11 +30,13 @@ function CartReview({ productImages, handleSwitchStep }) {
   const {
     carts,
     total,
-    finalTotal,
+    coupon: cartCoupon,
     isLoading: cartLoading,
     loadingItems,
     isMigrating: cartMigrating,
   } = useSelector(state => state.cart);
+  const { user: guestUser } = useSelector(state => state.guestAuth);
+  const finalTotal = useSelector(selectFinalTotal);
 
   // 優惠券輸入框
   const [coupon, setCoupon] = useState('');
@@ -42,16 +52,15 @@ function CartReview({ productImages, handleSwitchStep }) {
   // 整體載入狀態
   const isCartProcessing = cartLoading || couponStatus.isLoading || hasItemLoading;
 
-  async function handleUpdateCart(id, product_id, qty) {
+  async function handleUpdateCart(id, qty) {
     // 清除優惠券訊息
     setCouponStatus({ isLoading: false, message: '', type: null });
 
     // 更新購物車數量
     try {
-      const data = { product_id: product_id, qty: qty };
-      await dispatch(updateAndRefetchCarts({ id, data, preventGlobalLoading: true })).unwrap();
+      await dispatch(updateAndRefetchCarts({ id, qty, preventGlobalLoading: true })).unwrap();
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
   }
 
@@ -64,7 +73,7 @@ function CartReview({ productImages, handleSwitchStep }) {
       await dispatch(deleteAndRefetchCarts({ id, preventGlobalLoading: true })).unwrap();
       toast.success('刪除成功');
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
   }
 
@@ -86,15 +95,15 @@ function CartReview({ productImages, handleSwitchStep }) {
       // pending 狀態
       setCouponStatus({ isLoading: true, message: '驗證中...', type: null });
       // 呼叫 API
-      const couponRes = await guestCouponApi.applyCoupon({ code }, true);
-      const cartsRes = await dispatch(fetchCarts(true)).unwrap();
+      await guestCouponApi.applyCoupon({ code });
+      await dispatch(fetchCarts(true)).unwrap();
       // 組合優惠券訊息
-      const couponMsg = `${couponRes.message} (${cartsRes.data.carts[0].coupon.title})`;
+      const couponMsg = `已套用優惠券`;
       // 等待購物車更新完成後再顯示成功訊息
       setCouponStatus({ isLoading: false, message: couponMsg, type: 'success' });
       setCoupon('');
     } catch (error) {
-      setCouponStatus({ isLoading: false, message: error, type: 'error' });
+      setCouponStatus({ isLoading: false, message: getCouponErrorMessage(error.code), type: 'error' });
     }
   }
 
@@ -103,6 +112,17 @@ function CartReview({ productImages, handleSwitchStep }) {
     await handleSwitchStep(1);
     setCouponStatus({ isLoading: false, message: '', type: null });
     setCoupon('');
+  };
+
+  const handleRemoveCoupon = async () => {
+    try {
+      setCouponStatus({ isLoading: true, message: '取消中...', type: null });
+      await guestCouponApi.deleteCartCoupon(guestUser.id);
+      dispatch(deleteCartCoupon());
+      setCouponStatus({ isLoading: false, message: '成功取消套用', type: 'success' });
+    } catch (error) {
+      setCouponStatus({ isLoading: false, message: getCouponErrorMessage(error.code), type: 'error' });
+    }
   };
 
   return (
@@ -167,7 +187,7 @@ function CartReview({ productImages, handleSwitchStep }) {
                               size="sm"
                               className="me-1"
                               disabled={cartItem.qty <= 1 || itemStatus}
-                              onClick={() => handleUpdateCart(cartItem.id, cartItem.product_id, cartItem.qty - 1)}
+                              onClick={() => handleUpdateCart(cartItem.id, cartItem.qty - 1)}
                             >
                               <span className="custom-btn-icon material-symbols-rounded">remove</span>
                             </Button>
@@ -181,7 +201,7 @@ function CartReview({ productImages, handleSwitchStep }) {
                               size="sm"
                               className="me-1"
                               disabled={itemStatus}
-                              onClick={() => handleUpdateCart(cartItem.id, cartItem.product_id, cartItem.qty + 1)}
+                              onClick={() => handleUpdateCart(cartItem.id, cartItem.qty + 1)}
                             >
                               <span className="custom-btn-icon material-symbols-rounded">add</span>
                             </Button>
@@ -234,32 +254,59 @@ function CartReview({ productImages, handleSwitchStep }) {
             <h6 className="h6 fs-lg-5 text-primary-700 mb-4 mb-lg-8">使用優惠券</h6>
             <div>
               <div className="d-flex align-items-center">
-                <label htmlFor="coupon-code" className="col-form-label fs-sm fs-lg-8 text-neutral-400 text-nowrap me-3">
-                  輸入代碼
-                </label>
-                <input
-                  type="text"
-                  className="form-control border-2 rounded-0 py-3 px-4"
-                  id="coupon-code"
-                  placeholder="輸入優惠代碼"
-                  autoComplete="off"
-                  value={coupon}
-                  disabled={carts.length === 0 || couponStatus.isLoading}
-                  onChange={e => setCoupon(e.target.value)}
-                />
-                <Button
-                  type="button"
-                  variant="filled-primary"
-                  shape="square"
-                  size="md"
-                  className="text-nowrap ms-4"
-                  disabled={carts.length === 0 || couponStatus.isLoading}
-                  onClick={() => handleApplyCoupon(coupon)}
-                >
-                  確認
-                </Button>
+                {cartCoupon ? (
+                  <>
+                    <div className="d-flex flex-column align-items-start me-3">
+                      <span className="fs-xs fs-lg-sm text-nowrap bg-secondary-100 text-secondary px-2 py-1">
+                        {cartCoupon.code}
+                      </span>
+                      <span className="fs-xxs fs-lg-xs text-neutral-400 mt-1">{cartCoupon.title}</span>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="filled-primary"
+                      shape="square"
+                      size="md"
+                      className="text-nowrap ms-auto"
+                      disabled={carts.length === 0 || couponStatus.isLoading}
+                      onClick={() => handleRemoveCoupon()}
+                    >
+                      取消套用
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <label
+                      htmlFor="coupon-code"
+                      className="col-form-label fs-sm fs-lg-8 text-neutral-400 text-nowrap me-3"
+                    >
+                      輸入代碼
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control border-2 rounded-0 py-3 px-4"
+                      id="coupon-code"
+                      placeholder="輸入優惠代碼"
+                      autoComplete="off"
+                      value={coupon}
+                      disabled={carts.length === 0 || couponStatus.isLoading}
+                      onChange={e => setCoupon(e.target.value)}
+                    />
+                    <Button
+                      type="button"
+                      variant="filled-primary"
+                      shape="square"
+                      size="md"
+                      className="text-nowrap ms-4"
+                      disabled={carts.length === 0 || couponStatus.isLoading}
+                      onClick={() => handleApplyCoupon(coupon)}
+                    >
+                      確認
+                    </Button>
+                  </>
+                )}
               </div>
-              <div className="fs-sm mt-2">
+              <div className="fs-sm mt-4">
                 {couponStatus.isLoading && (
                   <div className="d-flex align-items-center gap-2">
                     <div className="spinner-border spinner-border-sm text-secondary" role="status">

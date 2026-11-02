@@ -8,8 +8,16 @@ import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router';
 
+import { handleMigrateResult } from '@/hook/useMigrateGuestCart';
 import { usePendingAuthAction } from '@/hook/usePendingAuthAction';
-import { authAwareDeleteCart, authAwareInitCarts, authAwareUpdateCart, selectHasItemLoading } from '@/slice/cartSlice';
+import {
+  authAwareDeleteCart,
+  authAwareInitCarts,
+  authAwareUpdateCart,
+  clearCouponExpired,
+  selectHasItemLoading,
+  setRemovedItemCount,
+} from '@/slice/cartSlice';
 import { guestAuthCheck, guestAuthLogout } from '@/slice/guestAuthSlice';
 import { closeModal, openModal } from '@/slice/uiSlice';
 import useMediaQuery from '@/utils/useMediaQuery';
@@ -28,7 +36,14 @@ export default function Navbar() {
   const isDesktopSize = useMediaQuery('(min-width: 992px)');
 
   // 從 Redux 取得購物車資料
-  const { carts, loadingItems, isLoading: cartLoading, isMigrating: cartMigrating } = useSelector(state => state.cart);
+  const {
+    carts,
+    loadingItems,
+    isLoading: cartLoading,
+    isMigrating: cartMigrating,
+    removedItemCount,
+    isCouponExpired,
+  } = useSelector(state => state.cart);
   // 購物車中是否有任何品項正在載入
   const hasItemLoading = useSelector(selectHasItemLoading);
   // 購物車是否正在處理中
@@ -89,20 +104,39 @@ export default function Navbar() {
           toast.error(result.payload.message);
         }
         // 初始化購物車資料
-        await dispatch(authAwareInitCarts(true));
+        const initResult = await dispatch(authAwareInitCarts(true));
+        if (initResult?.migrateResult) handleMigrateResult(initResult.migrateResult);
       } catch (error) {
-        toast.error(error);
+        toast.error(error.message);
       }
     }
     initFetch();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!isCouponExpired) return;
+    toast('優惠券已失效！', {
+      icon: '⚠️',
+      style: {
+        background: '#FEF3C7', // 淺黃色背景
+        color: '#92400E', // 深黃褐色文字
+      },
+    });
+    dispatch(clearCouponExpired()); // 提示過就清掉，避免重複跳出
+  }, [isCouponExpired, dispatch]);
+
+  useEffect(() => {
+    if (!removedItemCount) return;
+    toast(`有 ${removedItemCount} 項商品下架，已從購物車移除`, { id: 'cart-items-removed', icon: '⚠️' });
+    dispatch(setRemovedItemCount(0));
+  }, [removedItemCount, dispatch]);
 
   // 更新購物車數量
   async function handleUpdateCart(cartItemId, productId, qty) {
     try {
       await dispatch(authAwareUpdateCart({ cartItemId, productId, qty, preventGlobalLoading: true }));
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
   }
 
@@ -112,7 +146,7 @@ export default function Navbar() {
       await dispatch(authAwareDeleteCart({ cartItemId, preventGlobalLoading: true }));
       toast.success('刪除成功');
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
   }
 

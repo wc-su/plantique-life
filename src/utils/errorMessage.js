@@ -13,3 +13,29 @@ export function getAuthErrorMessage(code) {
   const message = authErrorMessages[code];
   return message ?? '發生錯誤，請稍後再試';
 }
+
+const cartErrorMessages = Object.freeze({
+  NO_USER: '請先登入',
+  API_ERROR: '商品資料載入失敗，請稍後再試',
+  NETWORK_ERROR: '網路連線異常，請稍後再試',
+  22023: '數量必須大於 0', // add_to_cart 的 raise exception
+  23514: '數量必須大於 0', // check (qty > 0)
+  42501: '登入狀態已失效，請重新登入', // 權限不足：沒帶到會員的 token
+});
+
+export function getCartErrorMessage(code) {
+  const message = cartErrorMessages[code];
+  return message ?? '購物車操作失敗，請稍後再試';
+}
+
+const couponErrorMessages = Object.freeze({
+  NETWORK_ERROR: '網路連線異常，請稍後再試',
+  22023: '請輸入優惠券代碼', // apply_coupon：沒傳優惠碼
+  P0002: '優惠券無效或已過期', // apply_coupon：查不到、停用、過期
+  42501: '請先登入才能使用優惠券', // 訪客沒有執行權限
+});
+
+export function getCouponErrorMessage(code) {
+  const message = couponErrorMessages[code];
+  return message ?? '優惠券操作失敗，請稍後再試';
+}

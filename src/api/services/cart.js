@@ -1,18 +1,47 @@
-import guestClient from '../clients/guestClient';
-import { GUEST_API_PATH } from '../core/constants';
+import { supabaseGuest } from '../clients/guestClient';
+
+const CART_ITEMS = 'cart_items';
 
 export const cartApi = {
   // 取得購物車列表
-  fetchCarts: preventGlobalLoading => guestClient.get(`${GUEST_API_PATH}/cart`, { preventGlobalLoading }),
-  // 新增產品到購物車
-  addToCart: (data, preventGlobalLoading) =>
-    guestClient.post(`${GUEST_API_PATH}/cart`, { data }, { preventGlobalLoading }),
+  fetchCarts: async () => {
+    const { data, error } = await supabaseGuest.rpc('get_cart');
+    if (error) throw error;
+    return data;
+  },
+  // 新增多筆產品到購物車
+  addToCart: async items => {
+    const { data, error } = await supabaseGuest.rpc('add_to_cart', { p_items: items });
+    if (error) throw error;
+    return data;
+  },
   // 更新購物車產品資訊
-  updateCart: (id, data, preventGlobalLoading) =>
-    guestClient.put(`${GUEST_API_PATH}/cart/${id}`, { data }, { preventGlobalLoading }),
+  updateCart: async ({ userId, id, qty }) => {
+    const { data, error } = await supabaseGuest
+      .from(CART_ITEMS)
+      .update({ qty })
+      .eq('user_id', userId)
+      .eq('id', id)
+      .select();
+    if (error) throw error;
+    return data;
+  },
   // 刪除購物車產品
-  deleteCart: (id, preventGlobalLoading) =>
-    guestClient.delete(`${GUEST_API_PATH}/cart/${id}`, { preventGlobalLoading }),
+  deleteCart: async ({ userId, id }) => {
+    const { data, error } = await supabaseGuest.from(CART_ITEMS).delete().eq('user_id', userId).eq('id', id).select();
+    if (error) throw error;
+    return data;
+  },
+  // 刪除多筆購物車產品
+  deleteCartItems: async ({ userId, ids }) => {
+    const { data, error } = await supabaseGuest.from(CART_ITEMS).delete().eq('user_id', userId).in('id', ids).select();
+    if (error) throw error;
+    return data;
+  },
   // 刪除購物車全部產品
-  deleteCarts: preventGlobalLoading => guestClient.delete(`${GUEST_API_PATH}/carts`, { preventGlobalLoading }),
+  deleteCarts: async ({ userId }) => {
+    const { data, error } = await supabaseGuest.from(CART_ITEMS).delete().eq('user_id', userId).select();
+    if (error) throw error;
+    return data;
+  },
 };
