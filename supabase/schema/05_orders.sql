@@ -56,3 +56,17 @@ create table public.orders (
 -- 替 orders 開啟 RLS
 alter table public.orders enable row level security;
 
+-- 授權 authenticated 角色查詢訂單，哪幾列由下面的 RLS policy 決定
+-- 不給 insert：建立訂單只能透過 create_order，訂單內容和清空購物車在同一個 transaction 完成
+-- 不給 update、delete：一般會員不能自己改付款狀態或刪除訂單；付款透過 pay_order
+-- 後台需要修改、刪除時，再 grant 並加上 is_admin() 的 policy
+-- 訪客 anon 不能查訂單
+grant select on public.orders to authenticated;
+
+-- SELECT: 一般會員看到自己的訂單，管理員看到全部
+create policy "orders_select_own_or_admin"
+on public.orders for select
+using (auth.uid() = user_id or public.is_admin());
+
+-- 依會員查訂單（前台訂單列表、RLS 的 auth.uid() = user_id）會用到 user_id
+create index orders_user_id_idx on public.orders (user_id);
