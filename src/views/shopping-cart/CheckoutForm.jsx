@@ -1,6 +1,7 @@
-import { guestOrderApi, payApi } from '@/api';
+import { cartApi, guestOrderApi, payApi } from '@/api';
 import Button from '@/components/Button';
 import { fetchCarts, selectFinalTotal } from '@/slice/cartSlice';
+import { getAllProducts } from '@/slice/product/guestProductSlice';
 import { getOrderErrorMessage } from '@/utils/errorMessage';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
@@ -337,6 +338,31 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
   const handleConfirmSubmit = async () => {
     // 建立訂單
     try {
+      // redux 重新取得所有產品，並建立 Map
+      const { products: allProducts } = await dispatch(getAllProducts()).unwrap();
+      const productMap = new Map(allProducts.map(p => [p.id, p]));
+      // 取得購物車最新資訊，並建立 Map
+      const { items } = await cartApi.fetchCarts();
+      const cartsMap = new Map(items.map(i => [i.id, i]));
+      // 比對是否有商品已下架
+      const notMatchProducts = items.filter(item => !productMap.has(item.product_id));
+      if (notMatchProducts.length > 0) {
+        toast.error('購物車有產品已下架，訂單建立失敗，請重新整理頁面確認');
+        return;
+      }
+      // 比對數量和金額
+      const notMatchCarts = carts.filter(item => {
+        const matchCarts = cartsMap.get(item.id);
+        const matchProduct = productMap.get(item.product_id);
+        if (!matchCarts || !matchProduct) return true;
+        if (matchCarts.qty !== item.qty || matchProduct.price !== item.product.price) return true;
+        return false;
+      });
+      if (items.length !== carts.length || notMatchCarts.length > 0) {
+        toast.error('購物車內容已變動，請重新整理頁面確認後再結帳');
+        return;
+      }
+
       const orderData = getValues();
       const isCreditCard = orderData.payment === '信用卡一次付清';
       const apiData = {
@@ -357,12 +383,15 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
           ubn: toNull(orderData.ubn),
           message: toNull(orderData.message),
         },
-        products: carts.map(item => ({
-          product_id: item.product_id,
-          title: item.product.title,
-          price: item.product.price,
-          image_url: item.product.imageUrl,
-        })),
+        products: items.map(item => {
+          const product = productMap.get(item.product_id);
+          return {
+            product_id: item.product_id,
+            title: product.title,
+            price: product.price,
+            image_url: product.imageUrl,
+          };
+        }),
       };
       const orderResponse = await guestOrderApi.createOrder(apiData);
 
