@@ -1,10 +1,14 @@
 import adminClient from '../clients/adminClient';
-import guestClient from '../clients/guestClient';
+import guestClient, { supabaseGuest } from '../clients/guestClient';
 import { ADMIN_API_PATH, GUEST_API_PATH } from '../core/constants';
 
 export const guestOrderApi = {
   // 建立訂單
-  createOrder: data => guestClient.post(`${GUEST_API_PATH}/order`, { data }),
+  createOrder: async ({ order, products }) => {
+    const { data, error } = await supabaseGuest.rpc('create_order', { p_order: order, p_products: products });
+    if (error) throw error;
+    return data;
+  },
   // 取得所有訂單
   fetchOrders: (page = 1) => guestClient.get(`${GUEST_API_PATH}/orders`, { params: { page } }),
   // 取得指定 ID 訂單

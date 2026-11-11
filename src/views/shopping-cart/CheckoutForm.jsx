@@ -1,6 +1,7 @@
 import { guestOrderApi, payApi } from '@/api';
 import Button from '@/components/Button';
 import { fetchCarts, selectFinalTotal } from '@/slice/cartSlice';
+import { getOrderErrorMessage } from '@/utils/errorMessage';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 import IMask from 'imask';
@@ -101,7 +102,11 @@ function getCardBrand(cardNumber) {
   ];
 
   const match = cardData.find(item => item.regex.test(cardNumber));
-  return match ? match.brand : 'Unknown';
+  return match ? match.brand : null;
+}
+
+function toNull(v) {
+  return v || null;
 }
 
 function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
@@ -163,6 +168,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
     },
     mode: 'onChange', // 即時驗證
     shouldFocusError: false, // 關閉 RHF 自動 focus，改用自訂 onError
+    shouldUnregister: true,
     defaultValues: {
       delivery: '',
       payment: '',
@@ -332,42 +338,50 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
     // 建立訂單
     try {
       const orderData = getValues();
+      const isCreditCard = orderData.payment === '信用卡一次付清';
       const apiData = {
-        user: {
-          name: orderData.recipientName,
-          email: orderData.recipientEmail,
-          tel: orderData.recipientPhone,
-          address: orderData.recipientAddress,
+        order: {
+          recipient_name: orderData.recipientName,
+          recipient_email: orderData.recipientEmail,
+          recipient_phone: orderData.recipientPhone,
+          recipient_address: orderData.recipientAddress,
           delivery: orderData.delivery,
           payment: orderData.payment,
-          cardLastFourNumber: orderData.cardNumber.slice(-4),
-          cardExp: orderData.cardExp,
-          cardBrand: getCardBrand(orderData.cardNumber),
-          purchaserName: orderData.purchaserName,
-          purchaserPhone: orderData.purchaserPhone,
-          purchaserEmail: orderData.purchaserEmail,
+          card_last_four: isCreditCard ? orderData.cardNumber.slice(-4) : null,
+          card_brand: isCreditCard ? getCardBrand(orderData.cardNumber) : null,
+          purchaser_name: orderData.purchaserName,
+          purchaser_phone: orderData.purchaserPhone,
+          purchaser_email: orderData.purchaserEmail,
           invoice: orderData.invoice,
-          mobileBarcode: orderData.mobileBarcode,
-          ubn: orderData.ubn,
+          mobile_barcode: toNull(orderData.mobileBarcode),
+          ubn: toNull(orderData.ubn),
+          message: toNull(orderData.message),
         },
-        message: orderData.message,
+        products: carts.map(item => ({
+          product_id: item.product_id,
+          title: item.product.title,
+          price: item.product.price,
+          image_url: item.product.imageUrl,
+        })),
       };
       const orderResponse = await guestOrderApi.createOrder(apiData);
 
       // 建立 orderInfo 基礎物件
       const orderInfo = {
-        orderId: orderResponse.orderId,
+        orderId: orderResponse.id,
         email: recipientEmail,
         // 是否轉帳付款
         isTransfer: paymentMethod === '轉帳',
-        // 轉帳繳費截止時間 (建立訂單時間後 3 天的 23:59:59) (timestamp)
-        transferDeadline: new Date(orderResponse.create_at * 1000 + 3 * 24 * 60 * 60 * 1000).setHours(23, 59, 59, 999),
+        // 轉帳繳費截止時間 (建立訂單時間後 3 天的 23:59:59)
+        transferDeadline: new Date(
+          new Date(orderResponse.created_at).setHours(23, 59, 59, 999) + 3 * 24 * 60 * 60 * 1000,
+        ),
       };
 
       // 只有信用卡一次付清才呼叫付款 API
       // 使用獨立方法處理，確保即使付款失敗也不會中斷流程
       if (paymentMethod === '信用卡一次付清') {
-        await processCreditCardPayment(orderResponse.orderId);
+        await processCreditCardPayment(orderResponse.id);
       }
 
       setOrderInfo(orderInfo);
@@ -378,7 +392,15 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
       // 更新購物車資訊
       dispatch(fetchCarts(false));
     } catch (error) {
-      toast.error(error);
+      let message = '';
+      if (typeof error === 'string') {
+        message = getOrderErrorMessage('API_ERROR');
+      } else {
+        // supabase-js 網路失敗時 code 是空字串
+        const code = error.code === '' ? 'NETWORK_ERROR' : error.code;
+        message = getOrderErrorMessage(code);
+      }
+      toast.error(message);
     }
   };
 
