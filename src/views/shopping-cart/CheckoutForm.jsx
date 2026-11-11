@@ -1,5 +1,6 @@
 import { cartApi, guestOrderApi, payApi } from '@/api';
 import Button from '@/components/Button';
+import { DELIVERY, deliveryOptions, INVOICE, invoiceOptions, PAYMENT, paymentOptions } from '@/const/guestConst';
 import { fetchCarts, selectFinalTotal } from '@/slice/cartSlice';
 import { getAllProducts } from '@/slice/product/guestProductSlice';
 import { getOrderErrorMessage } from '@/utils/errorMessage';
@@ -17,10 +18,6 @@ import { z } from 'zod';
 
 // 運費
 const deliveryFee = 120;
-// 下拉選項
-const deliveryOptions = ['黑貓宅配'];
-const paymentOptions = ['貨到付款', '信用卡一次付清', '轉帳'];
-const invoiceOptions = ['電子發票', '雲端載具', '統一編號'];
 // 表單驗證規則
 const baseSchema = {
   // 運送方式
@@ -155,13 +152,13 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
         schema = schema.extend(recipientSchema);
       }
       // 選擇信用卡付款時，需要驗證信用卡欄位
-      if (values.payment === '信用卡一次付清') {
+      if (values.payment === PAYMENT.CREDIT_CARD) {
         schema = schema.extend(creditCardSchema);
       }
       // 選擇不同發票類型時，需要驗證對應欄位
-      if (values.invoice === '雲端載具') {
+      if (values.invoice === INVOICE.MOBILE_BARCODE) {
         schema = schema.extend(mobileBarcodeSchema);
-      } else if (values.invoice === '統一編號') {
+      } else if (values.invoice === INVOICE.UBN) {
         schema = schema.extend(ubnSchema);
       }
 
@@ -207,6 +204,8 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
   const recipientEmail = useWatch({ control, name: 'recipientEmail' });
   const recipientAddress = useWatch({ control, name: 'recipientAddress' });
 
+  const isCreditCard = paymentMethod === PAYMENT.CREDIT_CARD;
+
   // 當勾選「同訂購人資訊」時，持續同步訂購人資訊到收件人
   useEffect(() => {
     if (recipientChecked) {
@@ -244,16 +243,16 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
 
   // 當選擇信用卡付款時，自動 focus 到卡號欄位
   useEffect(() => {
-    if (paymentMethod === '信用卡一次付清') {
+    if (isCreditCard) {
       setFocus('cardNumber');
     }
-  }, [paymentMethod, setFocus]);
+  }, [isCreditCard, setFocus]);
 
   // 當選擇發票類型時，自動 focus 到對應欄位
   useEffect(() => {
-    if (invoiceType === '雲端載具') {
+    if (invoiceType === INVOICE.MOBILE_BARCODE) {
       setFocus('mobileBarcode');
-    } else if (invoiceType === '統一編號') {
+    } else if (invoiceType === INVOICE.UBN) {
       setFocus('ubn');
     }
   }, [invoiceType, setFocus]);
@@ -364,7 +363,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
       }
 
       const orderData = getValues();
-      const isCreditCard = orderData.payment === '信用卡一次付清';
+      const isCreditCardOrder = orderData.payment === PAYMENT.CREDIT_CARD;
       const apiData = {
         order: {
           recipient_name: orderData.recipientName,
@@ -373,8 +372,8 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
           recipient_address: orderData.recipientAddress,
           delivery: orderData.delivery,
           payment: orderData.payment,
-          card_last_four: isCreditCard ? orderData.cardNumber.slice(-4) : null,
-          card_brand: isCreditCard ? getCardBrand(orderData.cardNumber) : null,
+          card_last_four: isCreditCardOrder ? orderData.cardNumber.slice(-4) : null,
+          card_brand: isCreditCardOrder ? getCardBrand(orderData.cardNumber) : null,
           purchaser_name: orderData.purchaserName,
           purchaser_phone: orderData.purchaserPhone,
           purchaser_email: orderData.purchaserEmail,
@@ -400,7 +399,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
         orderId: orderResponse.id,
         email: recipientEmail,
         // 是否轉帳付款
-        isTransfer: paymentMethod === '轉帳',
+        isTransfer: paymentMethod === PAYMENT.TRANSFER,
         // 轉帳繳費截止時間 (建立訂單時間後 3 天的 23:59:59)
         transferDeadline: new Date(
           new Date(orderResponse.created_at).setHours(23, 59, 59, 999) + 3 * 24 * 60 * 60 * 1000,
@@ -409,7 +408,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
 
       // 只有信用卡一次付清才呼叫付款 API
       // 使用獨立方法處理，確保即使付款失敗也不會中斷流程
-      if (paymentMethod === '信用卡一次付清') {
+      if (isCreditCardOrder) {
         await processCreditCardPayment(orderResponse.id);
       }
 
@@ -534,7 +533,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                 )}
               />
               {/* 條件顯示：信用卡欄位 */}
-              {paymentMethod === '信用卡一次付清' && (
+              {isCreditCard && (
                 <div className="mt-4">
                   <div className="mb-2">
                     <label htmlFor="card-number" className="form-label fs-lg-7 text-neutral-700">
@@ -874,7 +873,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                   )}
                 />
                 {/* 條件顯示：載具欄位 */}
-                {invoiceType === '雲端載具' && (
+                {invoiceType === INVOICE.MOBILE_BARCODE && (
                   <div className="mt-3">
                     <label htmlFor="mobile-barcode" className="form-label fs-lg-7">
                       手機條碼
@@ -894,7 +893,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                   </div>
                 )}
                 {/* 條件顯示：統一編號欄位 */}
-                {invoiceType === '統一編號' && (
+                {invoiceType === INVOICE.UBN && (
                   <div className="mt-3">
                     <label htmlFor="ubn" className="form-label fs-lg-7">
                       統一編號
@@ -980,7 +979,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
               <div className="d-flex justify-content-between mb-3 mb-lg-4">
                 <span className="fs-sm fs-lg-8 text-neutral-400">運費</span>
                 <span className="fs-sm fs-lg-8 text-secondary">
-                  {deliveryMethod === '黑貓宅配' ? (
+                  {deliveryMethod === DELIVERY.YAMATO_TRANSPORT ? (
                     <>
                       NT$0 <del className="text-neutral-400">{`$${deliveryFee}`}</del>
                     </>

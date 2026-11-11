@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router';
 
 import { guestOrderApi, payApi } from '@/api';
 import Button from '@/components/Button';
+import { INVOICE, PAYMENT } from '@/const/guestConst';
 import { addToCarts, fetchCarts } from '@/slice/cartSlice';
 
 function OrderDetail() {
@@ -199,7 +200,7 @@ function OrderDetail() {
             {orderDetail.is_paid ? '已付款' : '未付款'}
           </span>
         </p>
-        {orderDetail.user?.payment === '信用卡一次付清' && !orderDetail.is_paid && (
+        {orderDetail.user?.payment === PAYMENT.CREDIT_CARD && !orderDetail.is_paid && (
           <Button
             type="button"
             variant="filled-primary"
@@ -302,10 +303,10 @@ function OrderDetail() {
       {/* 發票資訊 */}
       <div className="border-top py-6 py-lg-10">
         <p className="fs-sm fs-lg-8 text-neutral-400 mb-3 mb-lg-4">發票種類：{orderDetail.user?.invoice}</p>
-        {orderDetail.user?.invoice === '雲端載具' && (
+        {orderDetail.user?.invoice === INVOICE.MOBILE_BARCODE && (
           <p className="fs-sm fs-lg-8 text-neutral-400">手機條碼：{orderDetail.user?.mobileBarcode}</p>
         )}
-        {orderDetail.user?.invoice === '統一編號' && (
+        {orderDetail.user?.invoice === INVOICE.UBN && (
           <p className="fs-sm fs-lg-8 text-neutral-400">統一編號：{orderDetail.user?.ubn}</p>
         )}
       </div>
