@@ -54,9 +54,6 @@ export const productSlice = createSlice({
     builder.addCase(getAllProducts.fulfilled, (state, { payload }) => {
       state.allProducts = payload.products;
     });
-    builder.addCase(getAllProducts.rejected, state => {
-      state.allProducts = [];
-    });
   },
 });
 
