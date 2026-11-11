@@ -419,7 +419,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
       shouldSwitchAfterClose.current = true;
       handleCloseConfirmModal();
       // 更新購物車資訊
-      dispatch(fetchCarts(false));
+      dispatch(fetchCarts(true));
     } catch (error) {
       let message = '';
       if (typeof error === 'string') {
