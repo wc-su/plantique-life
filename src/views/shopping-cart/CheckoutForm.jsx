@@ -3,7 +3,7 @@ import Button from '@/components/Button';
 import { DELIVERY, deliveryOptions, INVOICE, invoiceOptions, PAYMENT, paymentOptions } from '@/const/guestConst';
 import { fetchCarts, selectFinalTotal } from '@/slice/cartSlice';
 import { getAllProducts } from '@/slice/product/guestProductSlice';
-import { getOrderErrorMessage } from '@/utils/errorMessage';
+import { getOrderErrorMessage, getPayErrorMessage } from '@/utils/errorMessage';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 import IMask from 'imask';
@@ -306,7 +306,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
   // 處理信用卡付款（獨立方法，確保錯誤不會中斷流程）
   const processCreditCardPayment = async orderId => {
     try {
-      await payApi.createPayment(orderId);
+      await payApi.payOrder(orderId);
     } catch (error) {
       // 付款失敗時記錄錯誤但不中斷流程
       // 使用 toast 顯示錯誤訊息，Infinity 避免自動消失
@@ -317,7 +317,9 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
             <div>
               <span>信用卡付款處理失敗，請稍後查看訂單狀態</span>
               <br />
-              <span className="text-danger fs-sm">{error}</span>
+              <span className="text-danger fs-sm">
+                {getPayErrorMessage(error.code === '' ? 'NETWORK_ERROR' : error.code)}
+              </span>
             </div>
             <span
               className="material-symbols-rounded"

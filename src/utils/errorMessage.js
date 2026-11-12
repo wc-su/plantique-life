@@ -53,3 +53,15 @@ export function getOrderErrorMessage(code) {
   const message = orderErrorMessages[code];
   return message ?? '訂單操作失敗，請稍後再試';
 }
+
+const payErrorMessages = Object.freeze({
+  NETWORK_ERROR: '網路連線異常，請稍後再試',
+  PY001: '訂單已付款',
+  P0002: '訂單不存在',
+  42501: '登入狀態已失效，請重新登入', // 訪客沒有執行權限
+});
+
+export function getPayErrorMessage(code) {
+  const message = payErrorMessages[code];
+  return message ?? '付款操作失敗，請稍後再試';
+}

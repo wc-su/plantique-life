@@ -8,6 +8,7 @@ import { guestOrderApi, payApi } from '@/api';
 import Button from '@/components/Button';
 import { INVOICE, PAYMENT } from '@/const/guestConst';
 import { addToCarts, fetchCarts } from '@/slice/cartSlice';
+import { getPayErrorMessage } from '@/utils/errorMessage';
 
 function OrderDetail() {
   const navigate = useNavigate();
@@ -71,16 +72,16 @@ function OrderDetail() {
   // 重新付款
   const processCreditCardPayment = async orderId => {
     try {
-      const res = await payApi.createPayment(orderId);
-      // api 僅更新欄位 is_paid，所以不再重新呼叫訂單資訊
+      await payApi.payOrder(orderId);
+      // 付款成功只會改付款狀態，畫面只更新 is_paid，不重新取得訂單
       setOrderDetail(prev => ({ ...prev, is_paid: true }));
-      toast.success(res.message);
+      toast.success('付款成功');
     } catch (error) {
       toast(
         t => (
           <div className="d-flex align-items-center gap-3">
             <ErrorIcon />
-            <p>{error}</p>
+            <p>{getPayErrorMessage(error.code === '' ? 'NETWORK_ERROR' : error.code)}</p>
             <Button
               type="button"
               variant="outline-neutral"
