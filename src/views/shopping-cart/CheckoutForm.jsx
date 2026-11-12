@@ -2,6 +2,7 @@ import { cartApi, guestOrderApi, payApi } from '@/api';
 import Button from '@/components/Button';
 import { DELIVERY, deliveryOptions, INVOICE, invoiceOptions, PAYMENT, paymentOptions } from '@/const/guestConst';
 import { fetchCarts, selectFinalTotal } from '@/slice/cartSlice';
+import { hideLoading, showLoading } from '@/slice/loadingSlice';
 import { getAllProducts } from '@/slice/product/guestProductSlice';
 import { getOrderErrorMessage, getPayErrorMessage } from '@/utils/errorMessage';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -337,6 +338,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
 
   // 確認送出：設定 flag，關閉 Modal 後會觸發換頁
   const handleConfirmSubmit = async () => {
+    dispatch(showLoading());
     // 建立訂單
     try {
       // redux 重新取得所有產品，並建立 Map
@@ -431,6 +433,8 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
         message = getOrderErrorMessage(code);
       }
       toast.error(message);
+    } finally {
+      dispatch(hideLoading());
     }
   };
 
