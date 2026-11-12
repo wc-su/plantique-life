@@ -182,3 +182,44 @@ $$;
 -- 新函式預設所有人都能執行（包括訪客 anon），只開放給登入的會員
 revoke execute on function public.create_order(jsonb, jsonb) from public, anon;
 grant execute on function public.create_order(jsonb, jsonb) to authenticated;
+
+-- pay_order: 把自己還沒付款的訂單改成已付款；會修改 orders 的 is_paid、paid_at
+-- 前端用 supabase.rpc('pay_order', { p_order_id }) 呼叫
+-- 一般會員沒有 orders 的 update 權限，所以用 security definer；
+-- 安全靠函式內容把關：只改 user_id = auth.uid()、還沒付款的那一筆，而且只改付款的兩個欄位
+create or replace function public.pay_order(p_order_id uuid)
+returns void                       -- 不回傳資料；沒有錯誤就代表付款成功
+language plpgsql
+security definer                   -- 用建立者（postgres）的身分執行，會略過 RLS
+set search_path = ''               -- 固定 schema，下面的表都寫完整名稱 public.xxx
+as $$
+begin
+  -- 只改自己的、還沒付款的訂單；兩個欄位一起改，才符合 orders_paid_check
+  update public.orders
+  set is_paid = true,
+      paid_at = now()
+  where id = p_order_id
+    and user_id = auth.uid()
+    and not is_paid;
+
+  if found then
+    return;
+  end if;
+
+  -- 沒改到：分辨是「已經付款」還是「找不到這筆訂單」
+  -- 不是自己的訂單也當成找不到，不讓別人試出訂單編號存不存在
+  if exists (
+    select 1 from public.orders
+    where id = p_order_id
+      and user_id = auth.uid()
+  ) then
+    raise exception 'order is already paid' using errcode = 'PY001';
+  end if;
+
+  raise exception 'order not found' using errcode = 'P0002';
+end;
+$$;
+
+-- 新函式預設所有人都能執行（包括訪客 anon），只開放給登入的會員
+revoke execute on function public.pay_order(uuid) from public, anon;
+grant execute on function public.pay_order(uuid) to authenticated;
