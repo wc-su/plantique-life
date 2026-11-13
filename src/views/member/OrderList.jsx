@@ -31,7 +31,7 @@ function OrderList() {
         const response = await guestOrderApi.fetchOrders({ userId: userId, page });
         setOrders(response.orders);
         setPagination(response.pagination);
-        // 後端 API 有控制 page 參數，如果超過總頁數，會回傳最後一頁的頁數
+        // 頁數超過範圍時，fetchOrders 會回傳最後一頁
         // 如果有收到不同的 current_page，則更新 URL 的 page 參數
         const resCurrentPage = response.pagination?.current_page;
         if (page !== resCurrentPage && resCurrentPage > 0) {
