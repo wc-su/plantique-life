@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import toast, { ErrorIcon } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation, useNavigate, useParams } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
 
 import { guestOrderApi, payApi } from '@/api';
 import Button from '@/components/Button';
@@ -141,15 +141,7 @@ function OrderDetail() {
     return (
       <div className="text-center py-10">
         <h2 className="fs-7 noto-sans-tc text-neutral-400 text-center">訂單資料不存在</h2>
-        <Button
-          as={Link}
-          to="/member/orders"
-          type="button"
-          variant="filled-primary"
-          shape="pill"
-          size="lg"
-          className="mt-10"
-        >
+        <Button type="button" variant="filled-primary" shape="pill" size="lg" className="mt-10" onClick={handleGoBack}>
           返回訂單列表
         </Button>
       </div>
