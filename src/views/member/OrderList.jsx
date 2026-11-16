@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useSearchParams } from 'react-router';
 
 import { hideLoading, showLoading } from '@/slice/loadingSlice';
+import { getOrderFetchErrorMessage } from '@/utils/errorMessage';
 import Button from '../../components/Button';
 import Pagination from '../../components/Pagination';
 
@@ -48,8 +49,8 @@ function OrderList() {
             { replace: true },
           );
         }
-      } catch {
-        toast.error('訂單載入失敗');
+      } catch (error) {
+        toast.error(getOrderFetchErrorMessage(error.code === '' ? 'NETWORK_ERROR' : error.code));
       } finally {
         dispatch(hideLoading());
       }

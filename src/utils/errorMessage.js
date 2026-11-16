@@ -65,3 +65,12 @@ export function getPayErrorMessage(code) {
   const message = payErrorMessages[code];
   return message ?? '付款操作失敗，請稍後再試';
 }
+
+const orderFetchErrorMessages = Object.freeze({
+  NETWORK_ERROR: '網路連線異常，請稍後再試',
+  42501: '登入狀態已失效，請重新登入', // 沒帶到會員的 token
+});
+
+export function getOrderFetchErrorMessage(code) {
+  return orderFetchErrorMessages[code] ?? '訂單載入失敗，請稍後再試';
+}
