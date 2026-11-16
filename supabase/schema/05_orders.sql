@@ -41,6 +41,7 @@ create table public.orders (
   final_total integer not null check (final_total >= 0),
   -- 優惠券快照：不加外鍵，優惠券被刪除或修改也不影響舊訂單
   coupon_code text,
+  coupon_title text,
   coupon_percent integer check (coupon_percent between 1 and 100),
 
   -- 付款狀態：pay_order 會同時改這兩個欄位
@@ -85,6 +86,7 @@ declare
   v_info public.orders;            -- p_order 轉成 orders 形狀後的收件資料
   v_total integer;
   v_coupon_code text;
+  v_coupon_title text;
   v_coupon_percent integer;
   v_coupon_valid boolean;
   v_result public.orders;
@@ -121,9 +123,9 @@ begin
     on p.product_id = ci.product_id
   where ci.user_id = auth.uid();
 
-  -- 目前套用的優惠券；沒有套用時三個變數都是 null
-  select c.code, c.percent, (c.is_enabled and c.due_date > now())
-  into v_coupon_code, v_coupon_percent, v_coupon_valid
+  -- 目前套用的優惠券；沒有套用時四個變數都是 null
+  select c.code, c.title, c.percent, (c.is_enabled and c.due_date > now())
+  into v_coupon_code, v_coupon_title, v_coupon_percent, v_coupon_valid
   from public.cart_coupons as cc
   join public.coupons as c on c.code = cc.coupon_code
   where cc.user_id = auth.uid();
@@ -143,7 +145,7 @@ begin
     recipient_name, recipient_phone, recipient_email, recipient_address, message,
     delivery, payment, card_last_four, card_brand,
     invoice, mobile_barcode, ubn,
-    total, final_total, coupon_code, coupon_percent
+    total, final_total, coupon_code, coupon_title, coupon_percent
   ) values (
     auth.uid(),
     v_info.purchaser_name, v_info.purchaser_phone, v_info.purchaser_email,
@@ -154,15 +156,15 @@ begin
     -- 和前端 selectFinalTotal 相同：原價 × 付款比例 / 100，四捨五入
     case when v_coupon_percent is null then v_total
          else round(v_total * v_coupon_percent / 100.0)::integer end,
-    v_coupon_code, v_coupon_percent
+    v_coupon_code, v_coupon_title, v_coupon_percent
   )
   returning * into v_result;
 
-  -- 品項快照：名稱、價格、圖片用前端送來的，數量用資料庫裡的購物車
-  insert into public.order_items (order_id, product_id, title, price, image_url, qty)
-  select v_result.id, ci.product_id, p.title, p.price, p.image_url, ci.qty
+  -- 品項快照：名稱、價格、原價、圖片用前端送來的，數量用資料庫裡的購物車
+  insert into public.order_items (order_id, product_id, title, price, origin_price, image_url, qty)
+  select v_result.id, ci.product_id, p.title, p.price, p.origin_price, p.image_url, ci.qty
   from public.cart_items as ci
-  join jsonb_to_recordset(p_products) as p(product_id text, title text, price integer, image_url text)
+  join jsonb_to_recordset(p_products) as p(product_id text, title text, price integer, origin_price integer, image_url text)
     on p.product_id = ci.product_id
   where ci.user_id = auth.uid();
 

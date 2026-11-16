@@ -393,6 +393,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
             product_id: item.product_id,
             title: product.title,
             price: product.price,
+            origin_price: product.origin_price,
             image_url: product.imageUrl,
           };
         }),
