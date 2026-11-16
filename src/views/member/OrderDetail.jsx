@@ -1,14 +1,15 @@
 import clsx from 'clsx';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import toast, { ErrorIcon } from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate, useParams } from 'react-router';
 
 import { guestOrderApi, payApi } from '@/api';
 import Button from '@/components/Button';
 import { INVOICE, PAYMENT } from '@/const/guestConst';
 import { addToCarts, fetchCarts } from '@/slice/cartSlice';
-import { getPayErrorMessage } from '@/utils/errorMessage';
+import { hideLoading, showLoading } from '@/slice/loadingSlice';
+import { getOrderFetchErrorMessage, getPayErrorMessage } from '@/utils/errorMessage';
 
 function OrderDetail() {
   const navigate = useNavigate();
@@ -16,22 +17,16 @@ function OrderDetail() {
   const { state } = useLocation();
   const { orderId } = useParams();
 
+  const userId = useSelector(state => state.guestAuth.user?.id);
+
   const isFromOrderList = state?.fromOrderList || false;
 
-  const [orderDetail, setOrderDetail] = useState(() => {
-    // 如果 state 中有訂單資料，且訂單編號相同，則使用 state 中的訂單資料，否則使用 API 取得訂單資料
-    // 初始為 null，表示還沒有取得訂單資料
-    if (state?.orderDetail && state.orderDetail.id === orderId) {
-      return state.orderDetail;
-    }
-    return null;
-  });
-
-  // coupon 資訊
-  const [coupon, setCoupon] = useState(null);
+  const [orderDetail, setOrderDetail] = useState(null);
 
   // 是否正在新增訂單產品到購物車
   const [addToCartLoading, setAddToCartLoading] = useState(false);
+  // 錯誤訊息
+  const [loadErrorMessage, setLoadErrorMessage] = useState('');
 
   // 返回訂單列表
   const handleGoBack = () => {
@@ -45,8 +40,8 @@ function OrderDetail() {
   // 訂單產品加入購物車
   const handleAddToCart = async () => {
     // 取出訂單產品的 id 和 qty
-    const products = Object.values(orderDetail.products).map(product => ({
-      product_id: product.product.id,
+    const products = orderDetail.order_items.map(product => ({
+      product_id: product.product_id,
       qty: product.qty,
     }));
 
@@ -99,43 +94,42 @@ function OrderDetail() {
     }
   };
 
-  useEffect(() => {
-    // 如果 orderDetail 已經有資料，且訂單編號相同，則不重複呼叫 API
-    // 如果 orderDetail 為空物件，表示訂單不存在或是取得訂單資料失敗
-    if (orderDetail && (Object.keys(orderDetail).length === 0 || orderDetail.id === orderId)) {
-      return;
-    }
-
-    (async () => {
-      try {
-        const response = await guestOrderApi.fetchOrderById(orderId);
-        if (!response.order) {
-          // 訂單不存在，API 會回傳 null，不會觸發 catch 區塊
-          setOrderDetail({});
-        } else {
-          setOrderDetail(response.order);
-        }
-      } catch (error) {
-        toast.error(error);
+  const fetchOrderDetail = useCallback(async () => {
+    dispatch(showLoading());
+    try {
+      const data = await guestOrderApi.fetchOrderById(userId, orderId);
+      setOrderDetail(data ?? {}); // null 表示不存在
+    } catch (error) {
+      // 網址的 id 不是 uuid 格式，當成找不到
+      if (error.code === '22P02') {
         setOrderDetail({});
+        return;
       }
-    })();
-  }, [orderId, orderDetail]);
+      setLoadErrorMessage(getOrderFetchErrorMessage(error.code === '' ? 'NETWORK_ERROR' : error.code));
+    } finally {
+      dispatch(hideLoading());
+    }
+  }, [dispatch, userId, orderId]);
 
-  // 有訂單資料時（不論來自 state 或 API）都要取得 coupon 資訊
   useEffect(() => {
-    // orderDetail 沒有 products 資料，表示還沒有取得訂單資料
-    if (!orderDetail?.products) return;
+    fetchOrderDetail();
+  }, [fetchOrderDetail]);
 
-    (() => {
-      // coupon 紀錄在每一組 product 中，只取第一組的 coupon 資訊並計算總折扣金額
-      const products = Object.values(orderDetail.products);
-      setCoupon({
-        title: products[0]?.coupon?.title || '',
-        discount: products.reduce((acc, product) => acc + (product.total - product.final_total), 0) || 0,
-      });
-    })();
-  }, [orderDetail]);
+  const handleReload = () => {
+    setLoadErrorMessage('');
+    fetchOrderDetail();
+  };
+
+  if (loadErrorMessage) {
+    return (
+      <div className="text-center py-10">
+        <h2 className="fs-7 noto-sans-tc text-neutral-400 text-center">{loadErrorMessage}</h2>
+        <Button type="button" variant="filled-primary" shape="pill" size="lg" className="mt-10" onClick={handleReload}>
+          重新載入
+        </Button>
+      </div>
+    );
+  }
 
   // 訂單資料正在讀取中
   if (orderDetail === null) {
@@ -161,6 +155,8 @@ function OrderDetail() {
       </div>
     );
   }
+
+  const discount = orderDetail.total - orderDetail.final_total;
 
   return (
     <div className="my-8 mt-lg-0 mb-lg-0">
@@ -201,7 +197,7 @@ function OrderDetail() {
             {orderDetail.is_paid ? '已付款' : '未付款'}
           </span>
         </p>
-        {orderDetail.user?.payment === PAYMENT.CREDIT_CARD && !orderDetail.is_paid && (
+        {orderDetail.payment === PAYMENT.CREDIT_CARD && !orderDetail.is_paid && (
           <Button
             type="button"
             variant="filled-primary"
@@ -216,52 +212,54 @@ function OrderDetail() {
       </div>
       <p className="text-neutral-400 fs-sm fs-lg-8 mb-3 mb-lg-4">
         總額：
-        <span className="noto-serif-tc fw-bold text-primary-700 ms-1">NT${orderDetail.total.toLocaleString()}</span>
+        <span className="noto-serif-tc fw-bold text-primary-700 ms-1">
+          NT${orderDetail.final_total.toLocaleString()}
+        </span>
       </p>
       <p className="text-neutral-400 fs-sm fs-lg-8 mb-6 mb-lg-10">
-        付款方式：<span className="ms-1">{orderDetail.user?.payment}</span>
+        付款方式：<span className="ms-1">{orderDetail.payment}</span>
       </p>
       {/* 訂購資訊 */}
       <p className="order-detail-spacing mb-6 mb-lg-10">
         <span className="fs-8 fs-lg-7 text-neutral-400">訂購資訊</span>
       </p>
-      <p className="fs-sm fs-lg-8 text-neutral-400 mb-3 mb-lg-4">訂購人姓名：{orderDetail.user?.purchaserName}</p>
-      <p className="fs-sm fs-lg-8 text-neutral-400 mb-3 mb-lg-4">訂購人電話：{orderDetail.user?.purchaserPhone}</p>
-      <p className="fs-sm fs-lg-8 text-neutral-400 mb-6 mb-lg-10">訂購人電子郵件：{orderDetail.user?.purchaserEmail}</p>
+      <p className="fs-sm fs-lg-8 text-neutral-400 mb-3 mb-lg-4">訂購人姓名：{orderDetail.purchaser_name}</p>
+      <p className="fs-sm fs-lg-8 text-neutral-400 mb-3 mb-lg-4">訂購人電話：{orderDetail.purchaser_phone}</p>
+      <p className="fs-sm fs-lg-8 text-neutral-400 mb-6 mb-lg-10">訂購人電子郵件：{orderDetail.purchaser_email}</p>
       {/* 配送資訊 */}
       <p className="order-detail-spacing mb-6 mb-lg-10">
         <span className="fs-8 fs-lg-7 text-neutral-400">配送資訊</span>
       </p>
-      <p className="fs-sm fs-lg-8 text-neutral-400 mb-3 mb-lg-4">配送方式：{orderDetail.user?.delivery}</p>
-      <p className="fs-sm fs-lg-8 text-neutral-400 mb-3 mb-lg-4">收件人姓名：{orderDetail.user?.name}</p>
-      <p className="fs-sm fs-lg-8 text-neutral-400 mb-3 mb-lg-4">收件人電話：{orderDetail.user?.tel}</p>
-      <p className="fs-sm fs-lg-8 text-neutral-400 mb-3 mb-lg-4">收件人電子郵件：{orderDetail.user?.email}</p>
-      <p className="fs-sm fs-lg-8 text-neutral-400 mb-6 mb-lg-10">收件人地址：{orderDetail.user?.address}</p>
+      <p className="fs-sm fs-lg-8 text-neutral-400 mb-3 mb-lg-4">配送方式：{orderDetail.delivery}</p>
+      <p className="fs-sm fs-lg-8 text-neutral-400 mb-3 mb-lg-4">收件人姓名：{orderDetail.recipient_name}</p>
+      <p className="fs-sm fs-lg-8 text-neutral-400 mb-3 mb-lg-4">收件人電話：{orderDetail.recipient_phone}</p>
+      <p className="fs-sm fs-lg-8 text-neutral-400 mb-3 mb-lg-4">收件人電子郵件：{orderDetail.recipient_email}</p>
+      <p className="fs-sm fs-lg-8 text-neutral-400 mb-6 mb-lg-10">收件人地址：{orderDetail.recipient_address}</p>
       {/* 商品資訊 */}
       <p className="order-detail-spacing mb-6 mb-lg-10">
         <span className="fs-8 fs-lg-7 text-neutral-400">商品資訊</span>
       </p>
       <div className="row mb-6 mb-lg-10 gy-6">
-        {Object.values(orderDetail.products).map(product => (
+        {orderDetail.order_items.map(product => (
           <Fragment key={product.id}>
             <div className="col-6 col-lg-3">
               <img
-                src={product.product.imageUrl}
-                alt={product.product.title}
+                src={product.image_url}
+                alt={product.title}
                 className="order-detail-product-img img-fluid w-100 object-fit-cover"
               />
             </div>
             <div className="col-6 col-lg-9">
               <div className="row flex-column flex-lg-row justify-content-center align-items-lg-center h-100">
                 <div className="col-lg-6 mb-3 mb-lg-0">
-                  <p className="h6 fs-lg-5 text-neutral-700 mb-lg-2">{product.product.title}</p>
+                  <p className="h6 fs-lg-5 text-neutral-700 mb-lg-2">{product.title}</p>
                   <div className="d-flex align-items-center">
                     <p className="fs-8 fs-lg-7 noto-serif-tc fw-bold text-primary-700">
-                      NT${product.product.price.toLocaleString()}
+                      NT${product.price.toLocaleString()}
                     </p>
-                    {product.product.origin_price && (
+                    {product.origin_price > product.price && (
                       <del className="fs-sm fs-lg-8 noto-serif-tc fw-bold text-neutral-400 ms-1">
-                        ${product.product.origin_price.toLocaleString()}
+                        ${product.origin_price.toLocaleString()}
                       </del>
                     )}
                   </div>
@@ -271,7 +269,7 @@ function OrderDetail() {
                 </div>
                 <div className="col-lg-4 align-content-end">
                   <p className="fs-7 fs-lg-6 noto-serif-tc fw-bold text-primary-700 text-lg-end">
-                    NT${product.total.toLocaleString()}
+                    NT${(product.price * product.qty).toLocaleString()}
                   </p>
                 </div>
               </div>
@@ -283,11 +281,13 @@ function OrderDetail() {
       <div className="border-top py-6 py-lg-10">
         <div className="d-flex align-items-center mb-3 mb-lg-4">
           <span className="fs-sm fs-lg-8 text-neutral-400">優惠券：</span>
-          {coupon?.title && (
-            <span className="fs-xs fs-lg-sm bg-secondary-100 text-secondary px-2 py-1 ms-1">{coupon?.title}</span>
+          {orderDetail.coupon_title && (
+            <span className="fs-xs fs-lg-sm bg-secondary-100 text-secondary px-2 py-1 ms-1">
+              {orderDetail.coupon_title}
+            </span>
           )}
           <span className="fs-sm fs-lg-8 noto-serif-tc fw-bold text-primary-700 ms-auto">
-            {coupon?.discount > 0 && '-'} NT${coupon?.discount?.toLocaleString()}
+            {discount > 0 && '-'} NT${discount.toLocaleString()}
           </span>
         </div>
         <div className="d-flex justify-content-between mb-5 mb-lg-6">
@@ -298,17 +298,17 @@ function OrderDetail() {
         </div>
         <div className="d-flex justify-content-between">
           <span className="h6 fs-lg-5">訂單總金額</span>
-          <span className="h6 fs-lg-5">NT${orderDetail.total.toLocaleString()}</span>
+          <span className="h6 fs-lg-5">NT${orderDetail.final_total.toLocaleString()}</span>
         </div>
       </div>
       {/* 發票資訊 */}
       <div className="border-top py-6 py-lg-10">
-        <p className="fs-sm fs-lg-8 text-neutral-400 mb-3 mb-lg-4">發票種類：{orderDetail.user?.invoice}</p>
-        {orderDetail.user?.invoice === INVOICE.MOBILE_BARCODE && (
-          <p className="fs-sm fs-lg-8 text-neutral-400">手機條碼：{orderDetail.user?.mobileBarcode}</p>
+        <p className="fs-sm fs-lg-8 text-neutral-400 mb-3 mb-lg-4">發票種類：{orderDetail.invoice}</p>
+        {orderDetail.invoice === INVOICE.MOBILE_BARCODE && (
+          <p className="fs-sm fs-lg-8 text-neutral-400">手機條碼：{orderDetail.mobile_barcode}</p>
         )}
-        {orderDetail.user?.invoice === INVOICE.UBN && (
-          <p className="fs-sm fs-lg-8 text-neutral-400">統一編號：{orderDetail.user?.ubn}</p>
+        {orderDetail.invoice === INVOICE.UBN && (
+          <p className="fs-sm fs-lg-8 text-neutral-400">統一編號：{orderDetail.ubn}</p>
         )}
       </div>
       {/* 再買一次按鈕 */}

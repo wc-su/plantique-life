@@ -1,6 +1,6 @@
 import adminClient from '../clients/adminClient';
-import guestClient, { supabaseGuest } from '../clients/guestClient';
-import { ADMIN_API_PATH, GUEST_API_PATH } from '../core/constants';
+import { supabaseGuest } from '../clients/guestClient';
+import { ADMIN_API_PATH } from '../core/constants';
 
 const ORDERS = 'orders';
 const ORDERS_PER_PAGE = 10;
@@ -58,7 +58,17 @@ export const guestOrderApi = {
     return toOrdersResult(lastResult, lastPage);
   },
   // 取得指定 ID 訂單
-  fetchOrderById: orderId => guestClient.get(`${GUEST_API_PATH}/order/${orderId}`),
+  fetchOrderById: async (userId, orderId) => {
+    const { data, error } = await supabaseGuest
+      .from(ORDERS)
+      .select('*, order_items(*)')
+      .eq('id', orderId)
+      .eq('user_id', userId)
+      .order('title', { referencedTable: 'order_items' })
+      .maybeSingle();
+    if (error) throw error;
+    return data;
+  },
 };
 
 export const adminOrderApi = {

@@ -141,7 +141,6 @@ function OrderList() {
                 <Button
                   as={Link}
                   to={`/member/orders/${order.id}`}
-                  // TODO: 新的訂單沒有 products，傳給 OrderDetail 會報錯；之後改明細時再傳整筆訂單
                   state={{ page: searchParams.get('page'), fromOrderList: true }}
                   type="button"
                   variant="filled-primary"
