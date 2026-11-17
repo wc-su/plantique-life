@@ -557,7 +557,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                             inputRef={ref}
                             value={value}
                             className={clsx(
-                              'form-control cart-card-number fs-sm fs-lg-8',
+                              'form-control cart-card-number',
                               errors.cardNumber && 'is-invalid',
                               !errors.cardNumber && dirtyFields.cardNumber && 'is-valid',
                             )}
@@ -593,7 +593,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                               inputRef={ref}
                               value={value}
                               className={clsx(
-                                'form-control cart-card-exp fs-sm fs-lg-8',
+                                'form-control cart-card-exp',
                                 errors.cardExp && 'is-invalid',
                                 !errors.cardExp && dirtyFields.cardExp && 'is-valid',
                               )}
@@ -630,7 +630,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                               value={value}
                               type={isCvcVisible ? 'text' : 'password'}
                               className={clsx(
-                                'form-control cart-card-cvc fs-sm fs-lg-8',
+                                'form-control cart-card-cvc',
                                 errors.cardCvc && 'is-invalid',
                                 !errors.cardCvc && dirtyFields.cardCvc && 'is-valid',
                                 !errors.cardCvc && !dirtyFields.cardCvc && 'unvalidated',
@@ -675,7 +675,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                     {...register('purchaserName')}
                     type="text"
                     className={clsx(
-                      'form-control fs-sm fs-lg-8 checkout-form-control',
+                      'form-control checkout-form-control',
                       errors.purchaserName && 'is-invalid',
                       !errors.purchaserName && dirtyFields.purchaserName && 'is-valid',
                     )}
@@ -697,7 +697,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                         inputRef={ref}
                         value={value}
                         className={clsx(
-                          'form-control fs-sm fs-lg-8 checkout-form-control',
+                          'form-control checkout-form-control',
                           errors.purchaserPhone && 'is-invalid',
                           !errors.purchaserPhone && dirtyFields.purchaserPhone && 'is-valid',
                         )}
@@ -719,7 +719,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                   {...register('purchaserEmail')}
                   type="email"
                   className={clsx(
-                    'form-control fs-sm fs-lg-8',
+                    'form-control',
                     errors.purchaserEmail && 'is-invalid',
                     !errors.purchaserEmail && dirtyFields.purchaserEmail && 'is-valid',
                   )}
@@ -758,7 +758,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                       {...register('recipientName')}
                       type="text"
                       className={clsx(
-                        'form-control fs-sm fs-lg-8 checkout-form-control',
+                        'form-control checkout-form-control',
                         errors.recipientName && 'is-invalid',
                         !errors.recipientName && dirtyFields.recipientName && 'is-valid',
                       )}
@@ -781,7 +781,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                           inputRef={ref}
                           value={value}
                           className={clsx(
-                            'form-control fs-sm fs-lg-8 checkout-form-control',
+                            'form-control checkout-form-control',
                             errors.recipientPhone && 'is-invalid',
                             !errors.recipientPhone && dirtyFields.recipientPhone && 'is-valid',
                           )}
@@ -804,7 +804,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                     {...register('recipientEmail')}
                     type="email"
                     className={clsx(
-                      'form-control fs-sm fs-lg-8',
+                      'form-control',
                       errors.recipientEmail && 'is-invalid',
                       !errors.recipientEmail && dirtyFields.recipientEmail && 'is-valid',
                     )}
@@ -822,7 +822,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                     {...register('recipientAddress')}
                     type="text"
                     className={clsx(
-                      'form-control fs-sm fs-lg-8',
+                      'form-control',
                       errors.recipientAddress && 'is-invalid',
                       !errors.recipientAddress && dirtyFields.recipientAddress && 'is-valid',
                     )}
@@ -890,7 +890,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                       {...register('mobileBarcode')}
                       type="text"
                       className={clsx(
-                        'form-control fs-sm fs-lg-8',
+                        'form-control',
                         errors.mobileBarcode && 'is-invalid',
                         !errors.mobileBarcode && dirtyFields.mobileBarcode && 'is-valid',
                       )}
@@ -915,7 +915,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                           inputRef={ref}
                           value={value}
                           className={clsx(
-                            'form-control fs-sm fs-lg-8',
+                            'form-control',
                             errors.ubn && 'is-invalid',
                             !errors.ubn && dirtyFields.ubn && 'is-valid',
                           )}
@@ -938,7 +938,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                 </label>
                 <textarea
                   {...register('message')}
-                  className="form-control fs-sm fs-lg-8"
+                  className="form-control"
                   id="checkout-notes-text"
                   rows="3"
                   placeholder="請輸入留言"
