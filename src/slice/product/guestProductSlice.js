@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 
 export const getAllProducts = createAsyncThunk('guestProduct/getAllProducts', async (_, { rejectWithValue }) => {
   try {
-    return guestProductApi.getAllProducts();
+    return await guestProductApi.getAllProducts();
   } catch (error) {
     return rejectWithValue(error);
   }

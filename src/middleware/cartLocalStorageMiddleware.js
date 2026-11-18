@@ -14,7 +14,7 @@ export const cartLocalStorageMiddleware = store => next => action => {
     const { cart } = store.getState();
 
     // 處理副作用：自動同步到 localStorage
-    localStorage.setItem('guestCarts', JSON.stringify(cart.carts));
+    localStorage.setItem('guestCarts', JSON.stringify(cart.carts.map(({ product_id, qty }) => ({ product_id, qty }))));
   }
 
   // 回傳結果（保持 middleware 鏈的正常運作）

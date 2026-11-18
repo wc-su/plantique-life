@@ -44,35 +44,24 @@ function OrderDetail() {
   const handleAddToCart = async () => {
     // 取出訂單產品的 id 和 qty
     const products = Object.values(orderDetail.products).map(product => ({
-      id: product.product.id,
+      product_id: product.product.id,
       qty: product.qty,
     }));
 
     // 新增多筆產品到購物車
-    const results = [];
-    setAddToCartLoading(true);
-    for (const product of products) {
-      try {
-        const response = await dispatch(
-          addToCarts({ data: { product_id: product.id, qty: product.qty }, preventGlobalLoading: true }),
-        ).unwrap();
-        results.push({ status: 'fulfilled', value: response });
-      } catch (error) {
-        results.push({ status: 'rejected', reason: error });
-      }
-    }
-    // 顯示新增結果
-    const failedItems = results.filter(r => r.status === 'rejected');
-    if (failedItems.length > 0) {
-      toast.error(`有 ${failedItems.length} 個產品加入購物車失敗`);
-    } else {
-      toast.success('產品加入購物車成功！');
-    }
-    // 重新取得購物車資訊
     try {
-      await dispatch(fetchCarts(true)).unwrap();
-    } catch (error) {
-      toast.error(error);
+      setAddToCartLoading(true);
+      await dispatch(addToCarts({ data: products, preventGlobalLoading: true })).unwrap();
+      toast.success('產品加入購物車成功！');
+
+      // 重新取得購物車資訊
+      try {
+        await dispatch(fetchCarts(true)).unwrap();
+      } catch (error) {
+        toast.error(error.message);
+      }
+    } catch {
+      toast.error('加入購物車失敗');
     } finally {
       setAddToCartLoading(false);
     }

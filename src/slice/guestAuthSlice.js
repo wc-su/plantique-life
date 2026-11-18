@@ -77,7 +77,6 @@ export const guestAuthSlice = createSlice({
     isAuth: false,
     user: null,
     isAuthChecked: false,
-    isSigningIn: false, // 是否正在登入中
   },
   reducers: {
     authCleared: state => {
@@ -108,18 +107,14 @@ export const guestAuthSlice = createSlice({
       })
       .addMatcher(isAnyOf(guestRegister.pending, guestLogin.pending), state => {
         state.isAuth = false;
-        state.isSigningIn = true;
       })
       .addMatcher(isAnyOf(guestRegister.fulfilled, guestLogin.fulfilled), (state, action) => {
         state.isAuth = true;
         state.user = action.payload;
-        // 已登入完成，清除註記
-        state.isSigningIn = false;
       })
       .addMatcher(isAnyOf(guestRegister.rejected, guestLogin.rejected), state => {
         state.isAuth = false;
         state.user = null;
-        state.isSigningIn = false;
       });
   },
 });

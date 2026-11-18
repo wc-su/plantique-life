@@ -1,6 +1,6 @@
 import { guestOrderApi, payApi } from '@/api';
 import Button from '@/components/Button';
-import { fetchCarts } from '@/slice/cartSlice';
+import { fetchCarts, selectFinalTotal } from '@/slice/cartSlice';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 import IMask from 'imask';
@@ -123,7 +123,8 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
   const needValidateRecipientRef = useRef(false);
 
   // 從 Redux 取得購物車資料
-  const { carts, total, finalTotal } = useSelector(state => state.cart);
+  const { carts, total } = useSelector(state => state.cart);
+  const finalTotal = useSelector(selectFinalTotal);
 
   // 開關 Modal
   const handleCloseConfirmModal = () => setShowConfirmModal(false);
