@@ -39,3 +39,39 @@ export function getCouponErrorMessage(code) {
   const message = couponErrorMessages[code];
   return message ?? '優惠券操作失敗，請稍後再試';
 }
+
+const orderErrorMessages = Object.freeze({
+  API_ERROR: '商品資料載入失敗，請稍後再試',
+  NETWORK_ERROR: '網路連線異常，請稍後再試',
+  CT001: '購物車是空的',
+  22023: '購物車產品比對有誤',
+  P0002: '優惠券過期或停用，請重新整理頁面確認',
+  42501: '登入狀態已失效，請重新登入', // 訪客沒有執行權限
+});
+
+export function getOrderErrorMessage(code) {
+  const message = orderErrorMessages[code];
+  return message ?? '訂單操作失敗，請稍後再試';
+}
+
+const payErrorMessages = Object.freeze({
+  NETWORK_ERROR: '網路連線異常，請稍後再試',
+  PY001: '訂單已付款',
+  PY002: '此訂單無法線上付款',
+  P0002: '訂單不存在',
+  42501: '登入狀態已失效，請重新登入', // 訪客沒有執行權限
+});
+
+export function getPayErrorMessage(code) {
+  const message = payErrorMessages[code];
+  return message ?? '付款操作失敗，請稍後再試';
+}
+
+const orderFetchErrorMessages = Object.freeze({
+  NETWORK_ERROR: '網路連線異常，請稍後再試',
+  42501: '登入狀態已失效，請重新登入', // 沒帶到會員的 token
+});
+
+export function getOrderFetchErrorMessage(code) {
+  return orderFetchErrorMessages[code] ?? '訂單載入失敗，請稍後再試';
+}

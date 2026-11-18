@@ -1,14 +1,19 @@
 import clsx from 'clsx';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useSearchParams } from 'react-router';
 
+import { hideLoading, showLoading } from '@/slice/loadingSlice';
+import { getOrderFetchErrorMessage } from '@/utils/errorMessage';
 import Button from '../../components/Button';
 import Pagination from '../../components/Pagination';
 
 import { guestOrderApi } from '../../api';
 
 function OrderList() {
+  const dispatch = useDispatch();
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   // 訂單資料，初始為 null，表示還沒有取得訂單資料
@@ -17,14 +22,17 @@ function OrderList() {
 
   const skipNextFetchRef = useRef(false);
 
+  const userId = useSelector(state => state.guestAuth.user?.id);
+
   // 取得訂單資料
   const fetchOrders = useCallback(
     async (page = 1) => {
+      dispatch(showLoading());
       try {
-        const response = await guestOrderApi.fetchOrders(page);
+        const response = await guestOrderApi.fetchOrders({ userId: userId, page });
         setOrders(response.orders);
         setPagination(response.pagination);
-        // 後端 API 有控制 page 參數，如果超過總頁數，會回傳最後一頁的頁數
+        // 頁數超過範圍時，fetchOrders 會回傳最後一頁
         // 如果有收到不同的 current_page，則更新 URL 的 page 參數
         const resCurrentPage = response.pagination?.current_page;
         if (page !== resCurrentPage && resCurrentPage > 0) {
@@ -42,10 +50,12 @@ function OrderList() {
           );
         }
       } catch (error) {
-        toast.error(error);
+        toast.error(getOrderFetchErrorMessage(error.code === '' ? 'NETWORK_ERROR' : error.code));
+      } finally {
+        dispatch(hideLoading());
       }
     },
-    [setSearchParams],
+    [setSearchParams, userId, dispatch],
   );
 
   // 處理分頁按鈕點擊事件
@@ -119,17 +129,19 @@ function OrderList() {
                 </p>
                 <p className="text-neutral-400 fs-sm fs-lg-8 mb-3 mb-lg-4">
                   總額：
-                  <span className="noto-serif-tc fw-bold text-primary-700 ms-1">NT${order.total.toLocaleString()}</span>
+                  <span className="noto-serif-tc fw-bold text-primary-700 ms-1">
+                    NT${order.final_total.toLocaleString()}
+                  </span>
                 </p>
                 <p className="text-neutral-400 fs-sm fs-lg-8">
-                  付款方式：<span className="ms-1">{order.user.payment}</span>
+                  付款方式：<span className="ms-1">{order.payment}</span>
                 </p>
               </div>
               <div className="order-list-btn-container w-100 mt-5 mt-lg-0">
                 <Button
                   as={Link}
                   to={`/member/orders/${order.id}`}
-                  state={{ orderDetail: order, page: searchParams.get('page'), fromOrderList: true }}
+                  state={{ page: searchParams.get('page'), fromOrderList: true }}
                   type="button"
                   variant="filled-primary"
                   shape="pill"

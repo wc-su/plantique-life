@@ -1,6 +1,3 @@
-import { guestOrderApi, payApi } from '@/api';
-import Button from '@/components/Button';
-import { fetchCarts, selectFinalTotal } from '@/slice/cartSlice';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 import IMask from 'imask';
@@ -13,12 +10,16 @@ import { IMaskInput } from 'react-imask';
 import { useDispatch, useSelector } from 'react-redux';
 import { z } from 'zod';
 
+import { cartApi, guestOrderApi, payApi } from '@/api';
+import Button from '@/components/Button';
+import { DELIVERY, deliveryOptions, INVOICE, invoiceOptions, PAYMENT, paymentOptions } from '@/const/guestConst';
+import { fetchCarts, selectFinalTotal } from '@/slice/cartSlice';
+import { hideLoading, showLoading } from '@/slice/loadingSlice';
+import { getAllProducts } from '@/slice/product/guestProductSlice';
+import { getOrderErrorMessage, getPayErrorMessage } from '@/utils/errorMessage';
+
 // 運費
 const deliveryFee = 120;
-// 下拉選項
-const deliveryOptions = ['黑貓宅配'];
-const paymentOptions = ['貨到付款', '信用卡一次付清', '轉帳'];
-const invoiceOptions = ['電子發票', '雲端載具', '統一編號'];
 // 表單驗證規則
 const baseSchema = {
   // 運送方式
@@ -101,7 +102,11 @@ function getCardBrand(cardNumber) {
   ];
 
   const match = cardData.find(item => item.regex.test(cardNumber));
-  return match ? match.brand : 'Unknown';
+  return match ? match.brand : null;
+}
+
+function toNull(v) {
+  return v || null;
 }
 
 function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
@@ -149,13 +154,13 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
         schema = schema.extend(recipientSchema);
       }
       // 選擇信用卡付款時，需要驗證信用卡欄位
-      if (values.payment === '信用卡一次付清') {
+      if (values.payment === PAYMENT.CREDIT_CARD) {
         schema = schema.extend(creditCardSchema);
       }
       // 選擇不同發票類型時，需要驗證對應欄位
-      if (values.invoice === '雲端載具') {
+      if (values.invoice === INVOICE.MOBILE_BARCODE) {
         schema = schema.extend(mobileBarcodeSchema);
-      } else if (values.invoice === '統一編號') {
+      } else if (values.invoice === INVOICE.UBN) {
         schema = schema.extend(ubnSchema);
       }
 
@@ -163,6 +168,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
     },
     mode: 'onChange', // 即時驗證
     shouldFocusError: false, // 關閉 RHF 自動 focus，改用自訂 onError
+    shouldUnregister: true,
     defaultValues: {
       delivery: '',
       payment: '',
@@ -199,6 +205,8 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
   const recipientPhone = useWatch({ control, name: 'recipientPhone' });
   const recipientEmail = useWatch({ control, name: 'recipientEmail' });
   const recipientAddress = useWatch({ control, name: 'recipientAddress' });
+
+  const isCreditCard = paymentMethod === PAYMENT.CREDIT_CARD;
 
   // 當勾選「同訂購人資訊」時，持續同步訂購人資訊到收件人
   useEffect(() => {
@@ -237,16 +245,16 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
 
   // 當選擇信用卡付款時，自動 focus 到卡號欄位
   useEffect(() => {
-    if (paymentMethod === '信用卡一次付清') {
+    if (isCreditCard) {
       setFocus('cardNumber');
     }
-  }, [paymentMethod, setFocus]);
+  }, [isCreditCard, setFocus]);
 
   // 當選擇發票類型時，自動 focus 到對應欄位
   useEffect(() => {
-    if (invoiceType === '雲端載具') {
+    if (invoiceType === INVOICE.MOBILE_BARCODE) {
       setFocus('mobileBarcode');
-    } else if (invoiceType === '統一編號') {
+    } else if (invoiceType === INVOICE.UBN) {
       setFocus('ubn');
     }
   }, [invoiceType, setFocus]);
@@ -300,7 +308,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
   // 處理信用卡付款（獨立方法，確保錯誤不會中斷流程）
   const processCreditCardPayment = async orderId => {
     try {
-      await payApi.createPayment(orderId);
+      await payApi.payOrder(orderId);
     } catch (error) {
       // 付款失敗時記錄錯誤但不中斷流程
       // 使用 toast 顯示錯誤訊息，Infinity 避免自動消失
@@ -311,7 +319,9 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
             <div>
               <span>信用卡付款處理失敗，請稍後查看訂單狀態</span>
               <br />
-              <span className="text-danger fs-sm">{error}</span>
+              <span className="text-danger fs-sm">
+                {getPayErrorMessage(error.code === '' ? 'NETWORK_ERROR' : error.code)}
+              </span>
             </div>
             <span
               className="material-symbols-rounded"
@@ -329,45 +339,83 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
 
   // 確認送出：設定 flag，關閉 Modal 後會觸發換頁
   const handleConfirmSubmit = async () => {
+    dispatch(showLoading());
     // 建立訂單
     try {
+      // redux 重新取得所有產品，並建立 Map
+      const { products: allProducts } = await dispatch(getAllProducts()).unwrap();
+      const productMap = new Map(allProducts.map(p => [p.id, p]));
+      // 取得購物車最新資訊，並建立 Map
+      const { items } = await cartApi.fetchCarts();
+      const cartsMap = new Map(items.map(i => [i.id, i]));
+      // 比對是否有商品已下架
+      const notMatchProducts = items.filter(item => !productMap.has(item.product_id));
+      if (notMatchProducts.length > 0) {
+        toast.error('購物車有產品已下架，訂單建立失敗，請重新整理頁面確認');
+        return;
+      }
+      // 比對數量和金額
+      const notMatchCarts = carts.filter(item => {
+        const matchCarts = cartsMap.get(item.id);
+        const matchProduct = productMap.get(item.product_id);
+        if (!matchCarts || !matchProduct) return true;
+        if (matchCarts.qty !== item.qty || matchProduct.price !== item.product.price) return true;
+        return false;
+      });
+      if (items.length !== carts.length || notMatchCarts.length > 0) {
+        toast.error('購物車內容已變動，請重新整理頁面確認後再結帳');
+        return;
+      }
+
       const orderData = getValues();
+      const isCreditCardOrder = orderData.payment === PAYMENT.CREDIT_CARD;
       const apiData = {
-        user: {
-          name: orderData.recipientName,
-          email: orderData.recipientEmail,
-          tel: orderData.recipientPhone,
-          address: orderData.recipientAddress,
+        order: {
+          recipient_name: orderData.recipientName,
+          recipient_email: orderData.recipientEmail,
+          recipient_phone: orderData.recipientPhone,
+          recipient_address: orderData.recipientAddress,
           delivery: orderData.delivery,
           payment: orderData.payment,
-          cardLastFourNumber: orderData.cardNumber.slice(-4),
-          cardExp: orderData.cardExp,
-          cardBrand: getCardBrand(orderData.cardNumber),
-          purchaserName: orderData.purchaserName,
-          purchaserPhone: orderData.purchaserPhone,
-          purchaserEmail: orderData.purchaserEmail,
+          card_last_four: isCreditCardOrder ? orderData.cardNumber.slice(-4) : null,
+          card_brand: isCreditCardOrder ? getCardBrand(orderData.cardNumber) : null,
+          purchaser_name: orderData.purchaserName,
+          purchaser_phone: orderData.purchaserPhone,
+          purchaser_email: orderData.purchaserEmail,
           invoice: orderData.invoice,
-          mobileBarcode: orderData.mobileBarcode,
-          ubn: orderData.ubn,
+          mobile_barcode: toNull(orderData.mobileBarcode),
+          ubn: toNull(orderData.ubn),
+          message: toNull(orderData.message),
         },
-        message: orderData.message,
+        products: items.map(item => {
+          const product = productMap.get(item.product_id);
+          return {
+            product_id: item.product_id,
+            title: product.title,
+            price: product.price,
+            origin_price: product.origin_price,
+            image_url: product.imageUrl,
+          };
+        }),
       };
       const orderResponse = await guestOrderApi.createOrder(apiData);
 
       // 建立 orderInfo 基礎物件
       const orderInfo = {
-        orderId: orderResponse.orderId,
+        orderId: orderResponse.id,
         email: recipientEmail,
         // 是否轉帳付款
-        isTransfer: paymentMethod === '轉帳',
-        // 轉帳繳費截止時間 (建立訂單時間後 3 天的 23:59:59) (timestamp)
-        transferDeadline: new Date(orderResponse.create_at * 1000 + 3 * 24 * 60 * 60 * 1000).setHours(23, 59, 59, 999),
+        isTransfer: paymentMethod === PAYMENT.TRANSFER,
+        // 轉帳繳費截止時間 (建立訂單時間後 3 天的 23:59:59)
+        transferDeadline: new Date(
+          new Date(orderResponse.created_at).setHours(23, 59, 59, 999) + 3 * 24 * 60 * 60 * 1000,
+        ),
       };
 
       // 只有信用卡一次付清才呼叫付款 API
       // 使用獨立方法處理，確保即使付款失敗也不會中斷流程
-      if (paymentMethod === '信用卡一次付清') {
-        await processCreditCardPayment(orderResponse.orderId);
+      if (isCreditCardOrder) {
+        await processCreditCardPayment(orderResponse.id);
       }
 
       setOrderInfo(orderInfo);
@@ -376,9 +424,19 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
       shouldSwitchAfterClose.current = true;
       handleCloseConfirmModal();
       // 更新購物車資訊
-      dispatch(fetchCarts(false));
+      dispatch(fetchCarts(true));
     } catch (error) {
-      toast.error(error);
+      let message = '';
+      if (typeof error === 'string') {
+        message = getOrderErrorMessage('API_ERROR');
+      } else {
+        // supabase-js 網路失敗時 code 是空字串
+        const code = error.code === '' ? 'NETWORK_ERROR' : error.code;
+        message = getOrderErrorMessage(code);
+      }
+      toast.error(message);
+    } finally {
+      dispatch(hideLoading());
     }
   };
 
@@ -483,7 +541,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                 )}
               />
               {/* 條件顯示：信用卡欄位 */}
-              {paymentMethod === '信用卡一次付清' && (
+              {isCreditCard && (
                 <div className="mt-4">
                   <div className="mb-2">
                     <label htmlFor="card-number" className="form-label fs-lg-7 text-neutral-700">
@@ -499,7 +557,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                             inputRef={ref}
                             value={value}
                             className={clsx(
-                              'form-control cart-card-number fs-sm fs-lg-8',
+                              'form-control cart-card-number',
                               errors.cardNumber && 'is-invalid',
                               !errors.cardNumber && dirtyFields.cardNumber && 'is-valid',
                             )}
@@ -535,7 +593,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                               inputRef={ref}
                               value={value}
                               className={clsx(
-                                'form-control cart-card-exp fs-sm fs-lg-8',
+                                'form-control cart-card-exp',
                                 errors.cardExp && 'is-invalid',
                                 !errors.cardExp && dirtyFields.cardExp && 'is-valid',
                               )}
@@ -572,7 +630,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                               value={value}
                               type={isCvcVisible ? 'text' : 'password'}
                               className={clsx(
-                                'form-control cart-card-cvc fs-sm fs-lg-8',
+                                'form-control cart-card-cvc',
                                 errors.cardCvc && 'is-invalid',
                                 !errors.cardCvc && dirtyFields.cardCvc && 'is-valid',
                                 !errors.cardCvc && !dirtyFields.cardCvc && 'unvalidated',
@@ -617,7 +675,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                     {...register('purchaserName')}
                     type="text"
                     className={clsx(
-                      'form-control fs-sm fs-lg-8 checkout-form-control',
+                      'form-control checkout-form-control',
                       errors.purchaserName && 'is-invalid',
                       !errors.purchaserName && dirtyFields.purchaserName && 'is-valid',
                     )}
@@ -639,7 +697,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                         inputRef={ref}
                         value={value}
                         className={clsx(
-                          'form-control fs-sm fs-lg-8 checkout-form-control',
+                          'form-control checkout-form-control',
                           errors.purchaserPhone && 'is-invalid',
                           !errors.purchaserPhone && dirtyFields.purchaserPhone && 'is-valid',
                         )}
@@ -661,7 +719,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                   {...register('purchaserEmail')}
                   type="email"
                   className={clsx(
-                    'form-control fs-sm fs-lg-8',
+                    'form-control',
                     errors.purchaserEmail && 'is-invalid',
                     !errors.purchaserEmail && dirtyFields.purchaserEmail && 'is-valid',
                   )}
@@ -700,7 +758,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                       {...register('recipientName')}
                       type="text"
                       className={clsx(
-                        'form-control fs-sm fs-lg-8 checkout-form-control',
+                        'form-control checkout-form-control',
                         errors.recipientName && 'is-invalid',
                         !errors.recipientName && dirtyFields.recipientName && 'is-valid',
                       )}
@@ -723,7 +781,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                           inputRef={ref}
                           value={value}
                           className={clsx(
-                            'form-control fs-sm fs-lg-8 checkout-form-control',
+                            'form-control checkout-form-control',
                             errors.recipientPhone && 'is-invalid',
                             !errors.recipientPhone && dirtyFields.recipientPhone && 'is-valid',
                           )}
@@ -746,7 +804,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                     {...register('recipientEmail')}
                     type="email"
                     className={clsx(
-                      'form-control fs-sm fs-lg-8',
+                      'form-control',
                       errors.recipientEmail && 'is-invalid',
                       !errors.recipientEmail && dirtyFields.recipientEmail && 'is-valid',
                     )}
@@ -764,7 +822,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                     {...register('recipientAddress')}
                     type="text"
                     className={clsx(
-                      'form-control fs-sm fs-lg-8',
+                      'form-control',
                       errors.recipientAddress && 'is-invalid',
                       !errors.recipientAddress && dirtyFields.recipientAddress && 'is-valid',
                     )}
@@ -823,7 +881,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                   )}
                 />
                 {/* 條件顯示：載具欄位 */}
-                {invoiceType === '雲端載具' && (
+                {invoiceType === INVOICE.MOBILE_BARCODE && (
                   <div className="mt-3">
                     <label htmlFor="mobile-barcode" className="form-label fs-lg-7">
                       手機條碼
@@ -832,7 +890,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                       {...register('mobileBarcode')}
                       type="text"
                       className={clsx(
-                        'form-control fs-sm fs-lg-8',
+                        'form-control',
                         errors.mobileBarcode && 'is-invalid',
                         !errors.mobileBarcode && dirtyFields.mobileBarcode && 'is-valid',
                       )}
@@ -843,7 +901,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                   </div>
                 )}
                 {/* 條件顯示：統一編號欄位 */}
-                {invoiceType === '統一編號' && (
+                {invoiceType === INVOICE.UBN && (
                   <div className="mt-3">
                     <label htmlFor="ubn" className="form-label fs-lg-7">
                       統一編號
@@ -857,7 +915,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                           inputRef={ref}
                           value={value}
                           className={clsx(
-                            'form-control fs-sm fs-lg-8',
+                            'form-control',
                             errors.ubn && 'is-invalid',
                             !errors.ubn && dirtyFields.ubn && 'is-valid',
                           )}
@@ -880,7 +938,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
                 </label>
                 <textarea
                   {...register('message')}
-                  className="form-control fs-sm fs-lg-8"
+                  className="form-control"
                   id="checkout-notes-text"
                   rows="3"
                   placeholder="請輸入留言"
@@ -929,7 +987,7 @@ function CheckoutForm({ handleSwitchStep, setOrderInfo }) {
               <div className="d-flex justify-content-between mb-3 mb-lg-4">
                 <span className="fs-sm fs-lg-8 text-neutral-400">運費</span>
                 <span className="fs-sm fs-lg-8 text-secondary">
-                  {deliveryMethod === '黑貓宅配' ? (
+                  {deliveryMethod === DELIVERY.YAMATO_TRANSPORT ? (
                     <>
                       NT$0 <del className="text-neutral-400">{`$${deliveryFee}`}</del>
                     </>

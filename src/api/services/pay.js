@@ -1,7 +1,9 @@
-import guestClient from '../clients/guestClient';
-import { GUEST_API_PATH } from '../core/constants';
+import { supabaseGuest } from '../clients/guestClient';
 
 export const payApi = {
   // 付款
-  createPayment: orderId => guestClient.post(`${GUEST_API_PATH}/pay/${orderId}`),
+  payOrder: async orderId => {
+    const { error } = await supabaseGuest.rpc('pay_order', { p_order_id: orderId });
+    if (error) throw error;
+  },
 };
