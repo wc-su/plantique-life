@@ -57,6 +57,7 @@ export function getOrderErrorMessage(code) {
 const payErrorMessages = Object.freeze({
   NETWORK_ERROR: '網路連線異常，請稍後再試',
   PY001: '訂單已付款',
+  PY002: '此訂單無法線上付款',
   P0002: '訂單不存在',
   42501: '登入狀態已失效，請重新登入', // 訪客沒有執行權限
 });

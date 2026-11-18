@@ -185,10 +185,10 @@ $$;
 revoke execute on function public.create_order(jsonb, jsonb) from public, anon;
 grant execute on function public.create_order(jsonb, jsonb) to authenticated;
 
--- pay_order: 把自己還沒付款的訂單改成已付款；會修改 orders 的 is_paid、paid_at
+-- pay_order: 把自己還沒付款的訂單改成已付款（只有信用卡訂單可以付款）；會修改 orders 的 is_paid、paid_at
 -- 前端用 supabase.rpc('pay_order', { p_order_id }) 呼叫
 -- 一般會員沒有 orders 的 update 權限，所以用 security definer；
--- 安全靠函式內容把關：只改 user_id = auth.uid()、還沒付款的那一筆，而且只改付款的兩個欄位
+-- 安全靠函式內容把關：只改 user_id = auth.uid()、還沒付款的那一筆、信用卡付款，而且只改付款的兩個欄位
 create or replace function public.pay_order(p_order_id uuid)
 returns void                       -- 不回傳資料；沒有錯誤就代表付款成功
 language plpgsql
@@ -202,18 +202,29 @@ begin
       paid_at = now()
   where id = p_order_id
     and user_id = auth.uid()
-    and not is_paid;
+    and not is_paid
+    and payment = '信用卡一次付清';
 
   if found then
     return;
   end if;
 
-  -- 沒改到：分辨是「已經付款」還是「找不到這筆訂單」
+  -- 沒改到：分辨「是否為信用卡付款」、「已經付款」還是「找不到這筆訂單」
   -- 不是自己的訂單也當成找不到，不讓別人試出訂單編號存不存在
   if exists (
     select 1 from public.orders
     where id = p_order_id
       and user_id = auth.uid()
+      and payment <> '信用卡一次付清'
+  ) then
+    raise exception 'not credit card order' using errcode = 'PY002';
+  end if;
+
+  if exists (
+    select 1 from public.orders
+    where id = p_order_id
+      and user_id = auth.uid()
+      and is_paid
   ) then
     raise exception 'order is already paid' using errcode = 'PY001';
   end if;
